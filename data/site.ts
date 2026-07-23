@@ -109,14 +109,16 @@ export const deals: Deal[] = [
   { tag: "Florist Farms", name: "Florist Farms + 2pk Gummy", desc: "Buy anything from Florist Farms, get a 2pk gummy", value: "2pk", valid: "All week", code: "FF Free Gummy", type: "bogo" },
 
   /**
-   * ⚠️ COMPLIANCE CHECK BEFORE PUBLISHING THESE TWO.
-   * They advertise a cannabis product for $0.01, which reads as a giveaway.
-   * NY restricts advertising free/giveaway cannabis. They run fine in store —
-   * the question is only whether you may ADVERTISE them. Ask your compliance
-   * contact, then delete this comment or delete the two entries.
+   * ⚠️ These two run in the register at $0.01, but the PRICE IS NOT ADVERTISED
+   * here — a penny price on cannabis reads as a giveaway, and NY restricts
+   * advertising free/nominal-price cannabis. The promo still works in store;
+   * we just say "Add-On" and let the budtender apply it.
+   *
+   * ✏️ Confirm with your compliance contact. If they're comfortable with the
+   * price being public, you can put "$0.01" back in `value` and `desc`.
    */
-  { tag: "Jeeter", name: "Jeeter Pre-Roll Add-On", desc: "Buy any Jeeter, add a .5g pre-roll for $0.01", value: "$0.01", valid: "All week", code: "jeeter.5g3", type: "bogo" },
-  { tag: "Stiiizy", name: "Stiiizy 5pk Add-On", desc: "Buy a Stiiizy 5pk, add a single for $0.01", value: "$0.01", valid: "All week", code: "597949746919", type: "bogo" },
+  { tag: "Jeeter", name: "Jeeter Pre-Roll Add-On", desc: "Buy any Jeeter and add a .5g pre-roll — ask us in store", value: "Add-On", valid: "All week", code: "jeeter.5g3", type: "bogo" },
+  { tag: "Stiiizy", name: "Stiiizy 5pk Add-On", desc: "Buy a Stiiizy 5pk and add a single — ask us in store", value: "Add-On", valid: "All week", code: "597949746919", type: "bogo" },
 ];
 
 /** The subset shown in the homepage sliding gallery. */

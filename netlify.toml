@@ -18,3 +18,17 @@
   for = "/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# ─────────────────────────────────────────────────────────────────────────
+#  Security headers — keep these on launch day.
+# ─────────────────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # don't let other sites frame the age gate away
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # this site needs none of these
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
