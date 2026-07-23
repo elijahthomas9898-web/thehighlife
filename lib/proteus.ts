@@ -276,11 +276,29 @@ async function call(file: string, params: Record<string, string>): Promise<unkno
   });
   if (!res.ok) throw new Error(`Proteus ${file} returned ${res.status} ${res.statusText}`);
   const text = await res.text();
+
+  let parsed: unknown;
   try {
-    return JSON.parse(text);
+    parsed = JSON.parse(text);
   } catch {
     throw new Error(`Proteus ${file} returned non-JSON (${text.slice(0, 120)}…)`);
   }
+
+  /**
+   * Proteus answers auth/permission failures with HTTP 200 and a body like
+   * {"error": "..."} — so a bad key looks like a SUCCESSFUL empty catalog
+   * unless we check for this. Left unhandled, the menu cheerfully reports
+   * "0 products in stock", which reads to a customer as "they have nothing".
+   * Turn it into a real failure so the unavailable page shows instead.
+   */
+  if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+    const err = (parsed as Record<string, unknown>).error;
+    if (typeof err === "string" && err.trim()) {
+      throw new Error(`Proteus ${file}: ${err}`);
+    }
+  }
+
+  return parsed;
 }
 
 export function isConfigured(): boolean {
@@ -373,7 +391,7 @@ export async function getMenu(): Promise<MenuResult> {
   if (cache && Date.now() - cache.at < TTL_MS) return cache.result;
 
   if (!isConfigured()) {
-    return { products: SAMPLE_PRODUCTS, live: false, error: "Proteus credentials not set" };
+    return { products: [], live: false, error: "Proteus credentials not set" };
   }
 
   try {
@@ -414,25 +432,36 @@ export async function getMenu(): Promise<MenuResult> {
       })
       .filter((p) => p.inStock && isPublicProduct(p));
 
+    /**
+     * A real dispensary always has stock. An empty catalog means something is
+     * wrong upstream (auth, an API change, a bad response) rather than "we
+     * sold out of everything" — so treat it as unavailable instead of telling
+     * customers we have nothing. Not cached, so it retries on the next view.
+     */
+    if (products.length === 0) {
+      return {
+        products: [],
+        live: false,
+        error: "Proteus returned no products — the menu looks empty upstream.",
+      };
+    }
+
     const result: MenuResult = { products, live: true, fetchedAt: Date.now() };
     cache = { at: Date.now(), result };
     return result;
   } catch (e) {
-    // never show a blank page — fall back to samples and surface the reason
+    /**
+     * NO PLACEHOLDER PRODUCTS.
+     *
+     * Showing invented stock on a dispensary menu sends customers in for
+     * things we don't have, and puts prices on screen that were never real.
+     * An empty menu with an honest "temporarily unavailable" message is the
+     * safer failure — the page says what's wrong instead of lying.
+     */
     return {
-      products: SAMPLE_PRODUCTS,
+      products: [],
       live: false,
       error: e instanceof Error ? e.message : "Could not reach Proteus",
     };
   }
 }
-
-/** Shown only if Proteus is unreachable, so the page is never empty. */
-export const SAMPLE_PRODUCTS: Product[] = [
-  { id: "s1", name: "Sample | Blue Dream | 3.5g", brand: "Sample", category: "flower", strain: "Blue Dream", price: 45, unit: "each", inStock: true },
-  { id: "s2", name: "Sample | Preroll 5pk", brand: "Sample", category: "pre-rolls", price: 40, unit: "each", inStock: true },
-  { id: "s3", name: "Sample | AIO 1g", brand: "Sample", category: "vapes", price: 64, unit: "each", inStock: true },
-  { id: "s4", name: "Sample | Gummies 100mg", brand: "Sample", category: "edibles", price: 24, unit: "each", inStock: true },
-  { id: "s5", name: "Sample | Live Rosin 1g", brand: "Sample", category: "concentrate", price: 60, unit: "each", inStock: true },
-  { id: "s6", name: "Sample | Relief Balm", brand: "Sample", category: "topicals", price: 30, unit: "each", inStock: true },
-];

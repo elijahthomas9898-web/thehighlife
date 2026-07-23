@@ -40,8 +40,9 @@ export default async function MerchPage() {
             </p>
           ) : (
             <p className="menu-note warn">
-              <b>Sample products shown.</b> Couldn&rsquo;t reach the live menu
-              {error ? ` — ${error}` : ""}.
+              <b>Our menu is temporarily unavailable.</b> We&rsquo;d rather show nothing than
+              show you inaccurate stock — come in or email us and we&rsquo;ll tell you what we
+              have.
             </p>
           )}
 

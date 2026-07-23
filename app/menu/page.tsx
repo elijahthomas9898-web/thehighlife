@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { getMenu } from "@/lib/proteus";
 import { categories } from "@/data/site";
 import MenuBrowser from "./MenuBrowser";
+import MenuUnavailable from "../components/MenuUnavailable";
 
 export const metadata: Metadata = {
   title: "Menu | The High Life Dispensary",
@@ -38,35 +39,36 @@ export default async function MenuPage({
       <section className="menu-page">
         <div className="wrap">
           <div className="kicker">
-            The Menu <span>/ {live ? "live from our shelves" : "sample products"}</span>
+            The Menu <span>/ {live ? "live from our shelves" : "temporarily unavailable"}</span>
           </div>
           <h2>Shop The Menu</h2>
 
           {live ? (
-            <p className="menu-note ok">
-              Showing <b>{products.length.toLocaleString()}</b> products in stock right now, synced
-              from our register.
-            </p>
+            <>
+              <p className="menu-note ok">
+                Showing <b>{products.length.toLocaleString()}</b> products in stock right now,
+                synced from our register.
+              </p>
+
+              <div className="menu-tabs">
+                {tabs.map((c) => (
+                  <a
+                    key={c.slug}
+                    href={`/menu?cat=${c.slug}`}
+                    className={`menu-tab${c.slug === active ? " on" : ""}`}
+                  >
+                    {c.name} <b>{counts.get(c.slug)}</b>
+                  </a>
+                ))}
+              </div>
+
+              <MenuBrowser products={inCategory} categoryName={activeName} />
+            </>
           ) : (
-            <p className="menu-note warn">
-              <b>Sample products shown.</b> Couldn&rsquo;t reach the live menu
-              {error ? ` — ${error}` : ""}.
-            </p>
+            /* Never show invented products — say what's wrong and point people
+               at the shop instead. */
+            <MenuUnavailable error={error} />
           )}
-
-          <div className="menu-tabs">
-            {tabs.map((c) => (
-              <a
-                key={c.slug}
-                href={`/menu?cat=${c.slug}`}
-                className={`menu-tab${c.slug === active ? " on" : ""}`}
-              >
-                {c.name} <b>{counts.get(c.slug)}</b>
-              </a>
-            ))}
-          </div>
-
-          <MenuBrowser products={inCategory} categoryName={activeName} />
 
           <p className="menu-legal">
             Menu reflects current in-store inventory and may change without notice. Prices exclude
