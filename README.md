@@ -1,85 +1,60 @@
-# The High Life Dispensary — Website
+# The High Life Dispensary — website
 
-Custom site for The High Life Dispensary, 1300 N Wellwood Ave, West Babylon NY 11704.
-Built with Next.js 16. Licensed NY adult-use retail (NYS OCM# OCM-CAURD-25-000277-D1).
+Private. 1300 N Wellwood Ave, West Babylon NY 11704 · NYS OCM# OCM-CAURD-25-000277-D1
 
----
-
-## How to run it on your computer
-
-Open a terminal in this folder and run:
+Run locally:
 
 ```bash
 npm run dev
 ```
 
-Then open **http://localhost:3000** in your browser. Press `Ctrl+C` in the terminal to stop it.
-
-> Note: there's a shortcut folder at `D:\highlife-site` that points to this same folder.
-> It exists because some tools can't handle the spaces in "the high life website".
-> Don't delete it.
+Deploys automatically to Netlify on every push to `main`.
 
 ---
 
-## The one file you'll actually edit: `data/site.ts`
+## 🚀 Launch day — two things, both required
 
-Everything you change week-to-week lives in **`data/site.ts`**. You do not need to touch
-any other file for normal updates.
+The site is currently **hidden from Google on purpose** so it can't compete with
+thehighlifeny.com while testing. To go public you must do BOTH:
 
-| What | Where in that file |
-|---|---|
-| **Weekly deals** | the `deals` list ← *this is the one you'll change most* |
-| Store hours | the `hours` list |
-| Address, email, license # | the `store` section |
-| Category names/descriptions | the `categories` list |
-| The yellow warning text | `WARNING_TEXT` |
+1. In Netlify, set env var `SITE_PUBLIC` = `true`
+2. In `netlify.toml`, delete the `X-Robots-Tag = "noindex, nofollow"` block
 
-### Changing a deal
-
-Find the deal in the `deals` list and edit the text between the quotes. For example, to
-change Ounce Fridays from $99 to $89, change `value: "$99"` to `value: "$89"`. Save the
-file — if the dev server is running, the site updates instantly.
-
-### ⚠️ Rules when writing deals (New York law)
-
-NY **allows** discounts, coupons, loyalty programs, and bundles — but:
-
-- No **gamification**: no "spin the wheel", scratch-offs, or game-style promos
-- Nothing that could **appeal to under-21** (cartoons, toys, candy-brand parodies)
-- No pricing **below fair market value**
-- **Keep records** of your advertising for compliance
-
-When in doubt, have your compliance person review the wording before it goes live.
+Doing only one leaves the site invisible.
 
 ---
 
-## What's already built
+## Editing the site
 
-- **21+ age gate** — blocks the site until the visitor confirms. Remembers them, and
-  fails *closed* (stays up) if anything goes wrong.
-- **Yellow compliance warning** on every page.
-- **Hours table** that auto-highlights today, in *New York* time (not the visitor's).
-- **Storefront hero**, deals marquee, pinned sideways-scrolling deals gallery,
-  six photo category tiles, stats, location.
+Almost everything lives in **`data/site.ts`** — deals, hours, address, category
+descriptions, the About copy, and the tax rate. Products and prices are NOT in
+there; those come live from Proteus.
 
-## What's NOT built yet
+### ⚠️ Writing deals — New York rules
 
-- **The live menu** — needs the Proteus 420 API docs (specifically whether the API can
-  *create* a pickup order, not just list products).
-- **Online pickup ordering** — pay-at-store, so no payment processing needed.
-- **Deals admin page** — deliberately skipped for now; deals live in `data/site.ts`.
-  If a staff member ever needs to edit deals without touching code, that's when we add it.
+NY allows discounts, BOGOs, and loyalty offers, but:
 
-## Images
+- **No gamification** — no spin-to-win, scratch-offs, or game-style promos
+- **Nothing appealing to under-21** — no cartoons, toys, or candy-brand parodies
+- **Don't advertise free or penny-priced cannabis.** Two add-on deals run at
+  $0.01 in the register but deliberately say "Add-On" here instead of showing
+  the price.
+- **Keep records** of what you advertise
 
-Live in `public/images/`. Replace a file with the same name to swap a photo.
+Have compliance review new deal wording before it goes live.
 
-- `logo.png` — the wordmark (nav + age gate)
-- `storefront.jpg` — hero background
-- `categories/*.jpg` — the six category tiles
+---
 
-## Security note
+## Notes for whoever works on this next
 
-When the Proteus 420 API is wired up, the API key goes in `.env.local` (which is never
-committed) and is only ever used **server-side**. It must never appear in code the
-browser downloads.
+- **Proteus credentials** live in `.env.local` (never committed) and in Netlify's
+  env vars. Server-side only — they must never reach the browser.
+- **Never show placeholder products.** If the API fails the menu shows an honest
+  "temporarily unavailable" page. Fake stock sends customers in for things we
+  don't have. See the comment in `lib/proteus.ts`.
+- **Proteus returns auth errors as HTTP 200** with `{"error": "..."}`, so a bad
+  key looks like an empty catalog. `call()` throws on that — don't remove it.
+- The **21+ age gate fails closed**: it's driven by a `data-age` attribute set
+  before first paint, so if scripts or storage fail, the gate stays up.
+- `AGENTS.md` — this is Next.js 16; read `node_modules/next/dist/docs/` before
+  assuming an API works the way older versions did.
