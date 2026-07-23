@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# ─────────────────────────────────────────────────────────────────────────
+#  ⚠️ PREVIEW MODE — blocks Google from indexing the site.
+#
+#  While we're testing, we do NOT want a half-finished cannabis site showing
+#  up in search results, or competing with thehighlifeny.com.
+#
+#  ✏️ DELETE this whole [[headers]] block on launch day, when the site is
+#     ready to be found publicly.
+# ─────────────────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
