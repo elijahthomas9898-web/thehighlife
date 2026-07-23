@@ -6,29 +6,13 @@
   NODE_VERSION = "22"
 
 # ─────────────────────────────────────────────────────────────────────────
-#  ⚠️ PREVIEW MODE — blocks Google from indexing the site.
+#  Headers are NOT set here.
 #
-#  While we're testing, we do NOT want a half-finished cannabis site showing
-#  up in search results, or competing with thehighlifeny.com.
+#  Netlify's [[headers]] rules don't reliably reach Next.js server-rendered
+#  pages — checked against a live deploy and X-Robots-Tag / X-Frame-Options
+#  were silently missing. They now live in next.config.ts, which Next applies
+#  to its own responses.
 #
-#  ✏️ DELETE this whole [[headers]] block on launch day, when the site is
-#     ready to be found publicly.
+#  Launch day: set SITE_PUBLIC=true in Netlify's environment variables.
+#  Nothing in this file needs changing.
 # ─────────────────────────────────────────────────────────────────────────
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
-
-# ─────────────────────────────────────────────────────────────────────────
-#  Security headers — keep these on launch day.
-# ─────────────────────────────────────────────────────────────────────────
-[[headers]]
-  for = "/*"
-  [headers.values]
-    # don't let other sites frame the age gate away
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    # this site needs none of these
-    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
