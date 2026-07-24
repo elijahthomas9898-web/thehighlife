@@ -1,10 +1,24 @@
 import type { Metadata } from "next";
+import { Baloo_2 } from "next/font/google";
 import "./globals.css";
 import AgeGate from "./components/AgeGate";
 import WarnBand from "./components/WarnBand";
 import { InlineScript } from "./components/InlineScript";
 import { CartProvider } from "./components/CartProvider";
 import CartDrawer from "./components/CartDrawer";
+
+/**
+ * The groovy display face. Self-hosted by Next at build time, so it renders
+ * BYTE-IDENTICALLY on the kiosk, phones and desktop — no more per-device
+ * fallback to Arial Rounded / SF Rounded / Roboto. Baloo 2 is the closest
+ * free match to the rounded bold look, and pairs with the bubble logo.
+ */
+const groovy = Baloo_2({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-groovy",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "The High Life Dispensary | West Babylon, NY",
@@ -32,7 +46,7 @@ if(m[d]!==undefined){document.documentElement.setAttribute("data-today",String(m
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={groovy.variable} suppressHydrationWarning>
       <head>
         <InlineScript html={BOOT_SCRIPT} />
       </head>
