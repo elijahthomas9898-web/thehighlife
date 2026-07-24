@@ -73,7 +73,11 @@
   .hero-photo{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat}
   .hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,9,10,.32),rgba(8,9,10,.66) 55%,rgba(8,9,10,.94)),radial-gradient(130% 90% at 50% 34%,transparent,rgba(8,9,10,.55))}
   .hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 45%,#000 30%,transparent 75%)}
-  .hero-inner{position:relative;z-index:3;max-width:var(--maxw);margin:0 auto;width:100%;will-change:transform;text-align:center}
+  /* No `will-change:transform` here. It permanently promotes the whole hero —
+     including the huge outlined headline — onto a GPU layer, and weak kiosk
+     GPUs tile that layer's texture, showing the seams as horizontal stripes
+     through the text. The parallax still works via the transform set in JS. */
+  .hero-inner{position:relative;z-index:3;max-width:var(--maxw);margin:0 auto;width:100%;text-align:center}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--green);margin-bottom:30px;display:inline-flex;align-items:center;gap:14px}
   .eyebrow::before,.eyebrow::after{content:"";width:30px;height:1px;background:var(--green-dim)}
 
@@ -81,7 +85,10 @@
   .brand-logo{height:42px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(59,232,127,.55))}
   @media(max-width:560px){.brand-logo{height:34px}}
   /* hero headline */
-  .hero-h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(44px,9.5vw,128px);line-height:.86;margin:0;color:var(--white);-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;filter:drop-shadow(0 0 24px rgba(59,232,127,.4)) drop-shadow(0 6px 0 rgba(0,0,0,.35));text-wrap:balance}
+  /* Glow + drop via text-shadow, NOT filter:drop-shadow. `filter` renders the
+     text into an offscreen GPU texture that tiles (stripes) on weak kiosk GPUs;
+     text-shadow draws inline with the glyphs and is robust everywhere. */
+  .hero-h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(44px,9.5vw,128px);line-height:.86;margin:0;color:var(--white);-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;text-shadow:0 0 26px rgba(59,232,127,.45),0 4px 0 rgba(0,0,0,.3);text-wrap:balance}
   .hero-h1 .g{color:var(--green)}
   .hero-sub{margin:34px auto 0;max-width:52ch;color:var(--muted);font-size:clamp(15px,1.6vw,19px)}
   .hero-cta{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
@@ -208,7 +215,7 @@
   /* footer */
   footer{border-top:1px solid var(--line);text-align:center;overflow:hidden;position:relative}
   footer .wrap{padding-top:clamp(84px,11vw,140px)}
-  .foot-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.82;-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;color:var(--white);filter:drop-shadow(0 0 18px rgba(59,232,127,.5))}
+  .foot-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.82;-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;color:var(--white);text-shadow:0 0 22px rgba(59,232,127,.5)}
   .foot-title .a{display:block;font-size:clamp(40px,11vw,150px)}
   .foot-title .b{display:block;color:var(--green);font-size:clamp(30px,8vw,110px)}
   .footmeta{margin-top:56px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:26px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}

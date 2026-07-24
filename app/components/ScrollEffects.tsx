@@ -12,6 +12,11 @@ type Particle = { x: number; y: number; r: number; vy: number; vx: number; a: nu
 export default function ScrollEffects() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Hero parallax only on mouse/desktop. On touch screens (the in-store kiosk
+    // and phones) the transform promotes the huge outlined headline onto a GPU
+    // layer, which weak kiosk GPUs render with horizontal-stripe artifacts.
+    // Skipping it there keeps the text crisp; desktop still gets the parallax.
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     const rail = document.getElementById("rail");
     const nav = document.getElementById("nav");
@@ -24,7 +29,7 @@ export default function ScrollEffects() {
       const max = h.scrollHeight - h.clientHeight || 1;
       if (rail) rail.style.width = `${(sc / max) * 100}%`;
       if (nav) nav.classList.toggle("solid", sc > 40);
-      if (!reduce && heroInner && sc < window.innerHeight) {
+      if (!reduce && finePointer && heroInner && sc < window.innerHeight) {
         heroInner.style.transform = `translateY(${sc * 0.28}px)`;
         heroInner.style.opacity = String(Math.max(0, 1 - sc / (window.innerHeight * 0.85)));
       }
