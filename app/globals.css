@@ -13,6 +13,13 @@
     --maxw:1240px;
     --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
     --groovy:var(--font-groovy),"Arial Rounded MT Bold","ui-rounded","Helvetica Rounded","Segoe UI",system-ui,sans-serif;
+    /* Black text outline drawn with layered shadows instead of
+       -webkit-text-stroke. text-stroke stripes on the in-store Android kiosk
+       (its GPU tiles large stroked glyphs); these 8-direction shadows render
+       cleanly on every device and look the same. Three weights by text size. */
+    --ol-lg:3px 0 0 #000,-3px 0 0 #000,0 3px 0 #000,0 -3px 0 #000,2px 2px 0 #000,-2px 2px 0 #000,2px -2px 0 #000,-2px -2px 0 #000;
+    --ol-md:1.5px 0 0 #000,-1.5px 0 0 #000,0 1.5px 0 #000,0 -1.5px 0 #000,1px 1px 0 #000,-1px 1px 0 #000,1px -1px 0 #000,-1px -1px 0 #000;
+    --ol-sm:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;
     --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
   }
@@ -88,7 +95,7 @@
   /* Glow + drop via text-shadow, NOT filter:drop-shadow. `filter` renders the
      text into an offscreen GPU texture that tiles (stripes) on weak kiosk GPUs;
      text-shadow draws inline with the glyphs and is robust everywhere. */
-  .hero-h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(44px,9.5vw,128px);line-height:.86;margin:0;color:var(--white);-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;text-shadow:0 0 26px rgba(59,232,127,.45),0 4px 0 rgba(0,0,0,.3);text-wrap:balance}
+  .hero-h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(44px,9.5vw,128px);line-height:.86;margin:0;color:var(--white);text-shadow:var(--ol-lg),0 0 26px rgba(59,232,127,.45);text-wrap:balance}
   .hero-h1 .g{color:var(--green)}
   .hero-sub{margin:34px auto 0;max-width:52ch;color:var(--muted);font-size:clamp(15px,1.6vw,19px)}
   .hero-cta{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
@@ -154,10 +161,10 @@
   .deal .top{display:flex;justify-content:space-between;align-items:flex-start}
   .deal .tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;padding:5px 11px;border-radius:100px;border:1px solid var(--green-dim);color:var(--green)}
   .deal .idx{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em}
-  .deal h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(28px,3.6vw,44px);line-height:.92;margin:14px 0 0;-webkit-text-stroke:1.5px #000;paint-order:stroke fill}
+  .deal h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(28px,3.6vw,44px);line-height:.92;margin:14px 0 0;text-shadow:var(--ol-md)}
   .deal .desc{color:var(--muted);font-size:14px;margin-top:12px;position:relative;z-index:2}
   .deal .meta{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);padding-top:18px;position:relative;z-index:2}
-  .deal .val{font-family:var(--groovy);font-weight:700;font-size:clamp(34px,4.4vw,54px);color:var(--green);line-height:1;-webkit-text-stroke:1.5px #000;paint-order:stroke fill}
+  .deal .val{font-family:var(--groovy);font-weight:700;font-size:clamp(34px,4.4vw,54px);color:var(--green);line-height:1;text-shadow:var(--ol-md)}
   .deal .valid{font-family:var(--mono);font-size:13px;color:var(--white);text-align:right}
   .deal .valid small{display:block;color:var(--muted);font-size:11px;letter-spacing:.08em}
   /* deal cards are links now — keep them feeling clickable */
@@ -176,7 +183,7 @@
   .cat:hover::before{background:linear-gradient(180deg,rgba(8,9,10,.15),rgba(18,59,34,.5) 42%,rgba(8,9,10,.94))}
   .cat>*{position:relative;z-index:1}
   .cat .cn{font-family:var(--mono);font-size:12px;color:var(--green);letter-spacing:.1em}
-  .cat h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(26px,3.4vw,42px);line-height:.92;margin:18px 0 0;-webkit-text-stroke:1.5px #000;paint-order:stroke fill;transition:color .3s}
+  .cat h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(26px,3.4vw,42px);line-height:.92;margin:18px 0 0;text-shadow:var(--ol-md);transition:color .3s}
   .cat:hover h3{color:var(--green)}
   .cat p{color:rgba(243,247,241,.82);font-size:13.5px;margin:12px 0 0;max-width:32ch}
   .cat .arrow{position:absolute;top:30px;right:28px;font-family:var(--mono);color:var(--muted);transition:.3s;opacity:0;transform:translateX(-6px)}
@@ -188,7 +195,7 @@
   .stats{border-top:1px solid var(--line)}
   .statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:50px}
   .stat{background:var(--bg);padding:38px 28px;display:flex;flex-direction:column;gap:10px}
-  .stat .n{font-family:var(--groovy);font-weight:700;font-size:clamp(40px,6vw,70px);line-height:1;color:var(--green);font-variant-numeric:tabular-nums;-webkit-text-stroke:1.5px #000;paint-order:stroke fill}
+  .stat .n{font-family:var(--groovy);font-weight:700;font-size:clamp(40px,6vw,70px);line-height:1;color:var(--green);font-variant-numeric:tabular-nums;text-shadow:var(--ol-md)}
   .stat .l{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   @media(max-width:820px){.statgrid{grid-template-columns:repeat(2,1fr)}}
 
@@ -205,7 +212,7 @@
   html[data-today="0"] .hours .hr:nth-child(1) .d,html[data-today="1"] .hours .hr:nth-child(2) .d,html[data-today="2"] .hours .hr:nth-child(3) .d,html[data-today="3"] .hours .hr:nth-child(4) .d,html[data-today="4"] .hours .hr:nth-child(5) .d,html[data-today="5"] .hours .hr:nth-child(6) .d,html[data-today="6"] .hours .hr:nth-child(7) .d{color:var(--green)}
   html[data-today="0"] .hours .hr:nth-child(1) .d::after,html[data-today="1"] .hours .hr:nth-child(2) .d::after,html[data-today="2"] .hours .hr:nth-child(3) .d::after,html[data-today="3"] .hours .hr:nth-child(4) .d::after,html[data-today="4"] .hours .hr:nth-child(5) .d::after,html[data-today="5"] .hours .hr:nth-child(6) .d::after,html[data-today="6"] .hours .hr:nth-child(7) .d::after{content:" · Today"}
   .addr{display:flex;flex-direction:column;gap:20px}
-  .addr .big{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(26px,3vw,38px);line-height:1;color:var(--white);-webkit-text-stroke:1.5px #000;paint-order:stroke fill}
+  .addr .big{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(26px,3vw,38px);line-height:1;color:var(--white);text-shadow:var(--ol-md)}
   .addr p{color:var(--muted);margin:0;font-size:15px}
   .map{height:200px;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:radial-gradient(circle at 60% 40%,rgba(59,232,127,.18),transparent 45%),linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px),var(--panel);background-size:auto,26px 26px,26px 26px,auto}
   .map .pin{position:absolute;top:42%;left:58%;width:14px;height:14px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(59,232,127,.25),var(--glow);transform:translate(-50%,-50%)}
@@ -215,7 +222,7 @@
   /* footer */
   footer{border-top:1px solid var(--line);text-align:center;overflow:hidden;position:relative}
   footer .wrap{padding-top:clamp(84px,11vw,140px)}
-  .foot-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.82;-webkit-text-stroke:clamp(2px,.5vw,4px) #000;paint-order:stroke fill;color:var(--white);text-shadow:0 0 22px rgba(59,232,127,.5)}
+  .foot-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.82;color:var(--white);text-shadow:var(--ol-lg),0 0 22px rgba(59,232,127,.5)}
   .foot-title .a{display:block;font-size:clamp(40px,11vw,150px)}
   .foot-title .b{display:block;color:var(--green);font-size:clamp(30px,8vw,110px)}
   .footmeta{margin-top:56px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:26px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
@@ -228,7 +235,7 @@
   html[data-age="ok"] .agegate{display:none}
   .gate-box{max-width:600px;width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}
   .gate-logo{width:min(400px,78vw);height:auto;filter:drop-shadow(0 0 34px rgba(59,232,127,.45))}
-  .gate-q{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(28px,5.6vw,56px);line-height:.9;margin:0;color:var(--white);-webkit-text-stroke:2px #000;paint-order:stroke fill}
+  .gate-q{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(28px,5.6vw,56px);line-height:.9;margin:0;color:var(--white);text-shadow:var(--ol-lg)}
   .gate-q .g{color:var(--green)}
   .gate-sub{color:var(--muted);font-size:15px;margin:0;max-width:44ch}
   .gate-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:4px}
@@ -268,8 +275,8 @@
   .dealhead-code{font-family:var(--mono);font-size:12px;color:var(--muted)}
   .dealhead-code b{color:var(--green);letter-spacing:.05em}
   .dealhead-value{font-family:var(--groovy);font-weight:700;color:var(--green);line-height:1;
-    font-size:clamp(44px,7vw,86px);-webkit-text-stroke:2px #000;paint-order:stroke fill;
-    text-shadow:0 0 40px rgba(59,232,127,.35)}
+    font-size:clamp(44px,7vw,86px);
+    text-shadow:var(--ol-lg),0 0 40px rgba(59,232,127,.35)}
   .dealhead-kicker{margin-bottom:22px}
 
   /* shop page — category tiles are links here */
@@ -291,7 +298,7 @@
   @media(max-width:820px){.infocards{grid-template-columns:1fr}}
   .infocard{border:1px solid var(--line);border-radius:16px;padding:26px;background:var(--panel)}
   .infocard h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:20px;
-    margin:0 0 10px;color:var(--green);-webkit-text-stroke:1.2px #000;paint-order:stroke fill}
+    margin:0 0 10px;color:var(--green);text-shadow:var(--ol-sm)}
   .infocard p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
   .contactline{display:flex;flex-wrap:wrap;gap:14px 34px;margin-top:44px;padding-top:26px;
     border-top:1px solid var(--line);font-family:var(--mono);font-size:12.5px;color:var(--muted)}
@@ -311,7 +318,7 @@
   @media(max-width:900px){.about-grid{grid-template-columns:1fr}}
   .about-block h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;
     font-size:clamp(19px,2.2vw,25px);line-height:1;margin:0 0 12px;color:var(--white);
-    -webkit-text-stroke:1.3px #000;paint-order:stroke fill}
+    text-shadow:var(--ol-sm)}
   .about-block p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.7}
   .page .statgrid{margin-top:56px}
 
@@ -449,7 +456,7 @@
   .modal-media img{width:100%;height:auto;max-height:340px;object-fit:contain}
   .modal-body{padding:26px 26px 30px;display:flex;flex-direction:column;gap:14px;min-width:0}
   .modal-body h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(20px,2.6vw,30px);
-    line-height:1.05;margin:0;-webkit-text-stroke:1.2px #000;paint-order:stroke fill}
+    line-height:1.05;margin:0;text-shadow:var(--ol-sm)}
   .modal-tags{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .modal-buy{display:flex;justify-content:space-between;align-items:center;gap:14px;
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0}
@@ -499,7 +506,7 @@
     padding:22px 22px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;
     background:var(--panel);z-index:2}
   .cart-head h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:22px;margin:0;
-    -webkit-text-stroke:1.2px #000;paint-order:stroke fill}
+    text-shadow:var(--ol-sm)}
   .cart-head .modal-x{position:static;flex:0 0 auto}
 
   .cart-empty{padding:44px 22px;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
@@ -533,7 +540,7 @@
       linear-gradient(180deg,var(--panel),#0A0D0B)}
   .unavail-icon{font-size:34px;color:#E9C46A;line-height:1}
   .unavail h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;
-    font-size:clamp(21px,3vw,30px);margin:0;-webkit-text-stroke:1.2px #000;paint-order:stroke fill}
+    font-size:clamp(21px,3vw,30px);margin:0;text-shadow:var(--ol-sm)}
   .unavail > p{margin:0;max-width:56ch;color:var(--muted);font-size:14.5px;line-height:1.7}
   .unavail-contact{display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:center;
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;
@@ -547,7 +554,7 @@
   .cart-row{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;color:var(--muted)}
   .cart-row span:last-child{color:var(--white);font-variant-numeric:tabular-nums}
   .cart-total{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);font-size:13px}
-  .cart-total b{font-family:var(--groovy);font-size:26px;color:var(--green);-webkit-text-stroke:1.2px #000;paint-order:stroke fill}
+  .cart-total b{font-family:var(--groovy);font-size:26px;color:var(--green);text-shadow:var(--ol-sm)}
   .cart-note{margin:0;font-family:var(--mono);font-size:10.5px;color:var(--muted);line-height:1.6}
   .cart-instruct{border:1px solid var(--green-dim);background:rgba(59,232,127,.08);border-radius:12px;
     padding:13px 15px;font-size:13px;line-height:1.6;color:rgba(243,247,241,.85)}
