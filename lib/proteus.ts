@@ -24,6 +24,13 @@ import type {
 
 const CLIENT = process.env.PROTEUS_CLIENT_NAME ?? "highlife";
 const PASS = process.env.PROTEUS_WEBSERVICE_PASS ?? "";
+/**
+ * Separate credential for WRITES (createPickupOrder / addInvoice). The read key
+ * (PASS) can't create invoices — only the "Proteus Apps" key can. Kept distinct
+ * so the public menu runs on a read-only key and only ordering holds write power.
+ * Falls back to PASS if unset.
+ */
+const ORDER_PASS = process.env.PROTEUS_ORDER_PASS ?? PASS;
 /** Blank works — confirmed against the live API. */
 const APP_NAME = process.env.PROTEUS_APP_NAME ?? "";
 const BASE = `https://api.proteuserp.com/${CLIENT}/webservices`;
@@ -574,16 +581,20 @@ export function buildInvoicePayload(args: {
     // guest (0) unless we matched a returning customer
     customerID: args.customerId ? Number(args.customerId) || 0 : 0,
     customerType: "recreational",
-    // contact carried on the order so it identifies the customer in the queue
-    customer_fname: customer.firstName,
-    customer_lname: customer.lastName,
-    customer_phone: customer.phone,
-    customer_email: customer.email ?? "",
-    // website + pickup + unpaid markers, copied from the real fromwebsite=1 order
+    // Contact carried on the order so it identifies the customer in the queue.
+    // Input param names are fname/lname/phone/email (NOT customer_* — those are
+    // how Proteus STORES them). Confirmed live: sending customer_* fails with
+    // "The name is required (fname, lname, or company)".
+    fname: customer.firstName,
+    lname: customer.lastName,
+    phone: customer.phone,
+    email: customer.email ?? "",
+    // Unpaid reservation. `fromwebsite`/`shipping_type` are ignored by addInvoice
+    // (they're integration-set, not body params) but harmless to send. The real
+    // fulfillment control is `qty_shipped: 0` on the line items below.
     fromwebsite: 1,
     shipping_type: "pickup",
     status: "notpaid",
-    status_fulfill: "unfulfilled",
     invoiceID: invoiceId,
     recon_num: "",
     invoicedate: stamp,
@@ -596,7 +607,10 @@ export function buildInvoicePayload(args: {
       sku: l.sku ?? "",
       product_id: Number(l.productId) || l.productId,
       qty_ordered: l.quantity,
-      qty_shipped: l.quantity,
+      // 0 = nothing pulled yet ⇒ order lands UNFULFILLED in the Fulfillment
+      // Queue for the inventory room. Sending qty_shipped == qty_ordered makes
+      // Proteus mark it fulfilled immediately (confirmed live on invoice 4508).
+      qty_shipped: 0,
       price: toDollars(l.unitPriceCents),
       base_original_price: toDollars(l.unitPriceCents),
       price_type: l.priceType,
@@ -620,7 +634,8 @@ export async function createPickupOrder(args: {
   if (!isConfigured()) throw new Error("Proteus credentials not set");
   if (!isOrderingEnabled()) throw new Error("Ordering is disabled (ORDERING_ENABLED is not 'true')");
 
-  const payload = { ...buildInvoicePayload(args), webservicepass: PASS, appname: APP_NAME };
+  // ORDER_PASS (write key), not PASS (read key) — only the write key can create invoices.
+  const payload = { ...buildInvoicePayload(args), webservicepass: ORDER_PASS, appname: APP_NAME };
 
   const res = await fetch(`${BASE}/orders/?type=standard`, {
     method: "POST",
