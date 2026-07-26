@@ -561,6 +561,31 @@
   .cart-instruct b{color:var(--green)}
   .cart-actions{display:flex;gap:10px;flex-wrap:wrap}
   .cart-actions .btn{flex:1 1 auto;justify-content:center}
+  .btn:disabled{opacity:.55;cursor:not-allowed}
+
+  /* reserve form */
+  .cart-form{flex:1;padding:18px 22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+  .form-lead{margin:0 0 2px;color:var(--muted);font-size:13.5px;line-height:1.6}
+  .fld{display:flex;flex-direction:column;gap:6px}
+  .fld span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .fld span em{color:var(--muted);opacity:.7;font-style:normal;text-transform:none;letter-spacing:0}
+  .fld input{height:44px;padding:0 13px;border-radius:10px;border:1px solid var(--line-2);
+    background:var(--panel);color:var(--white);font-family:var(--body);font-size:15px;transition:border-color .2s}
+  .fld input:focus{outline:none;border-color:var(--green)}
+  .form-error{margin:0;font-size:13px;color:#ff8a8a;border-left:2px solid #ff8a8a;padding-left:10px;line-height:1.5}
+
+  /* confirmation */
+  .cart-confirmed{flex:1;padding:34px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;overflow-y:auto}
+  .confirm-badge{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px;
+    background:var(--green);color:#05130A;box-shadow:var(--glow);margin-bottom:4px}
+  .cart-confirmed h4{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:26px;margin:0;
+    text-shadow:var(--ol-md)}
+  .confirm-num{margin:0;font-family:var(--mono);font-size:14px;color:var(--muted)}
+  .confirm-num b{color:var(--green);font-size:16px;letter-spacing:.02em}
+  .confirm-total{margin:0;font-family:var(--mono);font-size:13px;color:var(--white)}
+  .cart-confirmed .cart-instruct{text-align:left;margin-top:8px}
+  .confirm-addr{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+  .cart-confirmed .cart-actions{width:100%;margin-top:6px}
 
   @media(max-width:520px){.cart{width:100%}}
   @media(prefers-reduced-motion:reduce){.cart{animation:none}}

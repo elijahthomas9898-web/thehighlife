@@ -1,20 +1,26 @@
 /**
  * ══════════════════════════════════════════════════════════════════════
- *  PROTEUS 420 — READ-ONLY CLIENT
+ *  PROTEUS 420 CLIENT
  * ══════════════════════════════════════════════════════════════════════
  *
- *  Every call in this file only READS. Nothing here creates, changes, or
- *  deletes anything in your Proteus system.
+ *  Almost everything here READS. The ONE write is `createPickupOrder()`
+ *  (`addInvoice`) at the bottom — it creates a real invoice, so it is
+ *  double-gated: it throws unless BOTH the credentials are set AND
+ *  `ORDERING_ENABLED === "true"`. Nothing else in the app can trigger it.
  *
- *  Ordering (`addInvoice`) is deliberately NOT implemented yet — that's
- *  the one endpoint that writes real invoices, and it needs a sandbox
- *  before we touch it.
- *
- *  🔒 Credentials come from .env.local and never reach the browser.
+ *  🔒 Credentials come from .env.local and never reach the browser. This
+ *     module is server-only; importing it into a client component fails.
  * ══════════════════════════════════════════════════════════════════════
  */
 
-import type { LabData, MenuResult, Product, Terpene } from "./types";
+import type {
+  LabData,
+  MenuResult,
+  OrderCustomer,
+  OrderLine,
+  Product,
+  Terpene,
+} from "./types";
 
 const CLIENT = process.env.PROTEUS_CLIENT_NAME ?? "highlife";
 const PASS = process.env.PROTEUS_WEBSERVICE_PASS ?? "";
@@ -464,4 +470,174 @@ export async function getMenu(): Promise<MenuResult> {
       error: e instanceof Error ? e.message : "Could not reach Proteus",
     };
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PICKUP ORDERING
+
+   `checkTaxes` and `findUser` are read-only. `createPickupOrder` is the ONE
+   write — double-gated on credentials AND ORDERING_ENABLED. The request body
+   mirrors a real `fromwebsite=1` order observed in Proteus.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/** The write is gated on this, on top of credentials. Default OFF. */
+export function isOrderingEnabled(): boolean {
+  return process.env.ORDERING_ENABLED === "true";
+}
+
+/** NYS cannabis retail tax. Mirrors data/site.ts (kept here to avoid importing client code). */
+const ORDER_TAX_RATE = 0.13;
+
+export type OrderTotals = { subtotalCents: number; taxCents: number; totalCents: number };
+
+/** Local totals in cents. The register recomputes tax at payment — this is the estimate. */
+export function computeTotals(lines: OrderLine[]): OrderTotals {
+  const subtotalCents = lines.reduce((n, l) => n + l.unitPriceCents * l.quantity, 0);
+  const taxCents = Math.round(subtotalCents * ORDER_TAX_RATE);
+  return { subtotalCents, taxCents, totalCents: subtotalCents + taxCents };
+}
+
+/**
+ * Authoritative taxes from Proteus (read-only). Returns null on any error so
+ * the caller falls back to computeTotals — an order is NEVER blocked on this.
+ * ⚠️ Request shape still being confirmed live (earlier attempt: "Data object
+ * was not sent"); until it's verified, callers should expect null.
+ */
+export async function checkTaxes(lines: OrderLine[]): Promise<OrderTotals | null> {
+  try {
+    const data = JSON.stringify({
+      items: lines.map((l) => ({
+        prodid: Number(l.productId),
+        qty: l.quantity,
+        pricetype: l.priceType,
+      })),
+    });
+    const res = (await call("invoices_json.cfm", { action: "checkTaxes", data })) as Record<
+      string,
+      unknown
+    >;
+    const totalprice = num(res.totalprice);
+    const totaltaxes = num(res.totaltaxes);
+    const grandtotal = num(res.grandtotal);
+    if (totalprice == null || totaltaxes == null) return null;
+    return {
+      subtotalCents: Math.round(totalprice * 100),
+      taxCents: Math.round(totaltaxes * 100),
+      totalCents: Math.round((grandtotal ?? totalprice + totaltaxes) * 100),
+    };
+  } catch {
+    return null;
+  }
+}
+
+/** Match a returning customer by last name + phone; returns their id or null. */
+export async function findUser(lastName: string, phone: string): Promise<string | null> {
+  try {
+    const res = (await call("invoices_json.cfm", {
+      action: "findUser",
+      lname: lastName,
+      phone,
+    })) as Record<string, unknown>;
+    const id = res.customer_id;
+    return id != null && String(id).trim() ? String(id) : null;
+  } catch {
+    return null;
+  }
+}
+
+const toDollars = (cents: number) => Math.round(cents) / 100;
+
+/**
+ * Builds the `addInvoice` body WITHOUT sending it or the secret. Kept pure so
+ * the dry-run verification script can print and diff it against the real
+ * `fromwebsite=1` template at zero write risk.
+ *
+ * ⚠️ The documented example omitted `fromwebsite`, `shipping_type`, and the
+ * customer-name fields — these are matched to the STORED record shape and are
+ * the most likely thing to adjust on the first live test.
+ */
+export function buildInvoicePayload(args: {
+  customer: OrderCustomer;
+  lines: OrderLine[];
+  totals: OrderTotals;
+  customerId?: string | null;
+  invoiceId?: string;
+  now?: Date;
+}): Record<string, unknown> {
+  const { customer, lines, totals } = args;
+  const now = args.now ?? new Date();
+  const stamp = now.toISOString().slice(0, 19).replace("T", " ");
+  const invoiceId = args.invoiceId ?? String(now.getTime());
+
+  return {
+    action: "addInvoice",
+    // guest (0) unless we matched a returning customer
+    customerID: args.customerId ? Number(args.customerId) || 0 : 0,
+    customerType: "recreational",
+    // contact carried on the order so it identifies the customer in the queue
+    customer_fname: customer.firstName,
+    customer_lname: customer.lastName,
+    customer_phone: customer.phone,
+    customer_email: customer.email ?? "",
+    // website + pickup + unpaid markers, copied from the real fromwebsite=1 order
+    fromwebsite: 1,
+    shipping_type: "pickup",
+    status: "notpaid",
+    status_fulfill: "unfulfilled",
+    invoiceID: invoiceId,
+    recon_num: "",
+    invoicedate: stamp,
+    subtotal: toDollars(totals.subtotalCents),
+    totaltax: toDollars(totals.taxCents),
+    discountamt: 0,
+    total_paid: 0,
+    payments: [],
+    items: lines.map((l) => ({
+      sku: l.sku ?? "",
+      product_id: Number(l.productId) || l.productId,
+      qty_ordered: l.quantity,
+      qty_shipped: l.quantity,
+      price: toDollars(l.unitPriceCents),
+      base_original_price: toDollars(l.unitPriceCents),
+      price_type: l.priceType,
+      name: l.name,
+      tax_amount: 0,
+      updated_at: stamp,
+    })),
+  };
+}
+
+/**
+ * THE WRITE. Creates a real pickup-reservation invoice in Proteus.
+ * Double-gated: throws unless credentials are set AND ordering is enabled.
+ */
+export async function createPickupOrder(args: {
+  customer: OrderCustomer;
+  lines: OrderLine[];
+  totals: OrderTotals;
+  customerId?: string | null;
+}): Promise<{ invoiceId: string }> {
+  if (!isConfigured()) throw new Error("Proteus credentials not set");
+  if (!isOrderingEnabled()) throw new Error("Ordering is disabled (ORDERING_ENABLED is not 'true')");
+
+  const payload = { ...buildInvoicePayload(args), webservicepass: PASS, appname: APP_NAME };
+
+  const res = await fetch(`${BASE}/orders/?type=standard`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(payload),
+    cache: "no-store",
+  });
+  const text = await res.text();
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error(`addInvoice returned non-JSON (${text.slice(0, 120)}…)`);
+  }
+  const obj = parsed as Record<string, unknown>;
+  // Proteus reports failures as HTTP 200 {"error":…}
+  if (typeof obj.error === "string" && obj.error.trim()) throw new Error(`addInvoice: ${obj.error}`);
+  if (obj.success == null) throw new Error(`addInvoice: unexpected response ${text.slice(0, 120)}`);
+  return { invoiceId: String(obj.success) };
 }
