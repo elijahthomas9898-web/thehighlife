@@ -670,3 +670,50 @@
   .sg-dots i.on{background:var(--green);box-shadow:0 0 1.2vh rgba(59,232,127,.6)}
 
   @media(prefers-reduced-motion:reduce){.sg-stage{animation:none}}
+
+  /* ══════════ VIDEO WALL (/signage/wall) — per-screen menu board ══════════ */
+  /* Flame art sits behind the whole screen. The layered gradients are a
+     code-drawn fallback that mimics it — if public/images/signage/flame.jpg
+     exists it covers them; if not, the gradient shows. Drop the real asset in
+     and it takes over with no code change. */
+  .wall{position:fixed;inset:0;z-index:1;display:flex;color:var(--white);overflow:hidden;
+    font-family:var(--body);
+    background:
+      url(/images/signage/flame.jpg) center/cover no-repeat,
+      radial-gradient(ellipse 62% 42% at 50% 104%,rgba(59,232,127,.5),transparent 68%),
+      radial-gradient(ellipse 26% 82% at 0% 48%,rgba(59,232,127,.2),transparent 70%),
+      radial-gradient(ellipse 26% 82% at 100% 48%,rgba(59,232,127,.2),transparent 70%),
+      #050706}
+
+  .wall-col{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;padding:0 1.6vw}
+  .wall-col + .wall-col{border-left:1px solid rgba(59,232,127,.18)}
+
+  .wall-col-head{padding:3.2vh 0 2vh;text-align:center;flex:0 0 auto}
+  .wall-col-head h2{margin:0;font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:6.6vh;line-height:1;color:var(--white);text-shadow:var(--ol-lg),0 0 2.4vh rgba(59,232,127,.5)}
+
+  .wall-scrollport{position:relative;flex:1;overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent)}
+  .wall-track{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+    animation:wallscroll linear infinite;will-change:transform}
+  @keyframes wallscroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+
+  .wr{display:flex;align-items:center;justify-content:space-between;gap:1vw;
+    padding:1.5vh .4vw;border-bottom:1px solid rgba(243,247,241,.08)}
+  .wr-main{min-width:0;display:flex;flex-direction:column;gap:.3vh}
+  .wr-brand{font-family:var(--mono);font-size:1.5vh;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+  .wr-name{font-size:2.4vh;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .wr-side{flex:0 0 auto;display:flex;align-items:center;gap:1vw}
+  .wr-thc{font-family:var(--mono);font-size:1.7vh;color:var(--muted)}
+  .wr-price{font-family:var(--groovy);font-weight:700;font-size:3vh;white-space:nowrap}
+  .wr-price s{color:var(--muted);font-size:2vh;margin-right:.4vw}
+  .wr-price b{color:var(--green)}
+
+  .wall-empty{margin:auto;font-family:var(--groovy);font-weight:700;text-transform:uppercase;
+    font-size:3.4vh;color:var(--muted);text-shadow:var(--ol-sm)}
+
+  .wall-updating{position:absolute;bottom:1.4vh;left:50%;transform:translateX(-50%);z-index:3;
+    font-family:var(--mono);font-size:1.4vh;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+
+  @media(prefers-reduced-motion:reduce){.wall-track{animation:none}}

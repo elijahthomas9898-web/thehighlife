@@ -252,6 +252,25 @@ export const stats = [
 ];
 
 /**
+ * ── VIDEO WALL (/signage/wall) ──
+ * The 6 category columns across the 3-screen wall, in order left→right.
+ * `screen` N shows columns [2N-2, 2N-1]:
+ *   Screen 1 → Flower, Pre-Rolls · Screen 2 → Vapes, Edibles · Screen 3 → Concentrate, Tinctures
+ * `slug` must match a Proteus category slug (see `categories` above). Edit freely.
+ */
+export const wallColumns: { slug: string; title: string }[] = [
+  { slug: "flower", title: "Flower" },
+  { slug: "pre-rolls", title: "Pre-Rolls" },
+  { slug: "vapes", title: "Vapes" },
+  { slug: "edibles", title: "Edibles" },
+  { slug: "concentrate", title: "Concentrate" },
+  { slug: "tinctures", title: "Tinctures" },
+];
+
+/** Seconds of scroll per product (higher = slower). Tune for readability. */
+export const WALL_SECONDS_PER_ITEM = 3.2;
+
+/**
  * ── ABOUT PAGE COPY ──
  * ✏️ REPLACE THIS WITH YOUR REAL STORY. I don't know your history, so I've
  * written something safe and true-but-generic. It will read much better in
