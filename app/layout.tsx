@@ -38,6 +38,9 @@ export const metadata: Metadata = {
  * Both are plain attributes driving CSS, so React never has to reconcile them.
  */
 const BOOT_SCRIPT = `(function(){
+// In-store signage (/signage) is inside a 21+-verified space — bypass the gate
+// before first paint so a TV never shows the "Are you 21?" prompt.
+try{if(location.pathname.indexOf("/signage")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{var d=new Date().toLocaleString("en-US",{timeZone:"America/New_York",weekday:"short"}),
 m={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};

@@ -607,3 +607,66 @@
     .reveal{opacity:1;transform:none;transition:none}
     .scrollcue .dot,.map .pin::after,.marquee .mtrack{animation:none}
   }
+
+/* ══════════ SIGNAGE (/signage) — full-screen in-store TV display ══════════ */
+  .sg{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:auto 1fr auto;
+    background:radial-gradient(120% 90% at 50% -10%,rgba(30,122,71,.18),transparent 60%),var(--bg);
+    color:var(--white);overflow:hidden;font-family:var(--body)}
+  html[data-signage] .warnband{display:none}
+
+  .sg-top{display:flex;align-items:center;justify-content:space-between;gap:2vw;
+    padding:2.2vh 3vw;border-bottom:1px solid var(--line)}
+  .sg-logo{height:8vh;width:auto;filter:drop-shadow(0 0 18px rgba(59,232,127,.5))}
+  .sg-hours{display:flex;flex-wrap:wrap;gap:.4vw 1.4vw;justify-content:flex-end;
+    font-family:var(--mono);font-size:1.5vh;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+  .sg-hours .on{color:var(--green)}
+
+  .sg-stage{position:relative;padding:3vh 3.5vw;display:flex;flex-direction:column;justify-content:center;
+    animation:sgfade .6s ease}
+  @keyframes sgfade{from{opacity:0;transform:translateY(1.4vh)}to{opacity:1;transform:none}}
+
+  .sg-eyebrow{font-family:var(--mono);font-size:1.7vh;letter-spacing:.34em;text-transform:uppercase;color:var(--green);margin-bottom:2vh}
+  .sg-welcome{text-align:center;max-width:22ch;margin:0 auto}
+  .sg-welcome h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.86;
+    font-size:9vh;margin:0;text-shadow:var(--ol-lg),0 0 3vh rgba(59,232,127,.4)}
+  .sg-welcome h1 .g{color:var(--green)}
+  .sg-welcome p{margin:3vh auto 0;font-size:2.6vh;color:var(--muted)}
+  .sg-welcome p b{color:var(--white)}
+
+  .sg-h{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:5.2vh;line-height:1;
+    margin:0 0 2.6vh;text-shadow:var(--ol-md)}
+
+  .sg-deals{display:grid;grid-template-columns:repeat(3,1fr);gap:2vh 2vw}
+  .sg-deal{border:1px solid var(--line-2);border-radius:1.4vh;padding:2.4vh 1.8vw;
+    background:radial-gradient(120% 80% at 100% 0%,rgba(59,232,127,.14),transparent 55%),linear-gradient(180deg,var(--panel),#0A0D0B);
+    display:flex;flex-direction:column;gap:.8vh}
+  .sg-deal-tag{align-self:flex-start;font-family:var(--mono);font-size:1.5vh;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--green);border:1px solid var(--green-dim);border-radius:100px;padding:.5vh 1vw}
+  .sg-deal-name{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:3.1vh;line-height:1;text-shadow:var(--ol-sm)}
+  .sg-deal-val{font-family:var(--groovy);font-weight:800;color:var(--green);font-size:5vh;line-height:1;text-shadow:var(--ol-sm)}
+  .sg-deal-valid{font-family:var(--mono);font-size:1.6vh;color:var(--muted)}
+
+  .sg-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:2vh 2vw;flex:1}
+  .sg-card{display:flex;gap:1.4vw;border:1px solid var(--line);border-radius:1.4vh;overflow:hidden;background:var(--panel)}
+  .sg-img{position:relative;flex:0 0 26%;background:#0A0D0B;display:grid;place-items:center}
+  .sg-img img{width:100%;height:100%;object-fit:cover}
+  .sg-noimg{width:100%;height:100%;background:linear-gradient(135deg,#0F1815,#0A0F0E)}
+  .sg-sale{position:absolute;top:.8vh;left:.6vw;font-family:var(--mono);font-size:1.3vh;background:var(--green);color:#05130A;font-weight:700;padding:.3vh .7vw;border-radius:100px}
+  .sg-thc{position:absolute;bottom:.8vh;left:.6vw;font-family:var(--mono);font-size:1.3vh;background:rgba(8,9,10,.82);color:var(--green);padding:.3vh .7vw;border-radius:100px;border:1px solid var(--green-dim)}
+  .sg-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:1.6vh 1vw 1.6vh 0}
+  .sg-brand{font-family:var(--mono);font-size:1.5vh;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+  .sg-name{font-size:2.2vh;line-height:1.15;margin:.4vh 0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .sg-price{font-family:var(--groovy);font-weight:700;font-size:2.8vh}
+  .sg-price .was{color:var(--muted);text-decoration:line-through;font-size:2vh}
+  .sg-price .now{color:var(--green)}
+
+  .sg-foot{display:flex;align-items:center;justify-content:center;gap:3vw;flex-wrap:wrap;
+    padding:1.6vh 3vw;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:1.5vh;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .sg-foot .sg-warn{color:var(--green)}
+
+  .sg-dots{position:absolute;top:1.2vh;left:50%;transform:translateX(-50%);display:flex;gap:.7vw;z-index:3}
+  .sg-dots i{width:1.1vh;height:1.1vh;border-radius:50%;background:var(--line-2)}
+  .sg-dots i.on{background:var(--green);box-shadow:0 0 1.2vh rgba(59,232,127,.6)}
+
+  @media(prefers-reduced-motion:reduce){.sg-stage{animation:none}}
