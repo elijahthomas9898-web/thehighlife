@@ -11,26 +11,36 @@ function money(n?: number) {
   return n == null ? "" : `$${n.toFixed(2)}`;
 }
 
-/** One product row on the board. Text-forward for TV legibility. */
+/** One product row on the board: thumbnail, brand + name, THC, price. */
 function Row({ p }: { p: Product }) {
   const sale = p.salePrice != null && p.price != null && p.salePrice < p.price;
   return (
-    <li className="wr">
+    <li className={sale ? "wr on-sale" : "wr"}>
+      <div className="wr-thumb">
+        {p.imageUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img src={p.imageUrl} alt="" />
+        ) : (
+          <div className="wr-noimg" aria-hidden="true" />
+        )}
+      </div>
       <div className="wr-main">
         {p.brand && <span className="wr-brand">{p.brand}</span>}
         <span className="wr-name">{p.name}</span>
       </div>
       <div className="wr-side">
         {p.lab?.thc != null && <span className="wr-thc">{p.lab.thc.toFixed(0)}%</span>}
-        <span className="wr-price">
-          {sale ? (
-            <>
-              <s>{money(p.price)}</s> <b>{money(p.salePrice)}</b>
-            </>
-          ) : (
+        {sale ? (
+          <span className="wr-price sale">
+            <span className="wr-saletag">Sale</span>
+            <s>{money(p.price)}</s>
+            <b>{money(p.salePrice)}</b>
+          </span>
+        ) : (
+          <span className="wr-price">
             <b>{money(p.price)}</b>
-          )}
-        </span>
+          </span>
+        )}
       </div>
     </li>
   );

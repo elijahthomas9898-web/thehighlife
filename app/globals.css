@@ -699,16 +699,31 @@
     animation:wallscroll linear infinite;will-change:transform}
   @keyframes wallscroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 
-  .wr{display:flex;align-items:center;justify-content:space-between;gap:1vw;
-    padding:1.5vh .4vw;border-bottom:1px solid rgba(243,247,241,.08)}
-  .wr-main{min-width:0;display:flex;flex-direction:column;gap:.3vh}
-  .wr-brand{font-family:var(--mono);font-size:1.5vh;letter-spacing:.08em;text-transform:uppercase;color:var(--green)}
+  .wr{display:flex;align-items:center;gap:1vw;
+    padding:1.3vh .4vw;border-bottom:1px solid rgba(243,247,241,.08)}
+  /* on-sale rows: green left bar + tint so a changed price reads at a glance */
+  .wr.on-sale{border-left:.45vh solid var(--green);padding-left:.8vw;
+    background:linear-gradient(90deg,rgba(59,232,127,.12),transparent 62%)}
+
+  .wr-thumb{flex:0 0 auto;width:9vh;height:9vh;border-radius:1vh;overflow:hidden;
+    background:#0A0D0B;border:1px solid var(--line)}
+  .wr-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .wr-noimg{width:100%;height:100%;background:linear-gradient(135deg,#123B22,#0A0F0E)}
+
+  .wr-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:.3vh}
+  /* brand in yellow so it pops off the green background */
+  .wr-brand{font-family:var(--mono);font-size:1.6vh;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#FFE24A}
   .wr-name{font-size:2.4vh;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
   .wr-side{flex:0 0 auto;display:flex;align-items:center;gap:1vw}
   .wr-thc{font-family:var(--mono);font-size:1.7vh;color:var(--muted)}
-  .wr-price{font-family:var(--groovy);font-weight:700;font-size:3vh;white-space:nowrap}
-  .wr-price s{color:var(--muted);font-size:2vh;margin-right:.4vw}
-  .wr-price b{color:var(--green)}
+  .wr-price{font-family:var(--groovy);font-weight:700;font-size:3vh;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:.6vw}
+  .wr-price b{color:var(--white)}                 /* regular price: white */
+  .wr-price.sale s{color:var(--muted);font-family:var(--body);font-weight:400;font-size:2vh}
+  .wr-price.sale b{color:var(--green);text-shadow:0 0 1.2vh rgba(59,232,127,.75)}  /* sale price: glowing green */
+  .wr-saletag{font-family:var(--mono);font-weight:700;font-size:1.3vh;letter-spacing:.06em;
+    text-transform:uppercase;color:#05130A;background:var(--green);padding:.4vh .7vw;border-radius:100px}
 
   .wall-empty{margin:auto;font-family:var(--groovy);font-weight:700;text-transform:uppercase;
     font-size:3.4vh;color:var(--muted);text-shadow:var(--ol-sm)}
