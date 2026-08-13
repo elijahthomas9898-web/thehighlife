@@ -695,12 +695,13 @@
   .wall-scrollport{position:relative;flex:1;overflow:hidden;
     -webkit-mask-image:linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent);
     mask-image:linear-gradient(to bottom,transparent,#000 7%,#000 93%,transparent)}
-  .wall-track{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
-    animation:wallscroll linear infinite;will-change:transform}
-  @keyframes wallscroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+  /* Position driven by JS (recycling scroller in WallColumns) — no CSS animation.
+     will-change keeps the small window on its own compositor layer. */
+  .wall-track{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;will-change:transform}
 
-  .wr{display:flex;align-items:center;gap:1vw;
-    padding:1.3vh .4vw;border-bottom:1px solid rgba(243,247,241,.08)}
+  /* FIXED height so the recycler can measure one row and scroll by exact rows. */
+  .wr{display:flex;align-items:center;gap:1vw;height:12vh;overflow:hidden;
+    padding:0 .4vw;border-bottom:1px solid rgba(243,247,241,.08)}
   /* on-sale rows: green left bar + tint so a changed price reads at a glance */
   .wr.on-sale{border-left:.45vh solid var(--green);padding-left:.8vw;
     background:linear-gradient(90deg,rgba(59,232,127,.12),transparent 62%)}
