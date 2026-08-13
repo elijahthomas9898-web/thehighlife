@@ -48,9 +48,15 @@ export default async function WallPage({
   }
 
   // Send the WHOLE category (no cap) — the scroller cycles through all of it.
+  // Sale items lead each column so the deals are the first thing on screen each
+  // loop; everything else keeps its catalog order (Array.sort is stable).
+  const isSale = (p: Product) =>
+    p.salePrice != null && p.price != null && p.salePrice < p.price;
   const build = (col: { slug: string; title: string }): WallColumn => ({
     title: col.title,
-    products: (byCat.get(col.slug) ?? []).map(toWallItem),
+    products: [...(byCat.get(col.slug) ?? [])]
+      .sort((a, b) => Number(isSale(b)) - Number(isSale(a)))
+      .map(toWallItem),
   });
 
   // screen=1|2|3 → that screen's two columns; no/invalid param → all six (desktop preview)
