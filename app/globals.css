@@ -599,6 +599,23 @@
   }
   .menu-legal{margin-top:40px;font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.7;max-width:75ch}
 
+  /* ── Legal pages (privacy / terms) ── */
+  .legal-doc{margin-top:40px;max-width:82ch;display:flex;flex-direction:column;gap:26px}
+  .legal-doc .updated{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--muted);margin:0}
+  .legal-doc .legal-lead{color:var(--white);font-size:clamp(16px,2vw,19px);line-height:1.65;margin:0}
+  .legal-doc section{display:flex;flex-direction:column;gap:12px}
+  .legal-doc h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.01em;font-size:clamp(16px,2.2vw,22px);color:var(--white);margin:14px 0 0;font-weight:800}
+  .legal-doc p{margin:0;color:rgba(243,247,241,.8);font-size:15.5px;line-height:1.75}
+  .legal-doc ul{margin:2px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:9px}
+  .legal-doc li{color:rgba(243,247,241,.8);font-size:15.5px;line-height:1.7}
+  .legal-doc a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+  .legal-doc strong{color:var(--white);font-weight:700}
+
+  /* footer legal links */
+  .footlinks{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+  .footlinks a{color:var(--muted);transition:color .2s}
+  .footlinks a:hover{color:var(--green)}
+
   .reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 
