@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Product } from "@/lib/types";
 
-export type WallColumn = { title: string; products: Product[] };
+/** The minimal per-product shape the board renders (slimmed server-side). */
+export type WallItem = {
+  id: string;
+  brand?: string;
+  name: string;
+  price?: number;
+  salePrice?: number;
+  thc?: number;
+  imageUrl?: string;
+};
+
+export type WallColumn = { title: string; products: WallItem[] };
 
 const RELOAD_MS = 5 * 60 * 1000; // refresh stock every 5 min
 
@@ -12,7 +22,7 @@ function money(n?: number) {
 }
 
 /** One product row on the board: thumbnail, brand + name, THC, price. */
-function Row({ p }: { p: Product }) {
+function Row({ p }: { p: WallItem }) {
   const sale = p.salePrice != null && p.price != null && p.salePrice < p.price;
   return (
     <li className={sale ? "wr on-sale" : "wr"}>
@@ -29,7 +39,7 @@ function Row({ p }: { p: Product }) {
         <span className="wr-name">{p.name}</span>
       </div>
       <div className="wr-side">
-        {p.lab?.thc != null && <span className="wr-thc">{p.lab.thc.toFixed(0)}%</span>}
+        {p.thc != null && <span className="wr-thc">{p.thc.toFixed(0)}%</span>}
         {sale ? (
           <span className="wr-price sale">
             <span className="wr-saletag">Sale</span>
