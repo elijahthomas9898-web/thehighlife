@@ -19,7 +19,7 @@ function Row({ p }: { p: Product }) {
       <div className="wr-thumb">
         {p.imageUrl ? (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img src={p.imageUrl} alt="" />
+          <img src={p.imageUrl} alt="" decoding="async" />
         ) : (
           <div className="wr-noimg" aria-hidden="true" />
         )}
@@ -46,9 +46,18 @@ function Row({ p }: { p: Product }) {
   );
 }
 
+/**
+ * Max products that scroll in one column. A menu board doesn't need 300 at
+ * once — and a giant scrolling layer (hundreds of rows, each with an image)
+ * overwhelms a weak signage player's GPU, which is what made some columns
+ * stutter/pause while lighter ones stayed smooth. Capping keeps the animated
+ * layer small so every column scrolls at a constant, even speed.
+ */
+const MAX_ROWS = 28;
+
 function Column({ col, secondsPerItem }: { col: WallColumn; secondsPerItem: number }) {
-  const items = col.products;
-  // duration scales with how much there is to scroll; min so short lists aren't frantic
+  const items = col.products.slice(0, MAX_ROWS);
+  // duration scales with item count so every column moves at the SAME pixel speed
   const duration = Math.max(items.length * secondsPerItem, 20);
 
   return (
