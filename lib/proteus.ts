@@ -31,7 +31,14 @@ const PASS = process.env.PROTEUS_WEBSERVICE_PASS ?? "";
  * Falls back to PASS if unset.
  */
 const ORDER_PASS = process.env.PROTEUS_ORDER_PASS ?? PASS;
-/** Blank works — confirmed against the live API. */
+/**
+ * The integration identity sent on every call. Per the Proteus API docs: "Each
+ * integration (app, website access, etc) will be given a specific AppName which
+ * must be included in all API calls." Proteus uses it to attribute an order's
+ * SOURCE — set it to your WEBSITE integration's AppName so pickup orders show as
+ * a web order instead of a register/POS sale. Blank still creates the order, but
+ * it lands untagged (shows as POS). Found in Proteus → API Keys / Integrations.
+ */
 const APP_NAME = process.env.PROTEUS_APP_NAME ?? "";
 const BASE = `https://api.proteuserp.com/${CLIENT}/webservices`;
 
@@ -589,8 +596,10 @@ export function buildInvoicePayload(args: {
     lname: customer.lastName,
     phone: customer.phone,
     email: customer.email ?? "",
-    // Unpaid reservation. `fromwebsite`/`shipping_type` are ignored by addInvoice
-    // (they're integration-set, not body params) but harmless to send. The real
+    // Unpaid reservation. NOTE: `fromwebsite` is NOT a real addInvoice param — it
+    // isn't in the API at all. Proteus derives the order's SOURCE (web vs POS) from
+    // the AppName the call is made under (see APP_NAME / createPickupOrder). We keep
+    // fromwebsite/shipping_type here as harmless, self-documenting hints; the real
     // fulfillment control is `qty_shipped: 0` on the line items below.
     fromwebsite: 1,
     shipping_type: "pickup",
@@ -633,6 +642,16 @@ export async function createPickupOrder(args: {
 }): Promise<{ invoiceId: string }> {
   if (!isConfigured()) throw new Error("Proteus credentials not set");
   if (!isOrderingEnabled()) throw new Error("Ordering is disabled (ORDERING_ENABLED is not 'true')");
+
+  // The order's SOURCE ("web" vs "pos") is derived by Proteus from the AppName this
+  // call is made under. Blank ⇒ Proteus can't attribute it to the website integration
+  // and it shows as a register/POS sale. Set PROTEUS_APP_NAME to the website
+  // integration's AppName (Proteus → API Keys) to tag these as web orders.
+  if (!APP_NAME) {
+    console.warn(
+      "[order] PROTEUS_APP_NAME is blank — reservation will not be tagged as web-sourced (may show as POS in Proteus)."
+    );
+  }
 
   // ORDER_PASS (write key), not PASS (read key) — only the write key can create invoices.
   const payload = { ...buildInvoicePayload(args), webservicepass: ORDER_PASS, appname: APP_NAME };

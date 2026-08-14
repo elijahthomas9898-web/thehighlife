@@ -99,7 +99,7 @@ The website reads these names (values live only in the two places above):
 | `PROTEUS_CLIENT_NAME` | Your Proteus account name (`highlife`) | no |
 | `PROTEUS_WEBSERVICE_PASS` | Proteus **read** key (menu) | 🔒 yes |
 | `PROTEUS_ORDER_PASS` | Proteus **write** key (ordering) | 🔒 yes |
-| `PROTEUS_APP_NAME` | Proteus app name (may be blank) | no |
+| `PROTEUS_APP_NAME` | Your **website integration's AppName** — Proteus uses it to tag orders as a **web** source instead of a register/POS sale. Blank still works but orders show as POS. Find it in Proteus → API Keys / Integrations. | no |
 | `ORDERING_ENABLED` | `true` turns the reservation API on (server) | no |
 | `NEXT_PUBLIC_ORDERING_ENABLED` | `true` shows the reserve button (browser) | no |
 | `SITE_PUBLIC` | `true` lets search engines index the live site | no |
