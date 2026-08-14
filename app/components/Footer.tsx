@@ -19,12 +19,12 @@ export default function Footer() {
             <a href="#top">Back to top ↑</a>
           </span>
         </div>
-        <nav className="footlinks" aria-label="Legal">
+        <div className="footlinks" role="navigation" aria-label="Legal">
           <a href="/about">About</a>
           <a href="/visit">Visit</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/terms">Terms of Service</a>
-        </nav>
+        </div>
         <p
           style={{
             marginTop: 28,

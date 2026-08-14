@@ -611,8 +611,8 @@
   .legal-doc a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
   .legal-doc strong{color:var(--white);font-weight:700}
 
-  /* footer legal links */
-  .footlinks{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+  /* footer legal links — position:static guards against the global nav{position:fixed} rule */
+  .footlinks{position:static;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
   .footlinks a{color:var(--muted);transition:color .2s}
   .footlinks a:hover{color:var(--green)}
 
