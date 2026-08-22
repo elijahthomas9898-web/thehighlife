@@ -32,6 +32,27 @@ export const hours = [
 ];
 
 /**
+ * ── SHOP CATEGORY BAR ──
+ * The sticky green category banner under the header. IDs are JSCart's REAL
+ * top-level category IDs (from the widget's getCategories), so each link opens
+ * the shop already filtered to that category: /menu#view=products&cat=<id>.
+ * "All Deals" routes to the deals page. Update this list if you add or rename a
+ * top-level category in Proteus.
+ */
+export const shopCategories: { label: string; href: string }[] = [
+  { label: "All Deals", href: "/deals" },
+  { label: "Prerolls", href: "/menu#view=products&cat=9" },
+  { label: "Flower", href: "/menu#view=products&cat=8" },
+  { label: "Vapes", href: "/menu#view=products&cat=6" },
+  { label: "Edibles", href: "/menu#view=products&cat=4" },
+  { label: "Concentrates", href: "/menu#view=products&cat=11" },
+  { label: "Tinctures", href: "/menu#view=products&cat=12" },
+  { label: "Topicals", href: "/menu#view=products&cat=7" },
+  { label: "CBD", href: "/menu#view=products&cat=5" },
+  { label: "Accessories", href: "/menu#view=products&cat=15" },
+];
+
+/**
  * ── YOUR COUPONS FROM PROTEUS ──
  *
  * These mirror Proteus → Coupon Management, so this list is easy to keep in

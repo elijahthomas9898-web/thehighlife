@@ -38,6 +38,17 @@
   /* nav */
   nav{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px clamp(20px,5vw,54px);background:linear-gradient(180deg,rgba(8,9,10,.88),rgba(8,9,10,0));backdrop-filter:blur(8px);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
   nav.solid{background:rgba(8,9,10,.92);border-bottom:1px solid var(--line)}
+
+  /* Two-row fixed header: main bar + green category banner underneath */
+  #nav{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:0}
+  .nav-main{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px clamp(20px,5vw,54px)}
+  .catbar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    background:#1f9e52;border-top:1px solid rgba(0,0,0,.18)}
+  .catbar::-webkit-scrollbar{display:none}
+  .catbar a{flex:0 0 auto;font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.05em;
+    text-transform:uppercase;color:#fff;padding:10px 15px;white-space:nowrap;transition:background .15s}
+  .catbar a:hover{background:rgba(0,0,0,.16)}
+  .catbar .catbar-deals{background:rgba(0,0,0,.20)}
   .brand{font-family:var(--groovy);font-weight:700;letter-spacing:.02em;font-size:19px;text-transform:uppercase;display:flex;align-items:center;gap:10px;color:var(--white);-webkit-text-stroke:.6px #000;text-shadow:0 0 14px rgba(59,232,127,.5)}
   .brand .leaf{width:22px;height:22px;flex:0 0 auto;filter:drop-shadow(0 0 8px rgba(59,232,127,.8));-webkit-text-stroke:0}
   .navlinks{display:flex;gap:28px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}

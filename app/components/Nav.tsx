@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { store } from "@/data/site";
+import CategoryBar from "./CategoryBar";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -40,38 +41,51 @@ export default function Nav() {
 
   return (
     <nav id="nav">
-      <a className="brand" href="/" aria-label={`${store.name} — home`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="brand-logo" src="/images/logo.png" alt={store.name} />
-      </a>
+      {/* top row: logo, links, sign-in */}
+      <div className="nav-main">
+        <a className="brand" href="/" aria-label={`${store.name} — home`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="brand-logo" src="/images/logo.png" alt={store.name} />
+        </a>
 
-      {/* desktop links */}
-      <div className="navlinks">
-        {LINKS.map((l) => {
-          const on = path === l.href;
-          return (
-            <a key={l.href} href={l.href} className={on ? "on" : undefined} aria-current={on ? "page" : undefined}>
-              {l.label}
-            </a>
-          );
-        })}
+        {/* desktop links */}
+        <div className="navlinks">
+          {LINKS.map((l) => {
+            const on = path === l.href;
+            return (
+              <a
+                key={l.href}
+                href={l.href}
+                className={on ? "on" : undefined}
+                aria-current={on ? "page" : undefined}
+              >
+                {l.label}
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="nav-right">
+          <button className="nav-signin" onClick={openAccount}>
+            Sign In
+          </button>
+          <div className="badge21">NY · 21+ Only</div>
+          {/* hamburger — only shows on small screens (CSS) */}
+          <button
+            className={`nav-burger${open ? " open" : ""}`}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
-      <div className="nav-right">
-        <button className="nav-signin" onClick={openAccount}>
-          Sign In
-        </button>
-        <div className="badge21">NY · 21+ Only</div>
-        {/* hamburger — only shows on small screens (CSS) */}
-        <button
-          className={`nav-burger${open ? " open" : ""}`}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span /><span /><span />
-        </button>
-      </div>
+      {/* second row: green category banner, deep-links into the JSCart shop */}
+      <CategoryBar />
 
       {/* mobile drawer */}
       <div className={`nav-drawer${open ? " open" : ""}`} role="dialog" aria-modal="true" aria-label="Menu">
