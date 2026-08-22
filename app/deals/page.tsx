@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { deals, categories } from "@/data/site";
-import { DealCard } from "../components/Deals";
+import { categories } from "@/data/site";
+import DealsBoard from "../components/DealsBoard";
 import { getMenu } from "@/lib/proteus";
 
 export const metadata: Metadata = {
@@ -10,8 +10,6 @@ export const metadata: Metadata = {
   description:
     "This week's cannabis deals at The High Life Dispensary in West Babylon, NY. New specials every week. 21+.",
 };
-
-const total = String(deals.length).padStart(2, "0");
 
 export default async function DealsPage() {
   // live products that are actually marked down in the register
@@ -29,7 +27,7 @@ export default async function DealsPage() {
       <section className="page">
         <div className="wrap">
           <div className="kicker">
-            Deals Deals Deals <span>/ new every week</span>
+            Deals Deals Deals <span>/ live from the register</span>
           </div>
           <h2>
             This Week&rsquo;s
@@ -37,15 +35,12 @@ export default async function DealsPage() {
             Deals
           </h2>
           <p className="page-lead">
-            We don&rsquo;t do markups — we do markdowns. These run all week unless noted. Prices
-            exclude tax, and everything is while supplies last.
+            We don&rsquo;t do markups — we do markdowns. These are pulled straight from our shop, so
+            they&rsquo;re always current. Tap one to shop it. Prices exclude tax, while supplies last.
           </p>
 
-          <div className="dealgrid">
-            {deals.map((d, i) => (
-              <DealCard key={d.name} deal={d} index={i} total={total} />
-            ))}
-          </div>
+          {/* Real deals, pulled live from JSCart so they always match the shop. */}
+          <DealsBoard />
 
           {live && onSale.length > 0 && (
             <>
@@ -91,7 +86,7 @@ export default async function DealsPage() {
               Browse The Full Menu →
             </a>
             {categories.slice(0, 3).map((c) => (
-              <a className="btn ghost" href={`/menu?cat=${c.slug}`} key={c.slug}>
+              <a className="btn ghost" href={`/menu#view=products&cat=${c.slug}`} key={c.slug}>
                 {c.name}
               </a>
             ))}
