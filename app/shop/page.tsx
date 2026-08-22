@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { categories } from "@/data/site";
+import { categories, categoryMenuHref } from "@/data/site";
 import { getMenu } from "@/lib/proteus";
 
 export const metadata: Metadata = {
@@ -44,7 +44,7 @@ export default async function ShopPage() {
                 <a
                   className={`cat${c.image ? "" : " no-photo"}`}
                   key={c.slug}
-                  href={`/menu?cat=${c.slug}`}
+                  href={categoryMenuHref(c.slug)}
                   style={c.image ? { backgroundImage: `url('${c.image}')` } : undefined}
                 >
                   <span className="arrow">↗</span>

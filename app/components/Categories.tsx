@@ -1,4 +1,4 @@
-import { categories } from "@/data/site";
+import { categories, categoryMenuHref } from "@/data/site";
 
 export default function Categories() {
   return (
@@ -17,7 +17,7 @@ export default function Categories() {
             <a
               className={`cat${c.image ? "" : " no-photo"}`}
               key={c.slug}
-              href={`/menu?cat=${c.slug}`}
+              href={categoryMenuHref(c.slug)}
               style={c.image ? { backgroundImage: `url('${c.image}')` } : undefined}
             >
               <span className="arrow">↗</span>

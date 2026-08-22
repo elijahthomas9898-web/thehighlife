@@ -292,6 +292,29 @@ export const categories: Category[] = [
   },
 ];
 
+/**
+ * JSCart's numeric category IDs (from the widget's getCategories), keyed by our
+ * category slug. Used to deep-link the shop to a category: the JSCart hash uses
+ * the numeric id (cat=<id>), NOT our slug. Keep in sync with shopCategories.
+ */
+const CATEGORY_CAT_ID: Record<string, number> = {
+  flower: 8,
+  "pre-rolls": 9,
+  vapes: 6,
+  edibles: 4,
+  concentrate: 11,
+  topicals: 7,
+  accessories: 15,
+  tinctures: 12,
+  cbd: 5,
+};
+
+/** Deep-link URL to the JSCart shop filtered to a category (by our slug). */
+export function categoryMenuHref(slug: string): string {
+  const id = CATEGORY_CAT_ID[slug];
+  return id ? `/menu#view=products&cat=${id}` : "/menu";
+}
+
 export const stats = [
   { count: 40, suffix: "+", label: "Brands On Shelf" },
   { count: 100, suffix: "%", label: "Lab-Tested (NY OCM)" },

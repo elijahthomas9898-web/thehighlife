@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { categories } from "@/data/site";
+import { categories, categoryMenuHref } from "@/data/site";
 import DealsBoard from "../components/DealsBoard";
 import { getMenu } from "@/lib/proteus";
 
@@ -86,7 +86,7 @@ export default async function DealsPage() {
               Browse The Full Menu →
             </a>
             {categories.slice(0, 3).map((c) => (
-              <a className="btn ghost" href={`/menu#view=products&cat=${c.slug}`} key={c.slug}>
+              <a className="btn ghost" href={categoryMenuHref(c.slug)} key={c.slug}>
                 {c.name}
               </a>
             ))}
