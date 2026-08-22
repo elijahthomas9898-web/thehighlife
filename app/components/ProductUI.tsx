@@ -92,7 +92,8 @@ export function ProductModal({
 }: {
   p: Product;
   onClose: () => void;
-  onAdd: (p: Product) => void;
+  /** Omit for browse-only pages — the modal then links to the JSCart menu. */
+  onAdd?: (p: Product) => void;
 }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -151,9 +152,15 @@ export function ProductModal({
               {p.stockCount != null && <span className="prod-stock">{p.stockCount} in stock</span>}
             </div>
 
-            <button className="btn primary addbtn" onClick={() => onAdd(p)}>
-              + Add to Cart
-            </button>
+            {onAdd ? (
+              <button className="btn primary addbtn" onClick={() => onAdd(p)}>
+                + Add to Cart
+              </button>
+            ) : (
+              <a className="btn primary addbtn" href="/menu">
+                Shop in the Menu →
+              </a>
+            )}
 
             <Cannabinoids p={p} />
             <TerpeneChart p={p} />
@@ -186,7 +193,8 @@ export function ProductCard({
 }: {
   p: Product;
   onOpen: (p: Product) => void;
-  onAdd: (p: Product) => void;
+  /** Omit for browse-only pages — the quick-add button is then hidden. */
+  onAdd?: (p: Product) => void;
 }) {
   return (
     <article className="prod is-clickable">
@@ -217,20 +225,17 @@ export function ProductCard({
         <div className="prod-price">
           <PriceTag p={p} />
         </div>
-        <button
-          className="quickadd"
-          onClick={() => onAdd(p)}
-          aria-label={`Add ${p.name} to your pickup list`}
-          title="Add to your pickup list"
-        >
-          +
-        </button>
+        {onAdd && (
+          <button
+            className="quickadd"
+            onClick={() => onAdd(p)}
+            aria-label={`Add ${p.name} to your pickup list`}
+            title="Add to your pickup list"
+          >
+            +
+          </button>
+        )}
       </div>
     </article>
   );
-}
-
-/** Brief confirmation after adding. The list itself lives in <CartDrawer>. */
-export function CartToast({ toast }: { toast: string | null }) {
-  return toast ? <div className="toast">{toast}</div> : null;
 }

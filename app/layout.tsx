@@ -4,8 +4,6 @@ import "./globals.css";
 import AgeGate from "./components/AgeGate";
 import WarnBand from "./components/WarnBand";
 import { InlineScript } from "./components/InlineScript";
-import { CartProvider } from "./components/CartProvider";
-import CartDrawer from "./components/CartDrawer";
 
 /**
  * The groovy display face. Self-hosted by Next at build time, so it renders
@@ -56,11 +54,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {/* Gate is always in the DOM; CSS decides whether it's visible. */}
         <AgeGate />
-        {/* Cart is a browser-local pickup list, shared across every page. */}
-        <CartProvider>
-          {children}
-          <CartDrawer />
-        </CartProvider>
+        {/* The real cart/checkout is Proteus's JSCart, embedded on /menu. */}
+        {children}
         <WarnBand />
       </body>
     </html>

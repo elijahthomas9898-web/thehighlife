@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { getMenu } from "@/lib/proteus";
-import MenuBrowser from "../menu/MenuBrowser";
+import BrowseGrid from "../components/BrowseGrid";
 
 export const metadata: Metadata = {
   title: "Merch & Accessories | The High Life Dispensary",
@@ -47,7 +47,7 @@ export default async function MerchPage() {
           )}
 
           {merch.length > 0 ? (
-            <MenuBrowser products={merch} categoryName="Merch" />
+            <BrowseGrid products={merch} />
           ) : (
             <p className="menu-note warn">Nothing in stock in this category right now.</p>
           )}

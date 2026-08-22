@@ -616,6 +616,68 @@
   .footlinks a{color:var(--muted);transition:color .2s}
   .footlinks a:hover{color:var(--green)}
 
+  /* ══════════ JSCart (Proteus widget) — The High Life brand skin (/order) ══════════
+     Scoped to #proteus_shop so it only restyles OUR embed, never the WordPress shop.
+     !important overrides the widget's own injected theme stylesheet. */
+  .order-wrap{max-width:1200px;padding-top:96px;padding-bottom:64px}
+
+  #proteus_shop{
+    --hlc-bg:#0b0e0b;--hlc-surf:#141a14;--hlc-surf-hi:#1c261c;
+    --hlc-line:rgba(233,244,233,.10);--hlc-ink:#f1f5ef;--hlc-muted:#9aa89d;
+    --hlc-green:#3ecf7a;--hlc-yellow:#ffe24a;--hlc-onpill:#08120b;
+    background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
+    border:1px solid var(--hlc-line);border-radius:16px;overflow:hidden}
+
+  /* surfaces + headings */
+  #proteus_shop .proteus-layout,#proteus_shop .proteus-main,#proteus_shop .proteus-sidebar,
+  #proteus_shop .proteus-full-header,#proteus_shop .proteus-search-panel,
+  #proteus_shop .proteus-deals-section{background:var(--hlc-bg)!important;color:var(--hlc-ink)!important}
+  #proteus_shop .proteus-full-header,#proteus_shop .proteus-toolbar,
+  #proteus_shop .proteus-sidebar,#proteus_shop .proteus-tree-divider{border-color:var(--hlc-line)!important}
+  #proteus_shop h2,#proteus_shop h3,#proteus_shop .proteus-nav-browsetitle,
+  #proteus_shop .proteus-deals-title,#proteus_shop .proteus-featured-header{color:var(--hlc-ink)!important}
+  #proteus_shop .proteus-sidebar-title,#proteus_shop .proteus-filters-label,
+  #proteus_shop .proteus-product-count,#proteus_shop .proteus-powered-by{color:var(--hlc-muted)!important}
+
+  /* header controls */
+  #proteus_shop .proteus-shoptype-selector,#proteus_shop .proteus-header-cart,
+  #proteus_shop .proteus-header-favorites{background:var(--hlc-surf)!important;border:1px solid var(--hlc-line)!important;color:var(--hlc-ink)!important}
+  #proteus_shop .proteus-signin-btn,#proteus_shop .proteus-badge-count{background:var(--hlc-green)!important;color:var(--hlc-onpill)!important;border:none!important}
+
+  /* search + filters */
+  #proteus_shop .proteus-search-box,#proteus_shop .proteus-search-input,
+  #proteus_shop .proteus-filter-select,#proteus_shop .proteus-mobile-filter-btn{
+    background:var(--hlc-surf)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
+  #proteus_shop .proteus-search-input::placeholder{color:var(--hlc-muted)!important}
+
+  /* category tree */
+  #proteus_shop .proteus-tree-item,#proteus_shop .proteus-tree-all,#proteus_shop .proteus-tree-label,
+  #proteus_shop .proteus-nav-featured,#proteus_shop .proteus-nav-onsale,
+  #proteus_shop .proteus-nav-allproducts{color:var(--hlc-ink)!important}
+  #proteus_shop .proteus-tree-count{color:var(--hlc-muted)!important}
+  #proteus_shop .proteus-tree-item:hover,#proteus_shop .proteus-tree-all:hover{background:var(--hlc-surf-hi)!important;color:var(--hlc-green)!important}
+  #proteus_shop .proteus-tree-item.active,#proteus_shop .proteus-tree-item.selected{color:var(--hlc-green)!important}
+  #proteus_shop .proteus-mobile-cat-chip{background:var(--hlc-surf)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
+  #proteus_shop .proteus-mobile-cat-chip.active{background:var(--hlc-green)!important;color:var(--hlc-onpill)!important}
+
+  /* product + deal cards */
+  #proteus_shop .proteus-product-card,#proteus_shop .proteus-deal-card{
+    background:var(--hlc-surf)!important;border:1px solid var(--hlc-line)!important;border-radius:14px!important}
+  #proteus_shop .proteus-product-name,#proteus_shop .proteus-deal-name,
+  #proteus_shop .proteus-product-price-value,#proteus_shop .proteus-product-price{color:var(--hlc-ink)!important}
+  #proteus_shop .proteus-product-brand{color:var(--hlc-yellow)!important}
+  #proteus_shop .proteus-product-tag,#proteus_shop .proteus-product-tag-dominance{
+    background:var(--hlc-surf-hi)!important;color:var(--hlc-muted)!important;border:1px solid var(--hlc-line)!important}
+  #proteus_shop .proteus-deal-discount{color:var(--hlc-green)!important}
+
+  /* buttons + qty */
+  #proteus_shop .proteus-add-btn,#proteus_shop .proteus-card-quickadd,
+  #proteus_shop .proteus-deal-btn,#proteus_shop .proteus-deals-nav-btn{
+    background:var(--hlc-green)!important;color:var(--hlc-onpill)!important;border:none!important}
+  #proteus_shop .proteus-qty-btn{background:var(--hlc-surf-hi)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
+  #proteus_shop .proteus-qty-input{background:var(--hlc-surf)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
+  #proteus_shop .proteus-wishlist-btn{color:var(--hlc-muted)!important}
+
   .reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
 

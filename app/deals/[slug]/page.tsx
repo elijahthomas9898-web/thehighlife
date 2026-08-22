@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
-import DealProducts from "./DealProducts";
+import BrowseGrid from "../../components/BrowseGrid";
 import { deals, dealSlug, findDealBySlug, dealMatchesProduct } from "@/data/site";
 import { getMenu } from "@/lib/proteus";
 
@@ -62,9 +62,10 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
           {matches.length > 0 ? (
             <>
               <div className="kicker dealhead-kicker">
-                {matches.length} {matches.length === 1 ? "product" : "products"} in this deal
+                {matches.length} {matches.length === 1 ? "product" : "products"} in this deal ·
+                applied automatically at checkout in the menu
               </div>
-              <DealProducts products={matches} />
+              <BrowseGrid products={matches} />
             </>
           ) : (
             <p className="menu-note warn">
