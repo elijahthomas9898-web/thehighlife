@@ -626,7 +626,7 @@
     --hlc-line:rgba(233,244,233,.10);--hlc-ink:#f1f5ef;--hlc-muted:#9aa89d;
     --hlc-green:#3ecf7a;--hlc-yellow:#ffe24a;--hlc-onpill:#08120b;
     background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
-    border:1px solid var(--hlc-line);border-radius:16px;overflow:hidden}
+    border:1px solid var(--hlc-line);border-radius:16px;overflow:clip}
 
   /* surfaces + headings */
   #proteus_shop .proteus-layout,#proteus_shop .proteus-main,#proteus_shop .proteus-sidebar,

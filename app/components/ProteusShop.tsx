@@ -26,6 +26,20 @@ declare global {
 export default function ProteusShop() {
   const started = useRef(false);
 
+  // The site sets `scroll-behavior: smooth` on <html> (for homepage anchor
+  // jumps). On this page the widget lazy-loads dozens of product images, and
+  // each reflow restarts the in-flight smooth-scroll animation — which makes the
+  // page feel frozen / impossible to scroll. Force instant scrolling while the
+  // shop is mounted, and restore on unmount.
+  useEffect(() => {
+    const html = document.documentElement;
+    const prev = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+    return () => {
+      html.style.scrollBehavior = prev;
+    };
+  }, []);
+
   useEffect(() => {
     if (started.current) return; // guard React 18/19 StrictMode double-run
     started.current = true;
