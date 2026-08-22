@@ -690,6 +690,9 @@
   /* product + deal cards */
   #proteus_shop .proteus-product-card,#proteus_shop .proteus-deal-card{
     background:var(--hlc-surf)!important;border:1px solid var(--hlc-line)!important;border-radius:14px!important}
+  /* Square product image tiles (JSCart default is a short landscape rectangle) */
+  #proteus_shop .proteus-product-image-wrapper{aspect-ratio:1/1!important;height:auto!important}
+  #proteus_shop .proteus-product-image{width:100%!important;height:100%!important;object-fit:cover!important}
   #proteus_shop .proteus-product-name,#proteus_shop .proteus-deal-name,
   #proteus_shop .proteus-product-price-value,#proteus_shop .proteus-product-price{color:var(--hlc-ink)!important}
   #proteus_shop .proteus-product-brand{color:var(--hlc-yellow)!important}
