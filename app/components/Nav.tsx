@@ -25,6 +25,19 @@ export default function Nav() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // JSCart owns login/accounts, and its widget only exists on /menu. So: if the
+  // widget is present, open its login (or account, if already signed in); from
+  // any other page, route to the shop with ?login=1 (ProteusShop opens it there).
+  function openAccount() {
+    const w = window.ProteusWidget;
+    if (w && w.showLoginModal) {
+      if (w.isAuthenticated && w.isAuthenticated()) w.showAccount?.();
+      else w.showLoginModal();
+      return;
+    }
+    window.location.href = "/menu?login=1";
+  }
+
   return (
     <nav id="nav">
       <a className="brand" href="/" aria-label={`${store.name} — home`}>
@@ -45,6 +58,9 @@ export default function Nav() {
       </div>
 
       <div className="nav-right">
+        <button className="nav-signin" onClick={openAccount}>
+          Sign In
+        </button>
         <div className="badge21">NY · 21+ Only</div>
         {/* hamburger — only shows on small screens (CSS) */}
         <button
@@ -67,6 +83,15 @@ export default function Nav() {
             </a>
           );
         })}
+        <button
+          className="drawer-signin"
+          onClick={() => {
+            setOpen(false);
+            openAccount();
+          }}
+        >
+          Sign In
+        </button>
       </div>
       {open && <div className="nav-scrim" onClick={() => setOpen(false)} aria-hidden="true" />}
     </nav>

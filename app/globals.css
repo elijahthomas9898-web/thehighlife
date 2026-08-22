@@ -115,6 +115,13 @@
   @keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
   .marquee:hover .mtrack{animation-play-state:paused}
 
+  /* Homepage deals band — a teaser moment routing to /deals (the live list) */
+  .deals-band{border-bottom:1px solid var(--line);
+    background:radial-gradient(120% 120% at 50% 0%,rgba(30,122,71,.16),transparent 62%),var(--bg)}
+  .deals-band-chips{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 36px}
+  .deals-band-chips span{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--green);border:1px solid rgba(64,210,131,.42);border-radius:999px;padding:8px 15px;background:rgba(64,210,131,.06)}
+
   /* section shell */
   section{position:relative}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:clamp(84px,12vw,168px) clamp(20px,5vw,54px)}
@@ -642,7 +649,16 @@
   /* header controls */
   #proteus_shop .proteus-shoptype-selector,#proteus_shop .proteus-header-cart,
   #proteus_shop .proteus-header-favorites{background:var(--hlc-surf)!important;border:1px solid var(--hlc-line)!important;color:var(--hlc-ink)!important}
-  #proteus_shop .proteus-signin-btn,#proteus_shop .proteus-badge-count{background:var(--hlc-green)!important;color:var(--hlc-onpill)!important;border:none!important}
+  /* Sign-in moved to the top nav (.nav-signin) — hide the widget's own small one */
+  #proteus_shop .proteus-signin-btn{display:none!important}
+  #proteus_shop .proteus-badge-count{background:var(--hlc-green)!important;color:var(--hlc-onpill)!important;border:none!important}
+
+  /* Top-nav "Sign In" — drives JSCart login/account from every page */
+  .nav-signin{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+    color:#08120b;background:var(--green);border:none;border-radius:999px;padding:9px 18px;cursor:pointer;white-space:nowrap;transition:filter .2s}
+  .nav-signin:hover{filter:brightness(1.08)}
+  .drawer-signin{margin-top:16px;font-family:var(--mono);font-size:15px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;
+    color:#08120b;background:var(--green);border:none;border-radius:12px;padding:14px 18px;cursor:pointer;width:100%}
 
   /* search + filters */
   #proteus_shop .proteus-search-box,#proteus_shop .proteus-search-input,
@@ -677,6 +693,31 @@
   #proteus_shop .proteus-qty-btn{background:var(--hlc-surf-hi)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
   #proteus_shop .proteus-qty-input{background:var(--hlc-surf)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
   #proteus_shop .proteus-wishlist-btn{color:var(--hlc-muted)!important}
+
+  /* JSCart auth/login modal — renders on <body>, so skinned outside #proteus_shop */
+  .proteus-modal-overlay .proteus-modal,
+  .proteus-modal-overlay .proteus-auth-panel,
+  .proteus-modal-overlay .proteus-auth-modal{
+    background:#141a14!important;color:#f1f5ef!important;
+    border:1px solid rgba(233,244,233,.12)!important;border-radius:16px!important}
+  .proteus-modal-overlay .proteus-modal-header,
+  .proteus-modal-overlay .proteus-choice-title,
+  .proteus-modal-overlay h2,.proteus-modal-overlay h3{color:#f1f5ef!important}
+  .proteus-modal-overlay .proteus-form-label{color:#9aa89d!important}
+  .proteus-modal-overlay .proteus-form-input{
+    background:#0b0e0b!important;color:#f1f5ef!important;
+    border:1px solid rgba(233,244,233,.14)!important;border-radius:10px!important}
+  .proteus-modal-overlay .proteus-form-input::placeholder{color:#67746c!important}
+  .proteus-modal-overlay .proteus-auth-tab{color:#9aa89d!important}
+  .proteus-modal-overlay .proteus-auth-tab.active{color:#3ecf7a!important;border-bottom-color:#3ecf7a!important}
+  .proteus-modal-overlay .proteus-login-btn{
+    background:#3ecf7a!important;color:#08120b!important;border:none!important;border-radius:10px!important;font-weight:700}
+  .proteus-modal-overlay .proteus-choice-btn{
+    background:#1c261c!important;color:#f1f5ef!important;
+    border:1px solid rgba(233,244,233,.12)!important;border-radius:12px!important}
+  .proteus-modal-overlay .proteus-modal-close{color:#9aa89d!important}
+  .proteus-modal-overlay .proteus-login-footer a,
+  .proteus-modal-overlay .proteus-forgot-help a{color:#3ecf7a!important}
 
   .reveal{opacity:0;transform:translateY(38px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}

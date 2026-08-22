@@ -44,6 +44,35 @@ export default function ProteusShop() {
     if (started.current) return; // guard React 18/19 StrictMode double-run
     started.current = true;
 
+    // If the nav "Sign In" button sent us here from another page (?login=1),
+    // open the widget's login (or account, if already signed in) once it's ready.
+    const maybeOpenLogin = () => {
+      let params: URLSearchParams;
+      try {
+        params = new URLSearchParams(location.search);
+      } catch {
+        return;
+      }
+      if (params.get("login") !== "1") return;
+      let tries = 0;
+      const go = () => {
+        const w = window.ProteusWidget;
+        // wait until the widget has actually loaded (brands present) before
+        // opening the modal — calling too early silently no-ops.
+        const ready = w && w.showLoginModal && w.getBrands && w.getBrands().length > 0;
+        if (ready) {
+          if (w.isAuthenticated && w.isAuthenticated()) w.showAccount?.();
+          else w.showLoginModal();
+          params.delete("login"); // don't reopen on refresh
+          const qs = params.toString();
+          history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash);
+          return;
+        }
+        if (tries++ < 60) setTimeout(go, 150);
+      };
+      go();
+    };
+
     const init = () => {
       if (!window.ProteusWidget) return;
       window.ProteusWidget.init({
@@ -58,6 +87,7 @@ export default function ProteusShop() {
         headerTitle: "Shop The High Life",
         logoImage: "",
       });
+      maybeOpenLogin();
     };
 
     if (window.ProteusWidget) {

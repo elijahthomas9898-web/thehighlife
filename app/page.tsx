@@ -1,7 +1,7 @@
 import ScrollEffects from "./components/ScrollEffects";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
-import { Marquee, DealsIntro, DealsGallery } from "./components/Deals";
+import { Marquee, DealsBand } from "./components/Deals";
 import Categories from "./components/Categories";
 import Stats from "./components/Stats";
 import Visit from "./components/Visit";
@@ -16,8 +16,7 @@ export default function Page() {
       <Nav />
       <Hero />
       <Marquee />
-      <DealsIntro />
-      <DealsGallery />
+      <DealsBand />
       <Categories />
       <Stats />
       <Visit />

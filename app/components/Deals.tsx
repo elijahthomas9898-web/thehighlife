@@ -1,49 +1,16 @@
-import { deals, featuredDeals, dealSlug, type Deal } from "@/data/site";
-import DealRail from "./DealRail";
-
-/** One deal card. Links through to that deal's products. */
-export function DealCard({
-  deal,
-  index,
-  total,
-}: {
-  deal: Deal;
-  index?: number;
-  total?: string;
-}) {
-  return (
-    <a className="deal" href={`/deals/${dealSlug(deal)}`}>
-      <div className="top">
-        {index != null && total ? (
-          <span className="idx">
-            {String(index + 1).padStart(2, "0")} / {total}
-          </span>
-        ) : (
-          <span className="idx">{deal.code}</span>
-        )}
-        <span className="tag">{deal.tag}</span>
-      </div>
-      <div>
-        <h3>{deal.name}</h3>
-        <div className="desc">{deal.desc}</div>
-      </div>
-      <div className="meta">
-        <div className="val">{deal.value}</div>
-        <div className="valid">
-          {deal.valid}
-          <small>see products →</small>
-        </div>
-      </div>
-    </a>
-  );
-}
+/**
+ * Homepage deals section: a scrolling marquee + a bold teaser band that routes
+ * to /deals (which pulls the REAL deals live from JSCart). No hand-kept deal
+ * data lives here anymore — nothing to drift out of sync.
+ */
 
 export function Marquee() {
+  // Generic, always-true energy — no specific brand/percent claims that could go stale.
   const unit = (
     <span>
-      Deals Deals Deals <em className="sep">✦</em> Airo 25% Off <em className="sep">✦</em> Puff
-      Pre-Rolls 40% <em className="sep">✦</em> Stiiizy 20% Off Vapes <em className="sep">✦</em> Old
-      Pal 30% <em className="sep">✦</em> BOGO All Week <em className="sep">✦</em>
+      Deals Deals Deals <em className="sep">✦</em> BOGO All Week <em className="sep">✦</em> 2 For $40
+      <em className="sep">✦</em> 25% Off <em className="sep">✦</em> Bundles <em className="sep">✦</em>
+      Fresh Markdowns <em className="sep">✦</em>
     </span>
   );
   return (
@@ -57,12 +24,13 @@ export function Marquee() {
   );
 }
 
-export function DealsIntro() {
+/** The homepage deals moment — big energy, honest copy, one route into /deals. */
+export function DealsBand() {
   return (
-    <section className="deals-intro" id="deals">
+    <section className="deals-band" id="deals">
       <div className="wrap">
         <div className="kicker reveal">
-          01 — Deals Deals Deals <span>/ new every week</span>
+          Deals Deals Deals <span>/ fresh every week</span>
         </div>
         <h2 className="reveal">
           This Week&rsquo;s
@@ -70,44 +38,27 @@ export function DealsIntro() {
           Deals
         </h2>
         <p className="lead reveal">
-          We don&rsquo;t do markups — we do markdowns. Every week we rotate a fresh set of specials
-          across the shop. Here&rsquo;s what&rsquo;s live right now. Scroll sideways →
+          We don&rsquo;t do markups — we do markdowns. BOGOs, bundles and fresh price drops across the
+          shop, pulled straight from the register so what you see is always what&rsquo;s live.
         </p>
-      </div>
-    </section>
-  );
-}
 
-/**
- * Horizontal row of deal cards.
- *
- * The page scrolls vertically as normal — this no longer hijacks the wheel to
- * drive a pinned track. The row itself scrolls sideways on its own (swipe,
- * trackpad, or the arrow buttons), so the layout stays horizontal without
- * taking over the page scroll.
- */
-export function DealsGallery() {
-  // only the featured handful — all 37 live on /deals
-  const total = String(featuredDeals.length).padStart(2, "0");
-  return (
-    <section className="gallery" id="weekly">
-      <div className="wrap gal-wrap">
-        <div className="gal-head">
-          <div>
-            <div className="kicker">Live Now</div>
-            <h2>On Special</h2>
-          </div>
-          <a className="btn ghost gal-all" href="/deals">
-            All {deals.length} deals →
+        <div className="deals-band-chips reveal" aria-hidden="true">
+          <span>BOGO</span>
+          <span>2 for $40</span>
+          <span>25% Off</span>
+          <span>Bundles</span>
+          <span>Grand-Opening Drops</span>
+        </div>
+
+        <div className="page-cta reveal">
+          <a className="btn primary" href="/deals">
+            See This Week&rsquo;s Deals →
+          </a>
+          <a className="btn ghost" href="/menu">
+            Shop The Menu
           </a>
         </div>
       </div>
-
-      <DealRail>
-        {featuredDeals.map((d, i) => (
-          <DealCard key={d.name} deal={d} index={i} total={total} />
-        ))}
-      </DealRail>
     </section>
   );
 }
