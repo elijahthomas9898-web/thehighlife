@@ -41,17 +41,19 @@
 
   /* Two-row fixed header: main bar + green category banner underneath */
   #nav{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:0;padding:0}
-  .nav-main{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px clamp(20px,5vw,54px)}
-  .catbar{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  .nav-main{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px clamp(20px,5vw,54px)}
+  .catbar{display:flex;justify-content:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
     background:#1f9e52;border-top:1px solid rgba(0,0,0,.18)}
   .catbar::-webkit-scrollbar{display:none}
+  /* on narrower screens the row overflows — scroll it from the left instead of centering */
+  @media(max-width:1024px){.catbar{justify-content:flex-start}}
   .catbar a{flex:0 0 auto;font-family:var(--mono);font-weight:700;font-size:12.5px;letter-spacing:.05em;
     text-transform:uppercase;color:#fff;padding:10px 15px;white-space:nowrap;transition:background .15s}
   .catbar a:hover{background:rgba(0,0,0,.16)}
   .catbar .catbar-deals{background:rgba(0,0,0,.20)}
   .brand{font-family:var(--groovy);font-weight:700;letter-spacing:.02em;font-size:19px;text-transform:uppercase;display:flex;align-items:center;gap:10px;color:var(--white);-webkit-text-stroke:.6px #000;text-shadow:0 0 14px rgba(59,232,127,.5)}
   .brand .leaf{width:22px;height:22px;flex:0 0 auto;filter:drop-shadow(0 0 8px rgba(59,232,127,.8));-webkit-text-stroke:0}
-  .navlinks{display:flex;gap:28px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .navlinks{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:28px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .navlinks a{transition:color .2s}
   .navlinks a:hover{color:var(--green)}
   .badge21{font-family:var(--mono);font-size:11px;letter-spacing:.08em;border:1px solid var(--green-dim);color:var(--green);padding:6px 10px;border-radius:100px;white-space:nowrap}
@@ -100,8 +102,8 @@
   .eyebrow::before,.eyebrow::after{content:"";width:30px;height:1px;background:var(--green-dim)}
 
   /* nav brand logo */
-  .brand-logo{height:42px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(59,232,127,.55))}
-  @media(max-width:560px){.brand-logo{height:34px}}
+  .brand-logo{height:56px;width:auto;display:block;filter:drop-shadow(0 0 10px rgba(59,232,127,.55))}
+  @media(max-width:560px){.brand-logo{height:44px}}
   /* hero headline */
   /* Glow + drop via text-shadow, NOT filter:drop-shadow. `filter` renders the
      text into an offscreen GPU texture that tiles (stripes) on weak kiosk GPUs;
