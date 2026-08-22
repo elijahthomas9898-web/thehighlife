@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import BrowseGrid from "../../components/BrowseGrid";
-import { deals, dealSlug, findDealBySlug, dealMatchesProduct } from "@/data/site";
+import { deals, dealSlug, findDealBySlug, dealMatchesProduct, dealShopHref } from "@/data/site";
 import { getMenu } from "@/lib/proteus";
 
 /** Pre-build a route for every deal. */
@@ -65,7 +65,7 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
                 {matches.length} {matches.length === 1 ? "product" : "products"} in this deal ·
                 applied automatically at checkout in the menu
               </div>
-              <BrowseGrid products={matches} />
+              <BrowseGrid products={matches} shopHref={dealShopHref(deal)} />
             </>
           ) : (
             <p className="menu-note warn">
@@ -76,8 +76,8 @@ export default async function DealPage({ params }: { params: Promise<{ slug: str
           )}
 
           <div className="page-cta">
-            <a className="btn primary" href="/menu">
-              Browse The Full Menu →
+            <a className="btn primary" href={dealShopHref(deal)}>
+              Shop {deal.tag} In The Menu →
             </a>
             <a className="btn ghost" href="/deals">
               See All Deals

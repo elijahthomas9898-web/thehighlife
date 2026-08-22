@@ -14,9 +14,12 @@ import { ProductCard, ProductModal } from "./ProductUI";
 export default function BrowseGrid({
   products,
   pageSize = 24,
+  shopHref = "/menu",
 }: {
   products: Product[];
   pageSize?: number;
+  /** Where the product modal's "Shop in the Menu" link points. */
+  shopHref?: string;
 }) {
   const [limit, setLimit] = useState(pageSize);
   const [open, setOpen] = useState<Product | null>(null);
@@ -39,7 +42,7 @@ export default function BrowseGrid({
         </div>
       )}
 
-      {open && <ProductModal p={open} onClose={() => setOpen(null)} />}
+      {open && <ProductModal p={open} onClose={() => setOpen(null)} shopHref={shopHref} />}
     </>
   );
 }

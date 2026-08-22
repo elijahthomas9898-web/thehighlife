@@ -89,11 +89,14 @@ export function ProductModal({
   p,
   onClose,
   onAdd,
+  shopHref = "/menu",
 }: {
   p: Product;
   onClose: () => void;
   /** Omit for browse-only pages — the modal then links to the JSCart menu. */
   onAdd?: (p: Product) => void;
+  /** Where the "Shop in the Menu" link points (e.g. a brand-filtered menu). */
+  shopHref?: string;
 }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -157,7 +160,7 @@ export function ProductModal({
                 + Add to Cart
               </button>
             ) : (
-              <a className="btn primary addbtn" href="/menu">
+              <a className="btn primary addbtn" href={shopHref}>
                 Shop in the Menu →
               </a>
             )}

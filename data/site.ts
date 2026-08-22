@@ -136,6 +136,33 @@ export function findDealBySlug(slug: string): Deal | undefined {
   return deals.find((d) => dealSlug(d) === slug);
 }
 
+/**
+ * The JSCart brand slug a deal points at, so a deal can deep-link the shop
+ * straight to that brand: `/menu#view=products&brand=<slug>`. JSCart slugs are
+ * lowercase with non-alphanumeric runs collapsed to "-" (e.g. "Old Pal" →
+ * "old-pal"). A handful of deal tags aren't the brand's exact name, so those are
+ * aliased here. An unknown slug is harmless — JSCart just shows the full shop.
+ */
+const BRAND_SLUG_ALIASES: Record<string, string> = {
+  chocolate: "all-that-chocolate",
+  bigbuzz: "the-big-buzz",
+  high5: "high-5-s",
+};
+
+export function dealBrandSlug(d: Deal): string {
+  const raw = (d.brandMatch?.[0] ?? d.tag)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return BRAND_SLUG_ALIASES[raw] ?? raw;
+}
+
+/** Shop URL for a deal — the JSCart menu pre-filtered to the deal's brand. */
+export function dealShopHref(d: Deal): string {
+  const slug = dealBrandSlug(d);
+  return slug ? `/menu#view=products&brand=${slug}` : "/menu";
+}
+
 /** "Chew & Chill" and "CHEW AND CHILL" have to compare equal. */
 function normalizeBrand(s: string): string {
   return s.toLowerCase().replace(/\band\b/g, "").replace(/[^a-z0-9]/g, "");
