@@ -14,7 +14,7 @@ export const store = {
   name: "The High Life Dispensary",
   addressLine1: "1300 N Wellwood Ave",
   addressLine2: "West Babylon, NY 11704",
-  email: "Info@thehighlifeny.com",
+  email: "info@thehighlife.shop",
   license: "OCM-CAURD-25-000277-D1",
   legal:
     "The High Life™ is a trademark of Hydro Phonics, LLC. West Babylon NY. ©2026 All Rights Reserved. NYS OCM#: OCM-CAURD-25-000277-D1. All products, trademarks, service marks, trade names, and logos appearing on this site remain the property of their respective owners. For use only by adults 21 and older.",
