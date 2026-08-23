@@ -100,6 +100,22 @@ export default function Nav() {
             onClick={openCart}
             aria-label={cartCount ? `View cart, ${cartCount} item${cartCount === 1 ? "" : "s"}` : "View cart"}
           >
+            <svg
+              className="nav-cart-ic"
+              viewBox="0 0 24 24"
+              width="16"
+              height="16"
+              aria-hidden="true"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
             Cart
             {cartCount > 0 && <span className="nav-cart-count">{cartCount}</span>}
           </button>
