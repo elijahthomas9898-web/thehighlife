@@ -701,6 +701,21 @@
   /* Square product image tiles (JSCart default is a short landscape rectangle) */
   #proteus_shop .proteus-product-image-wrapper{aspect-ratio:1/1!important;height:auto!important}
   #proteus_shop .proteus-product-image{width:100%!important;height:100%!important;object-fit:cover!important}
+
+  /* /deals — embed the widget but show ONLY its native "Today's Deals" section */
+  .deals-only #proteus_shop{border:0!important;border-radius:0!important;background:transparent!important;overflow:visible!important}
+  .deals-only #proteus_shop .proteus-full-header,
+  .deals-only #proteus_shop .proteus-search-panel,
+  .deals-only #proteus_shop .proteus-sidebar,
+  .deals-only #proteus_shop .proteus-toolbar,
+  .deals-only #proteus_shop .proteus-mobile-categories,
+  .deals-only #proteus_shop .proteus-mobile-filter-btn,
+  .deals-only #proteus_shop .proteus-featured-header,
+  .deals-only #proteus_shop .proteus-nav-browsetitle,
+  .deals-only #proteus_shop .proteus-products-grid,
+  .deals-only #proteus_shop .proteus-powered-by{display:none!important}
+  .deals-only #proteus_shop .proteus-layout,
+  .deals-only #proteus_shop .proteus-main{display:block!important;padding:0!important;margin:0!important;width:100%!important}
   #proteus_shop .proteus-product-name,#proteus_shop .proteus-deal-name,
   #proteus_shop .proteus-product-price-value,#proteus_shop .proteus-product-price{color:var(--hlc-ink)!important}
   #proteus_shop .proteus-product-brand{color:var(--hlc-yellow)!important}
