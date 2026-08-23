@@ -251,6 +251,11 @@
   /* ---------- 21+ age gate ---------- */
   /* No data-age attribute = not verified = gate up + page locked (fails closed) */
   html:not([data-age="ok"]){overflow:hidden}
+  /* Belt-and-suspenders anti-flash: until verified, HIDE all page content (not just
+     cover it) so nothing can flash in before the overlay paints — some mobile
+     browsers composite backdrop-filter/blur a frame late. Verified visitors get
+     data-age="ok" from the boot script BEFORE first paint, so they never see this. */
+  html:not([data-age="ok"]) body>*:not(.agegate){display:none!important}
   .agegate{position:fixed;inset:0;z-index:999;background:rgba(6,7,7,.975);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
   html[data-age="ok"] .agegate{display:none}
   .gate-box{max-width:600px;width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}
