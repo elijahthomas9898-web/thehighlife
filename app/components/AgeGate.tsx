@@ -21,7 +21,15 @@ export default function AgeGate() {
     try {
       localStorage.setItem(KEY, "1");
     } catch {
-      /* storage blocked — still let them through for this session */
+      /* storage blocked — the cookie below still remembers them */
+    }
+    try {
+      // A cookie persists across page loads even when localStorage is blocked
+      // (Safari Private mode) or wiped between navigations (some in-app browsers) —
+      // which is what made the gate reappear on every mobile page. 1-year expiry.
+      document.cookie = `${KEY}=1; path=/; max-age=31536000; SameSite=Lax`;
+    } catch {
+      /* cookies blocked too — still let them through for this page */
     }
     document.documentElement.setAttribute("data-age", "ok");
   }

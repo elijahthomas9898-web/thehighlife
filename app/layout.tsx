@@ -40,6 +40,7 @@ const BOOT_SCRIPT = `(function(){
 // before first paint so a TV never shows the "Are you 21?" prompt.
 try{if(location.pathname.indexOf("/signage")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
+try{if(document.cookie.indexOf("hl_age_verified=1")!==-1){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{var d=new Date().toLocaleString("en-US",{timeZone:"America/New_York",weekday:"short"}),
 m={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
 if(m[d]!==undefined){document.documentElement.setAttribute("data-today",String(m[d]))}}catch(e){}
