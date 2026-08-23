@@ -41,6 +41,12 @@ const BOOT_SCRIPT = `(function(){
 try{if(location.pathname.indexOf("/signage")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(document.cookie.indexOf("hl_age_verified=1")!==-1){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
+// Storage-independent safety net for in-app browsers (Instagram/TikTok/FB) that
+// wipe localStorage AND cookies between pages: if this page was reached FROM a
+// page on our own site, the visitor already cleared the gate (it's a full-screen
+// blocker, so internal navigation is impossible before accepting). Only a first
+// arrival from outside / a direct hit still shows the gate.
+try{if(document.referrer&&document.referrer.indexOf(location.origin+"/")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{var d=new Date().toLocaleString("en-US",{timeZone:"America/New_York",weekday:"short"}),
 m={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
 if(m[d]!==undefined){document.documentElement.setAttribute("data-today",String(m[d]))}}catch(e){}
