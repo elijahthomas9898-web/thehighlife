@@ -22,22 +22,15 @@ export default function DealsLinkBridge() {
       const m = (card.getAttribute("onclick") || "").match(/_filterByCoupon\((\d+)\)/);
       if (!m) return;
 
-      const id = Number(m[1]);
-      let slug = "";
-      try {
-        const deals = window.ProteusWidget?.getDeals?.() ?? [];
-        slug =
-          deals.find((d: { id: number; slug: string }) => Number(d.id) === id)?.slug ?? "";
-      } catch {
-        /* fall back to the menu */
-      }
+      const id = m[1];
 
-      // block the widget's in-place filter and go to the menu view of this deal
+      // Block the widget's in-place filter and go to the menu filtered to this
+      // deal. IMPORTANT: the coupon filter keys on the NUMERIC coupon id (the same
+      // arg the card's _filterByCoupon uses). The slug only sets a label and does
+      // NOT actually filter the products — so pass the id straight through.
       e.preventDefault();
       e.stopImmediatePropagation();
-      window.location.href = slug
-        ? `/menu#view=products&coupon=${encodeURIComponent(slug)}`
-        : "/menu";
+      window.location.href = `/menu#view=products&coupon=${id}`;
     };
 
     document.addEventListener("click", onClick, true); // capture: runs before inline onclick
