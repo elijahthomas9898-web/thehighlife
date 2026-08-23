@@ -6,17 +6,19 @@ import { store } from "@/data/site";
 export const metadata: Metadata = {
   title: "Privacy Policy | The High Life Dispensary",
   description:
-    "How The High Life Dispensary handles your information. A licensed New York adult-use cannabis retailer. 21+.",
+    "How The High Life collects, uses, shares, and protects your information. Adults 21+ only, New York.",
 };
 
 /** Change this whenever the policy is edited. */
-const UPDATED = "August 13, 2026";
+const UPDATED = "August 14, 2026";
+const PHONE = "(631) 270-4989";
+const PHONE_TEL = "+16312704989";
 
 const LEAD =
-  `This Privacy Policy explains how The High Life Dispensary, operated by Hydro Phonics, LLC ` +
-  `(“The High Life,” “we,” “us”), handles information when you use ${"thehighlifeny.com"}. We are a ` +
-  `licensed New York State adult-use cannabis retailer, and this website is intended only for adults ` +
-  `21 and older.`;
+  "This Privacy Policy explains how The High Life (“The High Life,” “Company,” “we,” “our,” or “us”) " +
+  "collects, uses, shares, and protects information when you use our website, online ordering tools, " +
+  "loyalty and marketing programs, mobile communications, and related services. This website is for " +
+  "adults 21 and older. By using it, you agree to this Policy.";
 
 type Block = string | { list: string[] };
 type Section = { h: string; blocks: Block[] };
@@ -25,22 +27,36 @@ const sections: Section[] = [
   {
     h: "Who this applies to (21+)",
     blocks: [
-      "This website and our services are for adults 21 and older. We do not knowingly collect information from anyone under 21. If you are not 21, please do not use this site or give us any information.",
+      "Our website and services are intended solely for adults 21 years of age or older. We do not knowingly collect information from anyone under 21. If you are not 21, please do not use this site or provide any information.",
     ],
   },
   {
     h: "Information we collect",
     blocks: [
-      "We try to collect as little as possible. In practice that means:",
+      "Information you provide to us:",
       {
         list: [
-          "Reservation details — if you reserve products for in-store pickup, we collect your first name, last name, phone number, an optional email address, and the items you select.",
-          "Age confirmation — when you confirm you are 21 or older, your browser stores a simple flag so we do not have to keep asking. We do not store your date of birth.",
-          "Your cart — the items you add are saved locally in your own browser and stay on your device. They are only sent to us if you place a reservation.",
-          "Basic technical data — like any website, our hosting provider may briefly log standard request information (such as IP address and browser type) to keep the site running and secure.",
+          "Contact details — your name, phone number, email address, and (for delivery) a delivery address.",
+          "Order information — the products you reserve or order, pickup/delivery preferences, and related notes.",
+          "Account information — if you create an account, your login details and profile information.",
+          "Age & identity verification — confirmation that you are 21+, and, where required (for example, certain delivery or pickup orders), a government-issued ID or a photo of it.",
+          "Communications preferences — your opt-ins for email or SMS marketing and loyalty programs.",
         ],
       },
-      "What we do NOT collect on this website today: we do not take online payments, and we do not collect a photo of your government ID online. If we add delivery, online payment, or online ID verification in the future, we will update this policy before turning those on.",
+      "Information collected automatically:",
+      {
+        list: [
+          "Device and usage data — such as IP address, browser type, pages viewed, and interactions, collected through cookies and similar technologies.",
+          "Cookies and local storage — used to remember your age confirmation, your cart, your preferences, and to measure and improve the site.",
+        ],
+      },
+      "Information from other sources:",
+      {
+        list: [
+          "Our point-of-sale / online-ordering provider, which processes your orders and accounts.",
+          "Payment processors, which handle any online payment you choose to make (we do not store full payment card or bank-account numbers).",
+        ],
+      },
     ],
   },
   {
@@ -48,43 +64,54 @@ const sections: Section[] = [
     blocks: [
       {
         list: [
-          "To prepare and hold your pickup reservation.",
-          "To contact you about that reservation — for example, to confirm it is ready or to let you know an item is unavailable.",
-          "To operate, secure, and improve the website.",
-          "To meet our obligations under New York State cannabis laws and regulations.",
+          "To process, prepare, and fulfill your orders, and to hold pickup reservations.",
+          "To verify that you are 21 or older and to confirm your identity where required by law.",
+          "To create and manage your account, loyalty rewards, and store credit.",
+          "To contact you about your orders and respond to your questions.",
+          "To send marketing and promotional messages where you have opted in (see “Text messages” and “Your choices”).",
+          "To operate, secure, analyze, and improve our website and services, and to prevent fraud.",
+          "To comply with New York State cannabis laws and other legal obligations.",
         ],
       },
     ],
   },
   {
-    h: "How your information is shared",
+    h: "Text messages (SMS)",
+    blocks: [
+      "If you opt in, we may send you SMS messages such as order notifications, loyalty updates, and marketing offers. Consent to marketing texts is not a condition of any purchase. Message frequency may vary, and message and data rates may apply.",
+      "You can opt out of marketing texts at any time by replying STOP, or reply HELP for assistance. Opting out of marketing does not stop transactional messages about an order you have placed.",
+    ],
+  },
+  {
+    h: "Cookies, analytics & tracking",
+    blocks: [
+      "We and our service providers use cookies, local storage, and similar technologies to run the site, remember your age confirmation and cart, understand how the site is used, and improve it. Most browsers let you control or block cookies, though some features may not work without them.",
+      "We do not sell your personal information. Where analytics or advertising technologies are used, we aim to configure them in a privacy-conscious way, and we will update this Policy if our practices change.",
+    ],
+  },
+  {
+    h: "How we share your information",
     blocks: [
       "We do not sell your personal information. We share it only as needed to run the business:",
       {
         list: [
-          "Proteus 420 — our point-of-sale system. Reservation details are sent here to create and manage your order. Proteus is our system of record.",
-          "Service providers — such as our website host, and, in the future, a payment processor if you choose to pay online.",
-          "Legal and regulatory — the New York State Office of Cannabis Management or other authorities where required by law, and to protect our rights and safety.",
+          "Service providers — including our online-ordering / point-of-sale provider, payment processors, and our email, SMS, CRM, analytics, and hosting providers, who process information on our behalf.",
+          "Legal and regulatory — the New York State Office of Cannabis Management or other authorities where required by law, and to protect our rights, safety, and property.",
+          "Business transfers — in connection with a merger, acquisition, or sale of assets, subject to this Policy.",
         ],
       },
     ],
   },
   {
-    h: "Where your information is kept",
+    h: "Age & identity verification data",
     blocks: [
-      "This website does not keep its own separate customer database. The reservation details you submit are stored in our point-of-sale system (Proteus 420) and kept in line with our record-keeping obligations under New York law. The cart on your device stays in your browser until you clear it or complete a reservation.",
+      "Where we collect a government-issued ID or a photo of it to verify age or identity, that information is used only for verification and legal-compliance purposes, is handled through our secure ordering and point-of-sale systems, and is retained only as long as needed for those purposes or as required by law.",
     ],
   },
   {
-    h: "Text messages and email",
+    h: "How long we keep your information",
     blocks: [
-      "If you give us your phone number or email for a reservation, we may use them to contact you about that order. Message and data rates may apply. You can ask us to stop sending you marketing messages at any time by replying STOP to a text or by emailing us.",
-    ],
-  },
-  {
-    h: "Cookies and local storage",
-    blocks: [
-      "We use only the storage needed to make the site work — such as remembering your age confirmation and your cart. We do not use third-party advertising cookies. If this ever changes, we will update this policy.",
+      "We keep personal information for as long as needed to provide our services and for legitimate business purposes, and longer where cannabis record-keeping or other laws require it. When it is no longer needed, we take reasonable steps to delete or de-identify it.",
     ],
   },
   {
@@ -93,28 +120,35 @@ const sections: Section[] = [
       {
         list: [
           "Connections to the site are encrypted (HTTPS).",
-          "The keys that connect the site to our point-of-sale system are kept on our servers only and are never exposed in your browser.",
-          "No method of transmission or storage is perfectly secure, but we take reasonable steps to protect your information.",
+          "The keys and credentials that connect the site to our ordering and point-of-sale systems are kept on our servers and are not exposed in your browser.",
+          "No method of transmission or storage is perfectly secure, but we take reasonable measures to protect your information.",
         ],
       },
     ],
   },
   {
-    h: "Your choices and rights",
+    h: "Your privacy choices & rights",
     blocks: [
-      "You can ask what reservation information we have about you, or ask us to correct or delete it, by emailing us. Because your order information lives in our point-of-sale system, some records may be kept where the law requires us to retain them.",
+      "You can ask what information we hold about you, or ask us to correct or delete it, by emailing or calling us (see “Contact”). You can opt out of marketing emails via the unsubscribe link, and marketing texts by replying STOP.",
+      "Depending on where you live, you may have additional rights — such as to access, correct, delete, or restrict the use of your personal information, or to opt out of certain sharing. To exercise any right, contact us using the details below; we may need to verify your identity, and some records may be retained where the law requires.",
     ],
   },
   {
     h: "Children",
     blocks: [
-      "Our products and this website are strictly for adults 21 and older. We do not knowingly collect information from anyone under 21.",
+      "Our products and this website are strictly for adults 21 and older. We do not knowingly collect information from anyone under 21. If you believe a minor has provided us information, contact us and we will delete it.",
+    ],
+  },
+  {
+    h: "Third-party links & services",
+    blocks: [
+      "Our website may link to or integrate third-party services (such as maps, our ordering/menu provider, payment processors, and email/SMS tools). We are not responsible for the privacy practices of those third parties; please review their policies.",
     ],
   },
   {
     h: "Changes to this policy",
     blocks: [
-      "We may update this Privacy Policy from time to time. When we do, we will change the “Last updated” date above, and meaningful changes will be reflected here before they take effect.",
+      "We may update this Privacy Policy from time to time. When we do, we will change the “Last updated” date above, and material changes will be reflected here before they take effect.",
     ],
   },
 ];
@@ -155,15 +189,15 @@ export default function PrivacyPage() {
             ))}
 
             <section>
-              <h3>Contact us</h3>
+              <h3>Contact</h3>
               <p>
-                The High Life Dispensary / Hydro Phonics, LLC
+                The High Life
                 <br />
                 {addr}
                 <br />
                 Email: <a href={`mailto:${store.email}`}>{store.email}</a>
                 <br />
-                NYS OCM License #{store.license}
+                Phone: <a href={`tel:${PHONE_TEL}`}>{PHONE}</a>
               </p>
             </section>
           </div>
