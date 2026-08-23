@@ -1,110 +1,167 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import { store } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | The High Life Dispensary",
+  title: "Terms of Use | The High Life Dispensary",
   description:
-    "The terms for using thehighlifeny.com and reserving products for in-store pickup. 21+ only.",
+    "The terms of use for The High Life website, online ordering, and communications. Adults 21+ only, New York.",
 };
 
 /** Change this whenever the terms are edited. */
-const UPDATED = "August 13, 2026";
+const UPDATED = "August 14, 2026";
 
 const LEAD =
-  `These Terms govern your use of ${"thehighlifeny.com"}, operated by Hydro Phonics, LLC ` +
-  `(“The High Life,” “we,” “us”). By using this website, you agree to these Terms. This site is ` +
-  `intended only for adults 21 and older.`;
+  "Welcome to The High Life (“The High Life,” “Company,” “we,” “our,” or “us”). These Terms of " +
+  "Service govern your use of our website, digital properties, online ordering tools, mobile " +
+  "communications, and related services. By accessing or using this website, you agree to these Terms.";
 
 type Block = string | { list: string[] };
 type Section = { h: string; blocks: Block[] };
 
 const sections: Section[] = [
   {
-    h: "Eligibility — 21+",
+    h: "Eligibility",
     blocks: [
-      "You must be 21 years of age or older to use this website or to reserve products. A valid, government-issued photo ID proving you are 21 or older is required at pickup. We may refuse service and cancel any order that cannot be verified.",
+      "This website is intended solely for adults 21 years of age or older. By using this website, you represent that:",
+      {
+        list: [
+          "You are at least 21 years old",
+          "You are legally permitted to access cannabis-related information under applicable law",
+          "Any information you submit is accurate and truthful",
+        ],
+      },
+      "We reserve the right to restrict access or terminate use for violations.",
     ],
   },
   {
-    h: "What this website is",
+    h: "Products & Availability",
     blocks: [
-      "This website provides information about our store and products and, where enabled, lets you reserve products for in-store pickup. Product information, availability, and pricing come from our live point-of-sale system and can change at any time. Nothing on this site is medical advice.",
+      "All cannabis products displayed are:",
+      {
+        list: [
+          "Subject to availability",
+          "Subject to New York State adult-use cannabis regulations",
+          "Available only where legally permitted",
+        ],
+      },
+      "Product descriptions, potency, pricing, imagery, and availability may change without notice. The High Life does not guarantee availability of any specific product.",
     ],
   },
   {
-    h: "Pickup reservations",
+    h: "Pricing",
     blocks: [
       {
         list: [
-          "A reservation is a request to hold items for you. It is not a completed purchase and does not guarantee availability.",
-          "No payment is taken online. You pay in store at the register when you pick up.",
-          "Any total shown online is an estimate. The final price is set at the register, where applicable coupons and discounts are applied — so you may pay a different amount.",
-          "You must present a valid 21+ ID at pickup. Reservations that are not picked up may be released back into inventory.",
-          "We may limit, cancel, or refuse any reservation — for example, if an item sells out, a listed price is clearly wrong, or eligibility cannot be verified.",
+          "Pricing displayed may change without notice.",
+          "Taxes, fees, and applicable charges may not be reflected until checkout.",
+          "Errors in pricing, product descriptions, or availability may be corrected at any time.",
         ],
       },
     ],
   },
   {
-    h: "Purchase limits and lawful use",
+    h: "Best Price Guarantee",
     blocks: [
-      "All sales are subject to New York State purchase limits and cannabis regulations. Products are for personal use by adults 21 and older only. Reselling our products, or purchasing on behalf of anyone under 21, is prohibited.",
+      "The High Life may offer a Best Price Guarantee subject to separate promotional terms. Eligibility may require:",
+      {
+        list: [
+          "Matching identical product",
+          "Same brand",
+          "Same package size",
+          "Same potency where applicable",
+          "Competitor licensed in New York",
+          "Publicly advertised and verifiable pricing",
+        ],
+      },
+      "We reserve the right to modify or discontinue promotional offers.",
     ],
   },
   {
-    h: "Health and safety",
+    h: "Orders",
     blocks: [
-      "Cannabis products may be habit forming and can impair concentration, coordination, and judgment. Do not operate a vehicle or machinery while under the influence of cannabis. For use only by adults 21 and older. Keep out of the reach of children and pets. Cannabis has not been analyzed or approved by the FDA, and there may be health risks associated with its use, including for those who are pregnant or breastfeeding. Please consult a physician before use.",
+      "Submitting an online order does not guarantee acceptance. Orders may be declined, modified, delayed, or canceled due to:",
+      {
+        list: [
+          "Inventory limitations",
+          "Compliance requirements",
+          "Identification verification issues",
+          "Suspected fraud",
+          "Operational constraints",
+        ],
+      },
     ],
   },
   {
-    h: "Pricing, coupons, and menu accuracy",
+    h: "Payments",
     blocks: [
-      "We work to keep prices and availability accurate, but errors and changes happen. Online figures are estimates only; the register is the source of truth. Coupons and promotions are subject to their own terms, available inventory, and applicable law, and are applied in store.",
+      "Accepted payment methods may vary. Due to cannabis industry banking limitations, some forms of payment may be unavailable.",
     ],
   },
   {
-    h: "Intellectual property",
+    h: "Marketing Communications",
     blocks: [
-      "The High Life™ is a trademark of Hydro Phonics, LLC. The content on this website — including text, graphics, logos, and design — is owned by us or our licensors and is protected by law. You may not copy, scrape, or reuse it without our written permission.",
+      "By submitting your information through our website, checkout, loyalty signup, event registration, promotional forms, or SMS opt-in tools, you may consent to receive:",
+      {
+        list: [
+          "Marketing emails",
+          "Promotional offers",
+          "Product updates",
+          "Loyalty communications",
+          "Order notifications",
+          "SMS marketing messages",
+        ],
+      },
+      "Consent is not a condition of purchase. Message frequency may vary. Message and data rates may apply.",
+      "You may unsubscribe:",
+      {
+        list: [
+          "Email via unsubscribe links",
+          "SMS by replying STOP",
+          "HELP for assistance",
+        ],
+      },
     ],
   },
   {
-    h: "Third-party links",
+    h: "Intellectual Property",
     blocks: [
-      "This site may link to third-party services, such as maps. We are not responsible for the content or practices of those services.",
+      "All website content including branding, logos, copy, graphics, menus, design, and photography is owned by The High Life or used under permission. Unauthorized reproduction prohibited.",
     ],
   },
   {
-    h: "Disclaimers",
+    h: "Third Party Services",
     blocks: [
-      "The website is provided “as is” and “as available,” without warranties of any kind, express or implied, to the fullest extent permitted by law. We do not warrant that the site will be uninterrupted or error-free, or that menu information is complete or current.",
+      "Our website may integrate third-party platforms including ecommerce/menu providers, payment processors, analytics tools, CRM systems, and email/SMS providers. We are not responsible for third-party policies or services.",
     ],
   },
   {
-    h: "Limitation of liability",
+    h: "Disclaimer",
     blocks: [
-      "To the fullest extent permitted by law, Hydro Phonics, LLC and its owners, employees, and agents will not be liable for any indirect, incidental, or consequential damages arising from your use of this website or any reservation made through it.",
+      {
+        list: [
+          "Cannabis products are intended only for lawful adult use",
+          "Statements on this website have not been evaluated by the FDA",
+          "Cannabis products are not intended to diagnose, treat, cure, or prevent disease",
+          "Do not drive or operate machinery while impaired",
+          "Keep products away from children and pets",
+        ],
+      },
     ],
   },
   {
-    h: "Governing law",
+    h: "Limitation of Liability",
     blocks: [
-      "These Terms are governed by the laws of the State of New York, without regard to its conflict-of-laws rules. Any dispute will be handled in the state or federal courts located in New York.",
+      "To the maximum extent permitted by law, The High Life shall not be liable for indirect damages, incidental damages, lost profits, service interruptions, inaccuracies, or unauthorized access.",
     ],
   },
   {
-    h: "Changes to these Terms",
-    blocks: [
-      "We may update these Terms from time to time. The “Last updated” date above shows when. By continuing to use the site after changes are posted, you accept the updated Terms.",
-    ],
+    h: "Governing Law",
+    blocks: ["Governed by the laws of the State of New York. Venue shall be Suffolk County, New York."],
   },
 ];
 
 export default function TermsPage() {
-  const addr = `${store.addressLine1}, ${store.addressLine2}`;
   return (
     <>
       <div className="rail" id="rail" />
@@ -113,9 +170,9 @@ export default function TermsPage() {
       <section className="page">
         <div className="wrap">
           <div className="kicker">
-            Legal <span>/ terms</span>
+            Legal <span>/ terms of use</span>
           </div>
-          <h2>Terms of Service</h2>
+          <h2>Terms of Use</h2>
 
           <div className="legal-doc">
             <p className="updated">Last updated: {UPDATED}</p>
@@ -139,15 +196,15 @@ export default function TermsPage() {
             ))}
 
             <section>
-              <h3>Contact us</h3>
+              <h3>Contact</h3>
               <p>
-                The High Life Dispensary / Hydro Phonics, LLC
+                The High Life
                 <br />
-                {addr}
+                1300 Wellwood Ave, West Babylon, NY 11704
                 <br />
-                Email: <a href={`mailto:${store.email}`}>{store.email}</a>
+                Email: <a href="mailto:info@thehighlife.shop">info@thehighlife.shop</a>
                 <br />
-                NYS OCM License #{store.license}
+                Phone: <a href="tel:+16312704989">(631) 270-4989</a>
               </p>
             </section>
           </div>
