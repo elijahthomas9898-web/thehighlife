@@ -116,13 +116,16 @@ export default function Nav() {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            Cart
+            <span className="nav-cart-label">Cart</span>
             {cartCount > 0 && <span className="nav-cart-count">{cartCount}</span>}
           </button>
           <button className="nav-signin" onClick={openAccount}>
             Sign In
           </button>
-          <div className="badge21">NY · 21+ Only</div>
+          <div className="badge21">
+            <span className="badge21-full">NY · 21+ Only</span>
+            <span className="badge21-short">21+</span>
+          </div>
           {/* hamburger — only shows on small screens (CSS) */}
           <button
             className={`nav-burger${open ? " open" : ""}`}
