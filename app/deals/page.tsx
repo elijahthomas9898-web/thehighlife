@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import ProteusShop from "../components/ProteusShop";
+import DealsLinkBridge from "../components/DealsLinkBridge";
 
 export const metadata: Metadata = {
   title: "Deals | The High Life Dispensary",
@@ -37,6 +38,7 @@ export default function DealsPage() {
           </p>
 
           <div className="deals-only">
+            <DealsLinkBridge />
             <ProteusShop />
           </div>
 
