@@ -738,6 +738,13 @@
     background:var(--hlc-surf-hi)!important;color:var(--hlc-muted)!important;border:1px solid var(--hlc-line)!important}
   #proteus_shop .proteus-deal-discount{color:var(--hlc-green)!important}
 
+  /* "View All Deals" button injected after the menu's Today's Deals carousel */
+  #proteus_shop .hl-deals-more-wrap{width:100%;display:flex;justify-content:center;margin:8px 0 4px}
+  #proteus_shop .hl-deals-more{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);
+    font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--hlc-green);
+    border:1px solid rgba(64,210,131,.45);border-radius:100px;padding:9px 18px;transition:background .2s}
+  #proteus_shop .hl-deals-more:hover{background:rgba(64,210,131,.12)}
+
   /* buttons + qty */
   #proteus_shop .proteus-add-btn,#proteus_shop .proteus-card-quickadd,
   #proteus_shop .proteus-deal-btn,#proteus_shop .proteus-deals-nav-btn{

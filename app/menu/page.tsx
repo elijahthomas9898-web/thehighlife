@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import ProteusShop from "../components/ProteusShop";
+import MenuDealsMore from "../components/MenuDealsMore";
 
 export const metadata: Metadata = {
   title: "Menu | The High Life Dispensary",
@@ -26,6 +27,7 @@ export default function MenuPage() {
           <div className="kicker">
             The Menu <span>/ shop, cart &amp; checkout</span>
           </div>
+          <MenuDealsMore />
           <ProteusShop />
         </div>
       </section>
