@@ -19,6 +19,10 @@ const groovy = Baloo_2({
 });
 
 export const metadata: Metadata = {
+  // Canonical domain: makes page/OG/canonical URLs absolute and points them at
+  // the real domain (not the *.netlify.app address), so Google attributes all
+  // ranking to thehighlifeny.com.
+  metadataBase: new URL("https://thehighlifeny.com"),
   title: "The High Life Dispensary | West Babylon, NY",
   description:
     "Licensed New York adult-use dispensary in West Babylon. The brands you love, tested and shelf-ready, with fresh deals every week. Must be 21+.",
