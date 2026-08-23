@@ -670,6 +670,12 @@
   .nav-signin{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
     color:#08120b;background:var(--green);border:none;border-radius:999px;padding:9px 18px;cursor:pointer;white-space:nowrap;transition:filter .2s}
   .nav-signin:hover{filter:brightness(1.08)}
+  .nav-cart{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+    color:var(--green);background:transparent;border:1px solid var(--green-dim);border-radius:100px;padding:8px 15px;
+    cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .2s,border-color .2s}
+  .nav-cart:hover{background:rgba(64,210,131,.12);border-color:var(--green)}
+  .nav-cart-count{background:var(--green);color:#08120b;border-radius:100px;min-width:18px;height:18px;padding:0 5px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1}
   .drawer-signin{margin-top:16px;font-family:var(--mono);font-size:15px;letter-spacing:.04em;text-transform:uppercase;font-weight:700;
     color:#08120b;background:var(--green);border:none;border-radius:12px;padding:14px 18px;cursor:pointer;width:100%}
 

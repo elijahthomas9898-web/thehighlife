@@ -16,6 +16,7 @@ const LINKS = [
 export default function Nav() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   // close the menu on route change, and lock scroll while it's open
   useEffect(() => setOpen(false), [path]);
@@ -25,6 +26,23 @@ export default function Nav() {
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // Reflect the JSCart cart count in the header while the widget is on the page
+  // (the shop / menu). Harmless elsewhere — getCartCount is simply absent, so the
+  // badge just stays hidden.
+  useEffect(() => {
+    const read = () => {
+      const w = window.ProteusWidget;
+      if (w && typeof w.getCartCount === "function") {
+        try {
+          setCartCount(Number(w.getCartCount()) || 0);
+        } catch {}
+      }
+    };
+    read();
+    const t = setInterval(read, 1500);
+    return () => clearInterval(t);
+  }, []);
 
   // JSCart owns login/accounts, and its widget only exists on /menu. So: if the
   // widget is present, open its login (or account, if already signed in); from
@@ -37,6 +55,17 @@ export default function Nav() {
       return;
     }
     window.location.href = "/menu?login=1";
+  }
+
+  // Same idea for the cart: open it in place if the widget is here, else route
+  // to the shop and open it there (ProteusShop handles ?cart=1).
+  function openCart() {
+    const w = window.ProteusWidget;
+    if (w && w.showCart) {
+      w.showCart();
+      return;
+    }
+    window.location.href = "/menu?cart=1";
   }
 
   return (
@@ -66,6 +95,14 @@ export default function Nav() {
         </div>
 
         <div className="nav-right">
+          <button
+            className="nav-cart"
+            onClick={openCart}
+            aria-label={cartCount ? `View cart, ${cartCount} item${cartCount === 1 ? "" : "s"}` : "View cart"}
+          >
+            Cart
+            {cartCount > 0 && <span className="nav-cart-count">{cartCount}</span>}
+          </button>
           <button className="nav-signin" onClick={openAccount}>
             Sign In
           </button>
@@ -97,6 +134,15 @@ export default function Nav() {
             </a>
           );
         })}
+        <button
+          className="drawer-signin"
+          onClick={() => {
+            setOpen(false);
+            openCart();
+          }}
+        >
+          View Cart{cartCount > 0 ? ` (${cartCount})` : ""}
+        </button>
         <button
           className="drawer-signin"
           onClick={() => {
