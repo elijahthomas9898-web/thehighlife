@@ -722,6 +722,11 @@
     display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important;
     gap:16px!important;overflow:visible!important;transform:none!important}
   .deals-only #proteus_shop .proteus-deal-card{width:auto!important;min-width:0!important;flex:none!important}
+  /* deals WITH a real image: show just the picture (hide the discount/name text).
+     deals without an image (--no-image, a gradient) keep their text so they're not blank. */
+  .deals-only #proteus_shop .proteus-deal-card:not(.proteus-deal-card--no-image) .proteus-deal-card-content{display:none!important}
+  .deals-only #proteus_shop .proteus-deal-card:not(.proteus-deal-card--no-image) .proteus-deal-card-bg{position:absolute!important;inset:0!important}
+  .deals-only #proteus_shop .proteus-deal-card:not(.proteus-deal-card--no-image) .proteus-deal-card-bg img{width:100%!important;height:100%!important;object-fit:cover!important}
   #proteus_shop .proteus-product-name,#proteus_shop .proteus-deal-name,
   #proteus_shop .proteus-product-price-value,#proteus_shop .proteus-product-price{color:var(--hlc-ink)!important}
   #proteus_shop .proteus-product-brand{color:var(--hlc-yellow)!important}
