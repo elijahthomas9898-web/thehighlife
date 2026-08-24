@@ -16,6 +16,7 @@ const KEY = "hl_age_verified";
  */
 export default function AgeGate() {
   const [denied, setDenied] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   function accept() {
     try {
@@ -23,16 +24,34 @@ export default function AgeGate() {
     } catch {
       /* storage blocked — the cookie below still remembers them */
     }
+
+    let cookieOk = false;
     try {
-      // A cookie persists across page loads even when localStorage is blocked
-      // (Safari Private mode) or wiped between navigations (some in-app browsers) —
-      // which is what made the gate reappear on every mobile page. 1-year expiry.
+      // 1-year cookie. This is the flag the SERVER reads to render data-age="ok"
+      // into the HTML on every later request (see app/layout.tsx).
       document.cookie = `${KEY}=1; path=/; max-age=31536000; SameSite=Lax`;
+      cookieOk = document.cookie.indexOf(`${KEY}=1`) !== -1;
     } catch {
-      /* cookies blocked too — still let them through for this page */
+      /* cookies blocked — handled below */
     }
+
     document.documentElement.setAttribute("data-age", "ok");
+
+    if (cookieOk) {
+      // Reload once so the server re-renders with the flag baked in. From here on
+      // it's part of React's own tree, so no re-render can drop it — this is what
+      // stops the gate reappearing on iOS. Only runs when the cookie actually
+      // took, so blocked cookies can't cause a reload loop.
+      window.location.reload();
+      return;
+    }
+    // Cookies blocked: nothing will persist, so hide the gate in React state for
+    // at least this page rather than trapping the visitor behind it.
+    setAccepted(true);
   }
+
+  // Cookies blocked — accepted in memory only (see accept()).
+  if (accepted) return null;
 
   return (
     <div className="agegate" role="dialog" aria-modal="true" aria-labelledby="gateQ">

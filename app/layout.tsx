@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Baloo_2 } from "next/font/google";
 import "./globals.css";
 import AgeGate from "./components/AgeGate";
@@ -62,9 +63,30 @@ m={Mon:0,Tue:1,Wed:2,Thu:3,Fri:4,Sat:5,Sun:6};
 if(m[d]!==undefined){document.documentElement.setAttribute("data-today",String(m[d]))}}catch(e){}
 })();`;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+/**
+ * ⚠️ The age gate's verified flag is rendered SERVER-SIDE, on purpose.
+ *
+ * It used to rely solely on the boot script setting data-age="ok" on <html>.
+ * That broke on iOS Safari: /agecheck on a real iPhone reported the flag missing
+ * even though the cookie, localStorage AND referrer all survived — React drops
+ * DOM attributes it doesn't own when it re-renders the tree at startup, so the
+ * gate reappeared on every page load and every refresh (mobile only).
+ *
+ * Reading the cookie here makes data-age a real React prop: it's in the HTML on
+ * the very first byte (no flash, no JS required) and survives any re-render.
+ * Cost: routes render dynamically instead of static. Worth it — a gate that
+ * re-prompts every page is far more expensive than a server render.
+ */
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const verified = (await cookies()).get("hl_age_verified")?.value === "1";
+
   return (
-    <html lang="en" className={groovy.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={groovy.variable}
+      data-age={verified ? "ok" : undefined}
+      suppressHydrationWarning
+    >
       <head>
         <InlineScript html={BOOT_SCRIPT} />
       </head>

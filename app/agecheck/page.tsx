@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import AgeCheckClient from "./AgeCheckClient";
 
 export const metadata: Metadata = {
@@ -12,7 +13,11 @@ export const metadata: Metadata = {
  * so the results are always readable. Safe to delete once the mobile gate issue
  * is closed out.
  */
-export default function AgeCheckPage() {
+export default async function AgeCheckPage() {
+  // The decisive check: did the SERVER see the cookie on this request? That's
+  // what now drives the gate, independent of any client-side JavaScript.
+  const serverVerified = (await cookies()).get("hl_age_verified")?.value === "1";
+
   return (
     <main
       style={{
@@ -34,7 +39,7 @@ export default function AgeCheckPage() {
         >
           Age Gate <span style={{ color: "#40d283" }}>Check</span>
         </h1>
-        <AgeCheckClient />
+        <AgeCheckClient serverVerified={serverVerified} />
       </div>
     </main>
   );

@@ -31,7 +31,7 @@ function readLocal(): string {
  * genuine full page navigation to step 2 reads them back. Whichever layer comes
  * back "LOST" is the one the device is killing.
  */
-export default function AgeCheckClient() {
+export default function AgeCheckClient({ serverVerified }: { serverVerified: boolean }) {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [step, setStep] = useState(1);
   const [summary, setSummary] = useState("");
@@ -49,6 +49,14 @@ export default function AgeCheckClient() {
     const iosSafari = /iPhone|iPad/.test(ua) && !inApp;
 
     const out: Row[] = [];
+
+    // THE row that matters now: the gate is driven by the server reading the
+    // cookie, so this must say YES on step 2 regardless of any client JS.
+    out.push({
+      label: "Server sees you verified",
+      value: serverVerified ? "YES ✓" : s === 1 ? "not yet (saving now)" : "NO",
+      ok: s === 1 ? null : serverVerified,
+    });
 
     if (s === 1) {
       // ---- STEP 1: write the flags, confirm they took ----
@@ -123,7 +131,7 @@ export default function AgeCheckClient() {
 
     setRows(out);
     setSummary(
-      `step=${s} boot=${bootRan} ls=${readLocal()} cookie=${readCookie()} ref=${document.referrer || "(empty)"} age=${html.getAttribute("data-age")} ua=${ua}`,
+      `step=${s} srv=${serverVerified} boot=${bootRan} ls=${readLocal()} cookie=${readCookie()} ref=${document.referrer || "(empty)"} age=${html.getAttribute("data-age")} ua=${ua}`,
     );
   }, []);
 
