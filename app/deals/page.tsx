@@ -24,9 +24,6 @@ export default function DealsPage() {
 
       <section className="page">
         <div className="wrap order-wrap">
-          <div className="kicker">
-            Deals Deals Deals <span>/ live from the register</span>
-          </div>
           <h2>
             This Week&rsquo;s
             <br />

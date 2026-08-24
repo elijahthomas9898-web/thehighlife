@@ -169,9 +169,6 @@ export default function TermsPage() {
 
       <section className="page">
         <div className="wrap">
-          <div className="kicker">
-            Legal <span>/ terms of use</span>
-          </div>
           <h2>Terms of Use</h2>
 
           <div className="legal-doc">

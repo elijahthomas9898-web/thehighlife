@@ -29,9 +29,6 @@ export function DealsBand() {
   return (
     <section className="deals-band" id="deals">
       <div className="wrap">
-        <div className="kicker reveal">
-          Deals Deals Deals <span>/ fresh every week</span>
-        </div>
         <h2 className="reveal">
           This Week&rsquo;s
           <br />

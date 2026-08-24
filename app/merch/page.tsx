@@ -24,9 +24,6 @@ export default async function MerchPage() {
 
       <section className="menu-page">
         <div className="wrap">
-          <div className="kicker">
-            Merch <span>/ gear &amp; accessories</span>
-          </div>
           <h2>
             Merch &amp;
             <br />

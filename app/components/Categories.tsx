@@ -4,9 +4,6 @@ export default function Categories() {
   return (
     <section className="shop" id="shop">
       <div className="wrap">
-        <div className="kicker reveal">
-          02 — The Shop <span>/ browse by category</span>
-        </div>
         <h2 className="reveal">
           Shop By
           <br />

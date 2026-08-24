@@ -162,9 +162,6 @@ export default function PrivacyPage() {
 
       <section className="page">
         <div className="wrap">
-          <div className="kicker">
-            Legal <span>/ privacy</span>
-          </div>
           <h2>Privacy Policy</h2>
 
           <div className="legal-doc">

@@ -23,9 +23,6 @@ export default async function ShopPage() {
 
       <section className="page">
         <div className="wrap">
-          <div className="kicker">
-            The Shop <span>/ browse by category</span>
-          </div>
           <h2>
             Shop By
             <br />

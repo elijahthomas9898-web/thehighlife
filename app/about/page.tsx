@@ -29,9 +29,6 @@ export default function AboutPage() {
 
       <section className="page">
         <div className="wrap">
-          <div className="kicker">
-            Our Story <span>/ who we are</span>
-          </div>
           <h2>{about.headline}</h2>
 
           <div className="about-photo" role="img" aria-label={`${store.name} storefront`} />

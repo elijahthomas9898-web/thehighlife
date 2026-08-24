@@ -5,9 +5,6 @@ export default function Visit() {
   return (
     <section className="visit" id="visit">
       <div className="wrap">
-        <div className="kicker reveal">
-          04 — Come Through <span>/ open 7 days</span>
-        </div>
         <h2 className="reveal">Visit The Shop</h2>
         <div className="visit-grid">
           <Hours />

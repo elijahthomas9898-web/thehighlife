@@ -21,9 +21,6 @@ export default function VisitPage() {
 
       <section className="page">
         <div className="wrap">
-          <div className="kicker">
-            Come Through <span>/ open 7 days</span>
-          </div>
           <h2>Visit The Shop</h2>
           <p className="page-lead">
             We&rsquo;re on N Wellwood Ave with parking on site. Walk in, take your time, ask

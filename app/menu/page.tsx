@@ -24,9 +24,6 @@ export default function MenuPage() {
 
       <section className="page">
         <div className="wrap order-wrap">
-          <div className="kicker">
-            The Menu <span>/ shop, cart &amp; checkout</span>
-          </div>
           <MenuDealsMore />
           <ProteusShop />
         </div>

@@ -4,9 +4,6 @@ export default function Stats() {
   return (
     <section className="stats" id="stats">
       <div className="wrap">
-        <div className="kicker reveal">
-          03 — Why The High Life <span>/ the receipts</span>
-        </div>
         <h2 className="reveal">Retail, Done Right</h2>
         <div className="statgrid reveal">
           {stats.map((s) => (
