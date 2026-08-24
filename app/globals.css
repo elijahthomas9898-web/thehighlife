@@ -6,7 +6,10 @@
     --green-dim:#1E7A47;
     --forest:#123B22;
     --white:#F3F7F1;
-    --muted:#7C8A7F;
+    /* Brighter + warmer than the old #7C8A7F, which was dim enough to be the
+       hardest text on the site to read on a phone. Kept sage-tinted rather than a
+       neutral cool grey — cool grey is what makes a page read generic. */
+    --muted:#A9B0A0;
     --line:rgba(243,247,241,.09);
     --line-2:rgba(243,247,241,.16);
     --glow:0 0 60px rgba(59,232,127,.4);
@@ -122,7 +125,7 @@
      text-shadow draws inline with the glyphs and is robust everywhere. */
   .hero-h1{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(44px,9.5vw,128px);line-height:.86;margin:0;color:var(--white);text-shadow:var(--ol-lg),0 0 26px rgba(59,232,127,.45);text-wrap:balance}
   .hero-h1 .g{color:var(--green)}
-  .hero-sub{margin:34px auto 0;max-width:52ch;color:var(--muted);font-size:clamp(15px,1.6vw,19px)}
+  .hero-sub{margin:34px auto 0;max-width:52ch;color:var(--muted);font-size:clamp(16px,1.7vw,21px)}
   .hero-cta{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
   .btn{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:13px;padding:15px 26px;border-radius:100px;border:1px solid var(--line-2);display:inline-flex;align-items:center;gap:10px;cursor:pointer;transition:.25s;background:transparent;color:var(--white)}
   .btn.primary{background:var(--green);color:#05130A;border-color:var(--green);font-weight:700}
@@ -194,7 +197,7 @@
   .deal .tag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;padding:5px 11px;border-radius:100px;border:1px solid var(--green-dim);color:var(--green)}
   .deal .idx{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em}
   .deal h3{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(28px,3.6vw,44px);line-height:.92;margin:14px 0 0;text-shadow:var(--ol-md)}
-  .deal .desc{color:var(--muted);font-size:14px;margin-top:12px;position:relative;z-index:2}
+  .deal .desc{color:var(--muted);font-size:15px;line-height:1.6;margin-top:12px;position:relative;z-index:2}
   .deal .meta{display:flex;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);padding-top:18px;position:relative;z-index:2}
   .deal .val{font-family:var(--groovy);font-weight:700;font-size:clamp(34px,4.4vw,54px);color:var(--green);line-height:1;text-shadow:var(--ol-md)}
   .deal .valid{font-family:var(--mono);font-size:13px;color:var(--white);text-align:right}
@@ -257,7 +260,7 @@
   .foot-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;line-height:.82;color:var(--white);text-shadow:var(--ol-lg),0 0 22px rgba(59,232,127,.5)}
   .foot-title .a{display:block;font-size:clamp(40px,11vw,150px)}
   .foot-title .b{display:block;color:var(--green);font-size:clamp(30px,8vw,110px)}
-  .footmeta{margin-top:56px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:26px;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+  .footmeta{margin-top:56px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid var(--line);padding-top:26px;font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
   .footmeta a:hover{color:var(--green)}
 
   /* ---------- 21+ age gate ---------- */
@@ -274,9 +277,9 @@
   .gate-logo{width:min(400px,78vw);height:auto;filter:drop-shadow(0 0 34px rgba(59,232,127,.45))}
   .gate-q{font-family:var(--groovy);font-weight:800;text-transform:uppercase;font-size:clamp(28px,5.6vw,56px);line-height:.9;margin:0;color:var(--white);text-shadow:var(--ol-lg)}
   .gate-q .g{color:var(--green)}
-  .gate-sub{color:var(--muted);font-size:15px;margin:0;max-width:44ch}
+  .gate-sub{color:var(--muted);font-size:16.5px;margin:0;max-width:44ch}
   .gate-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:4px}
-  .gate-legal{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;line-height:1.75;max-width:52ch;margin:6px 0 0}
+  .gate-legal{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em;line-height:1.8;max-width:52ch;margin:6px 0 0}
   .btn:focus-visible,.gate-btns .btn:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offset:3px}
 
   /* ---------- compliance warning band ---------- */
@@ -287,7 +290,7 @@
 
   /* ---------- shared inner pages ---------- */
   .page{padding-top:70px;border-top:1px solid var(--line)}
-  .page-lead{margin:20px 0 0;max-width:62ch;color:var(--muted);font-size:clamp(15px,1.7vw,18px)}
+  .page-lead{margin:20px 0 0;max-width:62ch;color:var(--muted);font-size:clamp(16px,1.8vw,19.5px);line-height:1.65}
   .page-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:46px}
   .navlinks a.on{color:var(--green)}
 
@@ -634,7 +637,7 @@
     .modal-back,.toast{animation:none}
     .quickadd:hover{transform:none}
   }
-  .menu-legal{margin-top:40px;font-family:var(--mono);font-size:11.5px;color:var(--muted);line-height:1.7;max-width:75ch}
+  .menu-legal{margin-top:40px;font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:1.75;max-width:75ch}
 
   /* ── Legal pages (privacy / terms) ── */
   .legal-doc{margin-top:40px;max-width:82ch;display:flex;flex-direction:column;gap:26px}
@@ -649,7 +652,7 @@
   .legal-doc strong{color:var(--white);font-weight:700}
 
   /* footer legal links — position:static guards against the global nav{position:fixed} rule */
-  .footlinks{position:static;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+  .footlinks{position:static;margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;font-family:var(--mono);font-size:13px;letter-spacing:.05em;text-transform:uppercase}
   .footlinks a{color:var(--muted);transition:color .2s}
   .footlinks a:hover{color:var(--green)}
 
