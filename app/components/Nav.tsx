@@ -17,6 +17,7 @@ export default function Nav() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [initials, setInitials] = useState<string | null>(null);
 
   // close the menu on route change, and lock scroll while it's open
   useEffect(() => setOpen(false), [path]);
@@ -33,11 +34,25 @@ export default function Nav() {
   useEffect(() => {
     const read = () => {
       const w = window.ProteusWidget;
-      if (w && typeof w.getCartCount === "function") {
+      if (!w) return;
+      if (typeof w.getCartCount === "function") {
         try {
           setCartCount(Number(w.getCartCount()) || 0);
         } catch {}
       }
+      // Signed-in shopper: show their initials instead of "Sign In". Same rule as
+      // JSCart's own getUserInitials() — first letter of first + last name.
+      try {
+        const signedIn = typeof w.isAuthenticated === "function" && w.isAuthenticated();
+        const u = signedIn && typeof w.getCurrentUser === "function" ? w.getCurrentUser() : null;
+        if (u) {
+          const f = u.firstName ? String(u.firstName).charAt(0).toUpperCase() : "";
+          const l = u.lastName ? String(u.lastName).charAt(0).toUpperCase() : "";
+          setInitials(f + l || "?");
+        } else {
+          setInitials(null);
+        }
+      } catch {}
     };
     read();
     const t = setInterval(read, 1500);
@@ -119,8 +134,13 @@ export default function Nav() {
             <span className="nav-cart-label">Cart</span>
             {cartCount > 0 && <span className="nav-cart-count">{cartCount}</span>}
           </button>
-          <button className="nav-signin" onClick={openAccount}>
-            Sign In
+          <button
+            className={initials ? "nav-signin nav-avatar" : "nav-signin"}
+            onClick={openAccount}
+            aria-label={initials ? "Your account" : "Sign in"}
+            title={initials ? "Your account" : undefined}
+          >
+            {initials ?? "Sign In"}
           </button>
           <div className="badge21">
             <span className="badge21-full">NY · 21+ Only</span>
@@ -169,7 +189,7 @@ export default function Nav() {
             openAccount();
           }}
         >
-          Sign In
+          {initials ? "My Account" : "Sign In"}
         </button>
       </div>
       {open && <div className="nav-scrim" onClick={() => setOpen(false)} aria-hidden="true" />}
