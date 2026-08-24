@@ -40,9 +40,15 @@ export const metadata: Metadata = {
  * Both are plain attributes driving CSS, so React never has to reconcile them.
  */
 const BOOT_SCRIPT = `(function(){
+// Proof-of-life marker: if this attribute is missing on a device, the inline
+// boot script never executed there (which would explain a gate that reappears).
+// Read by /agecheck.
+try{document.documentElement.setAttribute("data-boot","1")}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
-try{if(location.pathname.indexOf("/signage")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
+// /agecheck is the age-gate diagnostic — it must be readable without the gate
+// covering it, or it can't report what's broken.
+try{if(location.pathname.indexOf("/signage")===0||location.pathname.indexOf("/agecheck")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(document.cookie.indexOf("hl_age_verified=1")!==-1){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 // Storage-independent safety net for in-app browsers (Instagram/TikTok/FB) that
