@@ -282,7 +282,7 @@
     background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
     border:0!important;border-radius:0!important;
     /* bottom room so .kiosk-cartbar never covers the last row of products */
-    padding:0 0 104px!important}
+    padding:0 0 76px!important}
 
   /* Sticky cart bar along the bottom of the kiosk, so a shopper deep in the
      product list can reach the cart without scrolling back to the header.
@@ -290,16 +290,22 @@
      (2147483600), and the component hides itself while any overlay is up.
      Uses the ROOT tokens, not --hlc-*, which are scoped to #proteus_shop. */
   .kiosk-cartbar{position:fixed;left:0;right:0;bottom:0;z-index:2147483300;
-    display:flex;align-items:center;gap:16px;padding:16px clamp(16px,3vw,28px);
+    display:flex;align-items:center;gap:12px;padding:9px clamp(14px,2.5vw,22px);
     background:var(--panel);border-top:2px solid var(--green);
-    box-shadow:0 -12px 34px rgba(0,0,0,.5)}
-  .kiosk-cartbar-count{flex:0 0 auto;min-width:40px;height:40px;padding:0 12px;border-radius:100px;
-    background:var(--green);color:#08120b;font-family:var(--mono);font-weight:800;font-size:19px;
+    box-shadow:0 -10px 26px rgba(0,0,0,.5);
+    /* Slides up rather than snapping in. The Add buttons sit low on the screen, so a
+       bar that appears instantly lands under the finger that just tapped Add — and
+       the next tap hits "View Cart" instead of the next product. */
+    animation:kiosk-cartbar-in .28s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes kiosk-cartbar-in{from{transform:translateY(100%)}to{transform:none}}
+  @media(prefers-reduced-motion:reduce){.kiosk-cartbar{animation:none}}
+  .kiosk-cartbar-count{flex:0 0 auto;min-width:30px;height:30px;padding:0 9px;border-radius:100px;
+    background:var(--green);color:#08120b;font-family:var(--mono);font-weight:800;font-size:15px;
     display:inline-flex;align-items:center;justify-content:center}
-  .kiosk-cartbar-text{flex:1;color:var(--white);font-size:19px;font-weight:600}
-  .kiosk-cartbar-btn{flex:0 0 auto;font-family:var(--mono);font-size:17px;letter-spacing:.05em;
+  .kiosk-cartbar-text{flex:1;color:var(--white);font-size:15.5px;font-weight:600}
+  .kiosk-cartbar-btn{flex:0 0 auto;font-family:var(--mono);font-size:14px;letter-spacing:.05em;
     text-transform:uppercase;font-weight:800;color:#08120b;background:var(--green);
-    border:none;border-radius:14px;padding:18px 30px;min-height:64px;cursor:pointer}
+    border:none;border-radius:11px;padding:12px 22px;min-height:46px;cursor:pointer}
   .kiosk-cartbar-btn:active{transform:scale(.98)}
 
   /* Kiosk "View All Deals" panel — the same enlarged 16:9 picture tiles as /deals,
