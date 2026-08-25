@@ -107,7 +107,11 @@ export default function ProteusShop({
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
-        ...(kiosk ? { kiosk: true, kioskTimeout } : {}),
+        // Kiosk checkout: phone + birthdate (quick) with guest as the fallback for
+        // a first-timer who has no Proteus record yet. Nobody types an email and
+        // password standing at a tablet. Deliberately kiosk-only — this does NOT
+        // change how the public site checks out.
+        ...(kiosk ? { kiosk: true, kioskTimeout, quickCheckout: true, anonCheckout: true } : {}),
       });
       maybeOpenAction();
     };

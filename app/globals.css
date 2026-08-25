@@ -281,6 +281,26 @@
   html.proteus-kiosk-active #proteus_shop{
     background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
     border:0!important;border-radius:0!important;padding:0!important}
+
+  /* Kiosk checkout choice screen ("How would you like to check out?").
+     The widget renders Sign In → Guest → Quick, which is backwards for a tablet:
+     Quick is phone + birthdate, Sign In needs an email and password. The three
+     buttons share one class but differ by their onclick, so reorder on that.
+     Scoped to html.proteus-kiosk-active because the auth modal is appended to
+     <body>, OUTSIDE #proteus_shop. */
+  html.proteus-kiosk-active .proteus-choice-buttons{display:flex!important;flex-direction:column!important}
+  html.proteus-kiosk-active .proteus-choice-btn{
+    padding:22px 24px!important;font-size:19px!important;border-radius:14px!important;min-height:88px}
+  html.proteus-kiosk-active .proteus-choice-btn-label{font-size:20px!important;font-weight:800!important}
+  html.proteus-kiosk-active .proteus-choice-btn-sub{font-size:14.5px!important}
+  html.proteus-kiosk-active .proteus-choice-btn[onclick*="'quick'"]{order:1}
+  html.proteus-kiosk-active .proteus-choice-btn[onclick*="'guest'"]{order:2}
+  /* Sign In stays available but last and quiet — it's the slow path in store. */
+  html.proteus-kiosk-active .proteus-choice-btn[onclick*="'login'"]{order:3;opacity:.6}
+  /* Bigger fields in the quick/guest panels — these get tapped standing up. */
+  html.proteus-kiosk-active #proteus-quick-panel input,
+  html.proteus-kiosk-active #proteus-guest-panel input{
+    font-size:20px!important;padding:16px 18px!important;min-height:60px}
   .agegate{position:fixed;inset:0;z-index:999;background:rgba(6,7,7,.975);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
   html[data-age="ok"] .agegate{display:none}
   .gate-box{max-width:600px;width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}
