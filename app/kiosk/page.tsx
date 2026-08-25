@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ProteusShop from "../components/ProteusShop";
 import KioskInputHints from "../components/KioskInputHints";
 import KioskCartBar from "../components/KioskCartBar";
+import KioskDealsPanel from "../components/KioskDealsPanel";
 import MenuDealsMore from "../components/MenuDealsMore";
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default function KioskPage() {
       <MenuDealsMore kiosk />
       <ProteusShop kiosk kioskTimeout={3} />
       <KioskCartBar />
+      <KioskDealsPanel />
     </div>
   );
 }

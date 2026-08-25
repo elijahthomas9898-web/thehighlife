@@ -302,6 +302,32 @@
     border:none;border-radius:14px;padding:18px 30px;min-height:64px;cursor:pointer}
   .kiosk-cartbar-btn:active{transform:scale(.98)}
 
+  /* Kiosk "View All Deals" panel — the same enlarged 16:9 picture tiles as /deals,
+     rendered in place because the kiosk can't navigate away. Above the shop and the
+     cart bar, below the kiosk's own overlays (2147483600). */
+  .kiosk-deals{position:fixed;inset:0;z-index:2147483400;background:var(--bg);
+    overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px clamp(16px,3vw,32px) 40px}
+  .kiosk-deals-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}
+  .kiosk-deals-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:clamp(26px,4vw,40px);line-height:1;margin:0;color:var(--white)}
+  .kiosk-deals-close{font-family:var(--mono);font-size:16px;letter-spacing:.06em;text-transform:uppercase;
+    font-weight:800;color:var(--white);background:transparent;border:1px solid var(--line-2);
+    border-radius:100px;padding:16px 26px;min-height:60px;cursor:pointer}
+  .kiosk-deals-close:active{transform:scale(.98)}
+  .kiosk-deals-empty{color:var(--muted);font-size:18px}
+  .kiosk-deals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .kiosk-deal{aspect-ratio:16/9;position:relative;overflow:hidden;border:1px solid var(--line-2);
+    border-radius:16px;padding:0;background:var(--panel);cursor:pointer;display:block;width:100%}
+  .kiosk-deal img{width:100%;height:100%;object-fit:cover;display:block}
+  .kiosk-deal:active{transform:scale(.99)}
+  /* Deals with no artwork keep their words, so they're never blank boxes. */
+  .kiosk-deal.no-image{background:radial-gradient(120% 90% at 100% 0%,rgba(59,232,127,.20),transparent 55%),
+    linear-gradient(180deg,var(--panel),#0A0D0B);display:flex;align-items:center;justify-content:center;padding:20px}
+  .kiosk-deal-text{display:flex;flex-direction:column;gap:8px;text-align:center}
+  .kiosk-deal-text b{font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:clamp(20px,2.4vw,28px);line-height:1.05;color:var(--white)}
+  .kiosk-deal-text em{font-style:normal;font-size:15px;color:var(--muted)}
+
   /* Kiosk checkout choice screen ("How would you like to check out?").
      The widget renders Sign In → Guest → Quick, which is backwards for a tablet:
      Quick is phone + birthdate, Sign In needs an email and password. The three

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { KIOSK_DEALS_EVENT } from "./KioskDealsPanel";
 
 /**
  * Adds a "View All Deals" button right after JSCart's Today's Deals carousel.
@@ -8,8 +9,8 @@ import { useEffect } from "react";
  * Two modes, because the right destination differs:
  *  - website (/menu): links to our /deals page.
  *  - kiosk: must NOT navigate — leaving /kiosk drops out of kiosk mode. Instead it
- *    calls ProteusWidget.showOnSale(), the widget's own on-sale view, which is what
- *    its native "On Sale" chips use.
+ *    opens KioskDealsPanel, which shows the same enlarged deal tiles as /deals
+ *    right there on the kiosk.
  *
  * The widget re-renders its DOM on navigation/filter, so we re-inject on a light
  * interval and guard against duplicates.
@@ -30,7 +31,7 @@ export default function MenuDealsMore({ kiosk = false }: { kiosk?: boolean } = {
         btn.className = "hl-deals-more";
         btn.textContent = "View All Deals →";
         btn.addEventListener("click", () => {
-          window.ProteusWidget?.showOnSale?.();
+          window.dispatchEvent(new CustomEvent(KIOSK_DEALS_EVENT));
         });
         wrap.appendChild(btn);
       } else {
