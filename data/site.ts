@@ -12,7 +12,7 @@
 
 export const store = {
   name: "The High Life Dispensary",
-  addressLine1: "1300 N Wellwood Ave",
+  addressLine1: "1300 Wellwood Ave",
   addressLine2: "West Babylon, NY 11704",
   email: "info@thehighlife.shop",
   license: "OCM-CAURD-25-000277-D1",
@@ -355,7 +355,7 @@ export const WALL_SECONDS_PER_ITEM = 3.2;
 export const about = {
   headline: "About The High Life",
   paragraphs: [
-    "Welcome to **The High Life**, Long Island's destination for premium cannabis at unbeatable prices. Conveniently located at **1300 N. Wellwood Avenue, West Babylon, NY 11704**, we're proud to serve customers from across Long Island with one of the area's largest selections of trusted New York cannabis brands.",
+    "Welcome to **The High Life**, Long Island's destination for premium cannabis at unbeatable prices. Conveniently located at **1300 Wellwood Avenue, West Babylon, NY 11704**, we're proud to serve customers from across Long Island with one of the area's largest selections of trusted New York cannabis brands.",
     "Whether you're looking for flower, pre-rolls, vapes, edibles, concentrates, or wellness products, our knowledgeable team is here to help you find the perfect product for your needs. We believe everyone deserves access to high-quality cannabis without overpaying, which is why we're committed to offering the best products at the best prices every day.",
     "At The High Life, shopping is simple, welcoming, and stress-free. Whether you're a first-time customer or a seasoned cannabis enthusiast, we're dedicated to providing exceptional service, competitive pricing, and an experience that keeps you coming back.",
     "Stop by today and discover why more Long Island customers are choosing **The High Life** — where premium cannabis meets unbeatable value.",

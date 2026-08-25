@@ -5,7 +5,7 @@ export default function Hero() {
         className="hero-photo"
         style={{ backgroundImage: "url('/images/storefront.jpg')" }}
         role="img"
-        aria-label="The High Life Dispensary storefront on N Wellwood Ave, West Babylon"
+        aria-label="The High Life Dispensary storefront on Wellwood Ave, West Babylon"
       />
       <canvas id="smoke" />
       <div className="hero-overlay" />

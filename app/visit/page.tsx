@@ -7,11 +7,11 @@ import { store } from "@/data/site";
 export const metadata: Metadata = {
   title: "Visit Us | The High Life Dispensary",
   description:
-    "Visit The High Life Dispensary at 1300 N Wellwood Ave, West Babylon NY 11704. Open 7 days. 21+ with valid ID.",
+    "Visit The High Life Dispensary at 1300 Wellwood Ave, West Babylon NY 11704. Open 7 days. 21+ with valid ID.",
 };
 
 const MAPS_URL =
-  "https://www.google.com/maps/search/?api=1&query=1300+N+Wellwood+Ave+West+Babylon+NY+11704";
+  "https://www.google.com/maps/search/?api=1&query=1300+Wellwood+Ave+West+Babylon+NY+11704";
 
 export default function VisitPage() {
   return (
@@ -23,7 +23,7 @@ export default function VisitPage() {
         <div className="wrap">
           <h2>Visit The Shop</h2>
           <p className="page-lead">
-            We&rsquo;re on N Wellwood Ave with parking on site. Walk in, take your time, ask
+            We&rsquo;re on Wellwood Ave with parking on site. Walk in, take your time, ask
             questions — that&rsquo;s what we&rsquo;re here for.
           </p>
 
