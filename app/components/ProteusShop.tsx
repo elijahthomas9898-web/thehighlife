@@ -23,7 +23,21 @@ declare global {
   }
 }
 
-export default function ProteusShop() {
+/**
+ * `kiosk` turns on JSCart's OWN kiosk runtime (a module already inside the
+ * widget, off by default): full-screen takeover, an inactivity timeout that
+ * resets the cart for the next customer, a reset after each order, a PIN-gated
+ * staff exit, bigger touch targets, and orders flagged `kiosk` in Proteus.
+ * Used by /kiosk for the in-store tablets. Requires mode "full", which we
+ * already pass. `kioskTimeout` is in MINUTES.
+ */
+export default function ProteusShop({
+  kiosk = false,
+  kioskTimeout = 3,
+}: {
+  kiosk?: boolean;
+  kioskTimeout?: number;
+} = {}) {
   const started = useRef(false);
 
   // The site sets `scroll-behavior: smooth` on <html> (for homepage anchor
@@ -93,6 +107,7 @@ export default function ProteusShop() {
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
+        ...(kiosk ? { kiosk: true, kioskTimeout } : {}),
       });
       maybeOpenAction();
     };

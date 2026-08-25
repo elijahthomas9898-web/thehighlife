@@ -49,7 +49,10 @@ try{document.documentElement.setAttribute("data-boot","1")}catch(e){}
 // before first paint so a TV never shows the "Are you 21?" prompt.
 // /agecheck is the age-gate diagnostic — it must be readable without the gate
 // covering it, or it can't report what's broken.
-try{if(location.pathname.indexOf("/signage")===0||location.pathname.indexOf("/agecheck")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
+// /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong
+// there for the same reason it's wrong on signage. CSS in globals.css backs this
+// up (.kiosk-page) so the kiosk works even if this script never runs.
+try{if(location.pathname.indexOf("/signage")===0||location.pathname.indexOf("/agecheck")===0||location.pathname.indexOf("/kiosk")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(document.cookie.indexOf("hl_age_verified=1")!==-1){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 // Storage-independent safety net for in-app browsers (Instagram/TikTok/FB) that

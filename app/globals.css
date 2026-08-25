@@ -268,7 +268,19 @@
      cover it) so nothing can flash in before the overlay paints — some mobile
      browsers composite backdrop-filter/blur a frame late. Verified visitors get
      data-age="ok" from the boot script BEFORE first paint, so they never see this. */
-  html:not([data-age="ok"]) body>*:not(.agegate){display:none!important}
+  html:not([data-age="ok"]) body:not(:has(.kiosk-page))>*:not(.agegate){display:none!important}
+  /* In-store kiosk: never gate it. ID is checked at the door, and a tablet bolted
+     to the wall has nobody to tap "I'm 21+". Pure CSS, so it holds even if the
+     boot script in layout.tsx doesn't run (which is exactly what bit us on iOS). */
+  body:has(.kiosk-page) .agegate{display:none!important}
+  /* JSCart's kiosk runtime injects its own stylesheet at runtime that paints the
+     container white and pins it to the viewport. Repaint it in the brand, and drop
+     the rounded card border that makes no sense edge-to-edge on a tablet. The
+     runtime's <style> lands after ours, so these need !important. */
+  html.proteus-kiosk-active,html.proteus-kiosk-active body{background:var(--bg)!important}
+  html.proteus-kiosk-active #proteus_shop{
+    background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
+    border:0!important;border-radius:0!important;padding:0!important}
   .agegate{position:fixed;inset:0;z-index:999;background:rgba(6,7,7,.975);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
   html[data-age="ok"] .agegate{display:none}
   .gate-box{max-width:600px;width:100%;display:flex;flex-direction:column;align-items:center;gap:24px}
