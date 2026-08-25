@@ -280,7 +280,27 @@
   html.proteus-kiosk-active,html.proteus-kiosk-active body{background:var(--bg)!important}
   html.proteus-kiosk-active #proteus_shop{
     background:var(--hlc-bg)!important;color:var(--hlc-ink)!important;
-    border:0!important;border-radius:0!important;padding:0!important}
+    border:0!important;border-radius:0!important;
+    /* bottom room so .kiosk-cartbar never covers the last row of products */
+    padding:0 0 104px!important}
+
+  /* Sticky cart bar along the bottom of the kiosk, so a shopper deep in the
+     product list can reach the cart without scrolling back to the header.
+     Sits above the kiosk's pinned container (z 2147483000) but below its overlays
+     (2147483600), and the component hides itself while any overlay is up.
+     Uses the ROOT tokens, not --hlc-*, which are scoped to #proteus_shop. */
+  .kiosk-cartbar{position:fixed;left:0;right:0;bottom:0;z-index:2147483300;
+    display:flex;align-items:center;gap:16px;padding:16px clamp(16px,3vw,28px);
+    background:var(--panel);border-top:2px solid var(--green);
+    box-shadow:0 -12px 34px rgba(0,0,0,.5)}
+  .kiosk-cartbar-count{flex:0 0 auto;min-width:40px;height:40px;padding:0 12px;border-radius:100px;
+    background:var(--green);color:#08120b;font-family:var(--mono);font-weight:800;font-size:19px;
+    display:inline-flex;align-items:center;justify-content:center}
+  .kiosk-cartbar-text{flex:1;color:var(--white);font-size:19px;font-weight:600}
+  .kiosk-cartbar-btn{flex:0 0 auto;font-family:var(--mono);font-size:17px;letter-spacing:.05em;
+    text-transform:uppercase;font-weight:800;color:#08120b;background:var(--green);
+    border:none;border-radius:14px;padding:18px 30px;min-height:64px;cursor:pointer}
+  .kiosk-cartbar-btn:active{transform:scale(.98)}
 
   /* Kiosk checkout choice screen ("How would you like to check out?").
      The widget renders Sign In → Guest → Quick, which is backwards for a tablet:

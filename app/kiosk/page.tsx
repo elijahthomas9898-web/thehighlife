@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import ProteusShop from "../components/ProteusShop";
 import KioskInputHints from "../components/KioskInputHints";
+import KioskCartBar from "../components/KioskCartBar";
+import MenuDealsMore from "../components/MenuDealsMore";
 
 export const metadata: Metadata = {
   title: "Kiosk | The High Life Dispensary",
@@ -26,7 +28,9 @@ export default function KioskPage() {
   return (
     <div className="kiosk-page">
       <KioskInputHints />
+      <MenuDealsMore kiosk />
       <ProteusShop kiosk kioskTimeout={3} />
+      <KioskCartBar />
     </div>
   );
 }
