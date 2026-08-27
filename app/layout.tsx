@@ -44,6 +44,15 @@ export const metadata: Metadata = {
  * Both are plain attributes driving CSS, so React never has to reconcile them.
  */
 const BOOT_SCRIPT = `(function(){
+// Password reset. Proteus emails a link to the site ROOT as
+// "?action=newpass&u=UUID", but JSCart only exists on /menu — so on the homepage
+// nothing reads those params and the visitor just lands on the store, unable to
+// set a new password. Forward to /menu with the query intact and JSCart takes it
+// from there (it validates the uuid and opens the Set New Password panel).
+// Runs first and pre-paint, so there's no flash of the homepage.
+try{var _p=new URLSearchParams(location.search);
+if(_p.get("action")==="newpass"&&_p.get("u")&&location.pathname.indexOf("/menu")!==0){
+location.replace("/menu"+location.search+location.hash);return}}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
 // /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong
