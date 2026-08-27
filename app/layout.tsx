@@ -44,18 +44,12 @@ export const metadata: Metadata = {
  * Both are plain attributes driving CSS, so React never has to reconcile them.
  */
 const BOOT_SCRIPT = `(function(){
-// Proof-of-life marker: if this attribute is missing on a device, the inline
-// boot script never executed there (which would explain a gate that reappears).
-// Read by /agecheck.
-try{document.documentElement.setAttribute("data-boot","1")}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
-// /agecheck is the age-gate diagnostic — it must be readable without the gate
-// covering it, or it can't report what's broken.
 // /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong
 // there for the same reason it's wrong on signage. CSS in globals.css backs this
 // up (.kiosk-page) so the kiosk works even if this script never runs.
-try{if(location.pathname.indexOf("/signage")===0||location.pathname.indexOf("/agecheck")===0||location.pathname.indexOf("/kiosk")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
+try{if(location.pathname.indexOf("/signage")===0||location.pathname.indexOf("/kiosk")===0){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(localStorage.getItem("hl_age_verified")==="1"){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 try{if(document.cookie.indexOf("hl_age_verified=1")!==-1){document.documentElement.setAttribute("data-age","ok")}}catch(e){}
 // Storage-independent safety net for in-app browsers (Instagram/TikTok/FB) that
@@ -73,7 +67,7 @@ if(m[d]!==undefined){document.documentElement.setAttribute("data-today",String(m
  * ⚠️ The age gate's verified flag is rendered SERVER-SIDE, on purpose.
  *
  * It used to rely solely on the boot script setting data-age="ok" on <html>.
- * That broke on iOS Safari: /agecheck on a real iPhone reported the flag missing
+ * That broke on iOS Safari: a diagnostic on a real iPhone reported the flag missing
  * even though the cookie, localStorage AND referrer all survived — React drops
  * DOM attributes it doesn't own when it re-renders the tree at startup, so the
  * gate reappeared on every page load and every refresh (mobile only).
