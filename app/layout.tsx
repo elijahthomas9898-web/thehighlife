@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   title: "The High Life Dispensary | West Babylon, NY",
   description:
     "Licensed New York adult-use dispensary in West Babylon. The brands you love, tested and shelf-ready, with fresh deals every week. Must be 21+.",
+  // Proves ownership of the domain to Google Search Console, which is what lets us
+  // submit the sitemap and request indexing instead of waiting to be crawled.
+  verification: { google: "P8e49ANLDTQb-NkaXCUN6tvy3x6wDKkOl55XqzX2nvg" },
 };
 
 /**
