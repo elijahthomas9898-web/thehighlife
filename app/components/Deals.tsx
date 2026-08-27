@@ -1,3 +1,6 @@
+import { getShopDeals } from "@/lib/deals";
+import DealsSlideshow from "./DealsSlideshow";
+
 /**
  * Homepage deals section: a scrolling marquee + a bold teaser band that routes
  * to /deals (which pulls the REAL deals live from JSCart). No hand-kept deal
@@ -25,10 +28,16 @@ export function Marquee() {
 }
 
 /** The homepage deals moment — big energy, honest copy, one route into /deals. */
-export function DealsBand() {
+export async function DealsBand() {
+  // Real deal artwork, fetched server-side so the homepage renders the tiles
+  // without pulling in the whole JSCart bundle. Empty on failure -> band just
+  // reads as it did before.
+  const deals = await getShopDeals();
+
   return (
     <section className="deals-band" id="deals">
-      <div className="wrap">
+      <div className={`wrap${deals.length ? " deals-band-grid" : ""}`}>
+        <div className="deals-band-copy">
         <h2 className="reveal">
           This Week&rsquo;s
           <br />
@@ -48,13 +57,16 @@ export function DealsBand() {
         </div>
 
         <div className="page-cta reveal">
-          <a className="btn primary" href="/deals">
-            See This Week&rsquo;s Deals →
-          </a>
-          <a className="btn ghost" href="/menu">
-            Shop The Menu
-          </a>
+            <a className="btn primary" href="/deals">
+              See This Week&rsquo;s Deals →
+            </a>
+            <a className="btn ghost" href="/menu">
+              Shop The Menu
+            </a>
+          </div>
         </div>
+
+        {deals.length > 0 && <DealsSlideshow deals={deals} />}
       </div>
     </section>
   );
