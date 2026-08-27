@@ -147,24 +147,28 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
       <div className="kiosk-attract-brand">Today&rsquo;s Deals</div>
 
       <div className="kiosk-attract-stage">
-        {deal.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={String(deal.id)}
-            className="kiosk-attract-img"
-            src={encodeImage(deal.image)}
-            alt={deal.name || headline || "Deal"}
-          />
-        ) : (
-          <div key={String(deal.id)} className="kiosk-attract-text">
-            <b>{headline || deal.name}</b>
-            {deal.message ? <em>{deal.message}</em> : null}
-          </div>
-        )}
+        {/* Shrinks to the artwork so the cue can sit ON the tile rather than
+            floating in the empty space below it on a tall/portrait screen. */}
+        <div className="kiosk-attract-frame">
+          {deal.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={String(deal.id)}
+              className="kiosk-attract-img"
+              src={encodeImage(deal.image)}
+              alt={deal.name || headline || "Deal"}
+            />
+          ) : (
+            <div key={String(deal.id)} className="kiosk-attract-text">
+              <b>{headline || deal.name}</b>
+              {deal.message ? <em>{deal.message}</em> : null}
+            </div>
+          )}
+          <span className="kiosk-attract-cue">Tap anywhere to shop</span>
+        </div>
       </div>
 
       <div className="kiosk-attract-foot">
-        <span className="kiosk-attract-cue">Tap anywhere to shop</span>
         <span className="kiosk-attract-dots">
           {deals.slice(0, 12).map((d, i) => (
             <i key={String(d.id)} className={i === idx % deals.length ? "on" : undefined} />
