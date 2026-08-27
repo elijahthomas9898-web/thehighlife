@@ -58,6 +58,20 @@ try{var _p=new URLSearchParams(location.search),_pn=location.pathname;
 if(_p.get("action")==="newpass"&&_p.get("u")&&
 _pn.indexOf("/menu")!==0&&_pn.indexOf("/deals")!==0&&_pn.indexOf("/kiosk")!==0){
 location.replace("/menu"+location.search+location.hash);return}}catch(e){}
+// Shared-tablet privacy. JSCart's kiosk reset clears the cart and signs the
+// customer out (kioskFullReset -> clearAuthToken + reload), but it does NOT clear
+// two things it persists per DEVICE rather than per customer:
+//   proteus_recent_<client>   - recently viewed products
+//   proteus_wishlist_<client> - saved favourites
+// On a tablet on the shop floor that means the next customer sees what the last
+// one browsed and saved. Wipe them on every /kiosk load — the kiosk reloads after
+// each reset and each order, so every customer starts clean. Done here, before the
+// widget script loads, because the widget reads them into memory at init.
+// Auth and cart are deliberately left alone: the widget already handles those, and
+// clearing auth here would sign a shopper out when they return from checkout.
+try{if(location.pathname.indexOf("/kiosk")===0){
+localStorage.removeItem("proteus_recent_highlife");
+localStorage.removeItem("proteus_wishlist_highlife")}}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
 // /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong
