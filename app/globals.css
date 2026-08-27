@@ -1016,3 +1016,36 @@
     text-transform:uppercase;font-weight:800;color:#08120b;background:var(--green);
     border:none;border-radius:10px;padding:12px 20px;min-height:44px;cursor:pointer}
   .hl-account-link-btn:active{transform:scale(.98)}
+
+  /* ---------- kiosk idle attract screen (app/components/KioskAttract.tsx) ----------
+     Sits above the shop, cart bar and deals panel, but BELOW JSCart's own overlays
+     (2147483600) so setup and the PIN exit always win. */
+  .kiosk-attract{position:fixed;inset:0;z-index:2147483500;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+    padding:clamp(18px,3vh,34px) clamp(18px,3vw,40px);overflow:hidden}
+  .kiosk-attract-brand{font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:clamp(26px,4.4vw,54px);line-height:1;color:var(--white);
+    text-shadow:var(--ol-md),0 0 30px rgba(59,232,127,.35);flex:0 0 auto}
+  .kiosk-attract-stage{flex:1 1 auto;width:100%;display:flex;align-items:center;justify-content:center;
+    padding:clamp(12px,2.5vh,28px) 0;min-height:0}
+  .kiosk-attract-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+    border-radius:20px;border:1px solid var(--line-2);
+    box-shadow:0 24px 70px rgba(0,0,0,.6);animation:kiosk-attract-in .5s ease both}
+  .kiosk-attract-text{max-width:22ch;text-align:center;display:flex;flex-direction:column;gap:14px;
+    animation:kiosk-attract-in .5s ease both}
+  .kiosk-attract-text b{font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:clamp(38px,7vw,86px);line-height:.95;color:var(--green);text-shadow:var(--ol-lg)}
+  .kiosk-attract-text em{font-style:normal;font-size:clamp(16px,2vw,24px);color:var(--white)}
+  @keyframes kiosk-attract-in{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    .kiosk-attract-img,.kiosk-attract-text{animation:none}}
+  .kiosk-attract-foot{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:14px}
+  .kiosk-attract-cue{font-family:var(--mono);font-size:clamp(13px,1.5vw,18px);letter-spacing:.16em;
+    text-transform:uppercase;font-weight:700;color:var(--green);
+    animation:kiosk-attract-pulse 2.4s ease-in-out infinite}
+  @keyframes kiosk-attract-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+  @media(prefers-reduced-motion:reduce){.kiosk-attract-cue{animation:none;opacity:1}}
+  .kiosk-attract-dots{display:flex;gap:8px}
+  .kiosk-attract-dots i{width:8px;height:8px;border-radius:100px;background:rgba(243,247,241,.22);
+    transition:background .3s,width .3s}
+  .kiosk-attract-dots i.on{width:26px;background:var(--green)}

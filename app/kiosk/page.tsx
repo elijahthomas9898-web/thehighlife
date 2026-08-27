@@ -3,6 +3,7 @@ import ProteusShop from "../components/ProteusShop";
 import KioskInputHints from "../components/KioskInputHints";
 import KioskCartBar from "../components/KioskCartBar";
 import KioskDealsPanel from "../components/KioskDealsPanel";
+import KioskAttract from "../components/KioskAttract";
 import MenuDealsMore from "../components/MenuDealsMore";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function KioskPage() {
       <ProteusShop kiosk kioskTimeout={3} />
       <KioskCartBar />
       <KioskDealsPanel />
+      <KioskAttract />
     </div>
   );
 }
