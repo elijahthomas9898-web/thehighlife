@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import AccountLinkPrompt from "./AccountLinkPrompt";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -133,5 +134,13 @@ export default function ProteusShop({
     document.body.appendChild(script);
   }, []);
 
-  return <div id="proteus_shop" className="proteus-full-container" />;
+  return (
+    <>
+      {/* Offers a way forward when someone tries to register an email that already
+          exists in Proteus from an in-store visit. Lives here so it covers every
+          route the widget runs on — /menu, /deals and /kiosk. */}
+      <AccountLinkPrompt />
+      <div id="proteus_shop" className="proteus-full-container" />
+    </>
+  );
 }

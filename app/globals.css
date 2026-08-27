@@ -1002,3 +1002,17 @@
     font-family:var(--mono);font-size:1.4vh;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
 
   @media(prefers-reduced-motion:reduce){.wall-track{animation:none}}
+
+  /* "You already have an in-store account" prompt, injected into JSCart's
+     registration panel when the email is already on file (see
+     app/components/AccountLinkPrompt.tsx). Scoped by its own class because the
+     auth modal is appended to <body>, outside #proteus_shop. */
+  .hl-account-link{margin:14px 0 4px;padding:16px 18px;border-radius:12px;
+    background:rgba(64,210,131,.10);border:1px solid rgba(64,210,131,.42)}
+  .hl-account-link-title{font-family:var(--groovy);font-weight:800;text-transform:uppercase;
+    font-size:16px;letter-spacing:.02em;color:var(--green);margin-bottom:6px}
+  .hl-account-link-body{font-size:14.5px;line-height:1.6;color:var(--white);margin:0 0 12px}
+  .hl-account-link-btn{font-family:var(--mono);font-size:13px;letter-spacing:.05em;
+    text-transform:uppercase;font-weight:800;color:#08120b;background:var(--green);
+    border:none;border-radius:10px;padding:12px 20px;min-height:44px;cursor:pointer}
+  .hl-account-link-btn:active{transform:scale(.98)}
