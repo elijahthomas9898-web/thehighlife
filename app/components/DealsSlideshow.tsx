@@ -14,7 +14,7 @@ import type { ShopDeal } from "@/lib/deals";
  * Pauses on hover/focus so someone reading a tile isn't yanked off it, and honours
  * prefers-reduced-motion by not auto-advancing at all.
  */
-const ROTATE_MS = 4500;
+const ROTATE_MS = 3000;
 const DOTS = 10;
 
 export default function DealsSlideshow({ deals }: { deals: ShopDeal[] }) {
