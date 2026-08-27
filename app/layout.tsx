@@ -45,13 +45,18 @@ export const metadata: Metadata = {
  */
 const BOOT_SCRIPT = `(function(){
 // Password reset. Proteus emails a link to the site ROOT as
-// "?action=newpass&u=UUID", but JSCart only exists on /menu — so on the homepage
-// nothing reads those params and the visitor just lands on the store, unable to
-// set a new password. Forward to /menu with the query intact and JSCart takes it
-// from there (it validates the uuid and opens the Set New Password panel).
-// Runs first and pre-paint, so there's no flash of the homepage.
-try{var _p=new URLSearchParams(location.search);
-if(_p.get("action")==="newpass"&&_p.get("u")&&location.pathname.indexOf("/menu")!==0){
+// "?action=newpass&u=UUID", but JSCart only reads those params where the widget
+// is mounted — so on the homepage nothing handled them and the visitor just
+// landed on the store, unable to set a new password. Forward to /menu with the
+// query intact and JSCart takes it from there (it validates the uuid and opens
+// the Set New Password panel). Runs first and pre-paint, so no homepage flash.
+//
+// Skip the redirect wherever the widget ALREADY exists (/menu, /deals, /kiosk):
+// it handles the params in place, and on /kiosk a redirect would be actively
+// harmful — leaving /kiosk drops the tablet out of kiosk mode.
+try{var _p=new URLSearchParams(location.search),_pn=location.pathname;
+if(_p.get("action")==="newpass"&&_p.get("u")&&
+_pn.indexOf("/menu")!==0&&_pn.indexOf("/deals")!==0&&_pn.indexOf("/kiosk")!==0){
 location.replace("/menu"+location.search+location.hash);return}}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
