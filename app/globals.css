@@ -1120,3 +1120,10 @@
     .onsale-head{align-items:flex-start}
     .onsale-card{width:clamp(168px,60vw,200px)}
   }
+
+  /* Temporary event banner above the hero (app/components/EventBanner.tsx).
+     Offset by the fixed header so it isn't hidden behind the nav + category bar. */
+  .evtbanner{display:block;background:var(--bg);padding-top:calc(var(--header-h,132px) + 10px)}
+  .evtbanner-link{display:block;line-height:0}
+  .evtbanner-img{width:100%;height:auto;display:block}
+  @media(max-width:560px){.evtbanner{padding-top:calc(var(--header-h,116px) + 8px)}}
