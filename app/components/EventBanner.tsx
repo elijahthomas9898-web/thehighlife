@@ -32,7 +32,6 @@ export default function EventBanner() {
         <Image
           src={banner}
           alt="ROVE pop-up at The High Life Dispensary — Saturday 8/29/26, 4PM to 6PM. Stop by for exclusive penny deals."
-          priority
           sizes="100vw"
           className="evtbanner-img"
         />
