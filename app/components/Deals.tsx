@@ -1,5 +1,5 @@
 import { getShopDeals } from "@/lib/deals";
-import DealsSlideshow from "./DealsSlideshow";
+import DealsRail from "./DealsRail";
 
 /**
  * Homepage deals section: a scrolling marquee + a bold teaser band that routes
@@ -66,7 +66,7 @@ export async function DealsBand() {
           </div>
         </div>
 
-        {deals.length > 0 && <DealsSlideshow deals={deals} />}
+        {deals.length > 0 && <DealsRail deals={deals} />}
       </div>
     </section>
   );
