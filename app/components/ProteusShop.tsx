@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import AccountLinkPrompt from "./AccountLinkPrompt";
 import ProteusTextFix from "./ProteusTextFix";
+import AuthModalGuard from "./AuthModalGuard";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -153,6 +154,8 @@ export default function ProteusShop({
           route it runs on — /menu, /deals and /kiosk. */}
       {/* Repairs mojibake in JSCart's copy (their source file is double-encoded). */}
       <ProteusTextFix />
+      {/* Keeps the sign-in modal from closing on a retargeted click while typing. */}
+      <AuthModalGuard />
       {/* Offers a way forward when someone registers an email that already exists in
           Proteus from an in-store visit. */}
       <AccountLinkPrompt />
