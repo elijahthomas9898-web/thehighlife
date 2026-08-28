@@ -334,6 +334,13 @@
     font-size:clamp(20px,2.4vw,28px);line-height:1.05;color:var(--white)}
   .kiosk-deal-text em{font-style:normal;font-size:15px;color:var(--muted)}
 
+  /* Three products per row on the kiosk. The widget sizes the grid by available
+     width (auto-fill, minmax 220px), which lands on 2 columns on a portrait
+     tablet. collapseCategories (see ProteusShop) frees the sidebar space; this
+     pins the result so it is always 3 rather than depending on the exact screen. */
+  html.proteus-kiosk-active #proteus_shop .proteus-products-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+
   /* Kiosk checkout choice screen ("How would you like to check out?").
      The widget renders Sign In → Guest → Quick, which is backwards for a tablet:
      Quick is phone + birthdate, Sign In needs an email and password. The three

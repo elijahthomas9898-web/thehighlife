@@ -113,7 +113,19 @@ export default function ProteusShop({
         // a first-timer who has no Proteus record yet. Nobody types an email and
         // password standing at a tablet. Deliberately kiosk-only — this does NOT
         // change how the public site checks out.
-        ...(kiosk ? { kiosk: true, kioskTimeout, quickCheckout: true, anonCheckout: true } : {}),
+        // collapseCategories reclaims the fixed 240px category sidebar into a drawer.
+        // JSCart added it for exactly this case — on a portrait kiosk that sidebar costs
+        // a third of the width and squeezes the product grid down a column. The
+        // horizontal category chips stay on screen, so navigation isn't lost.
+        ...(kiosk
+          ? {
+              kiosk: true,
+              kioskTimeout,
+              quickCheckout: true,
+              anonCheckout: true,
+              collapseCategories: true,
+            }
+          : {}),
       });
       maybeOpenAction();
     };
