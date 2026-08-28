@@ -146,9 +146,11 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
     <div className="kiosk-attract" role="presentation">
       <div className="kiosk-attract-brand">Today&rsquo;s Deals</div>
 
+      {/* Sits on the black ABOVE the artwork, not on it — a glowing invitation
+          that reads as "waiting for you" and never competes with the deal image. */}
+      <span className="kiosk-attract-cue">Tap anywhere to shop</span>
+
       <div className="kiosk-attract-stage">
-        {/* Shrinks to the artwork so the cue can sit ON the tile rather than
-            floating in the empty space below it on a tall/portrait screen. */}
         <div className="kiosk-attract-frame">
           {deal.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -164,7 +166,6 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
               {deal.message ? <em>{deal.message}</em> : null}
             </div>
           )}
-          <span className="kiosk-attract-cue">Tap anywhere to shop</span>
         </div>
       </div>
 

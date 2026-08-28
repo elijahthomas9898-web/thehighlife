@@ -1042,15 +1042,20 @@
   @media(prefers-reduced-motion:reduce){
     .kiosk-attract-img,.kiosk-attract-text{animation:none}}
   .kiosk-attract-foot{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:14px}
-  .kiosk-attract-cue{position:absolute;left:50%;bottom:clamp(14px,3.5vh,38px);transform:translateX(-50%);
+  .kiosk-attract-cue{flex:0 0 auto;align-self:center;
+    margin:clamp(10px,1.8vh,20px) 0 clamp(4px,1vh,12px);
     font-family:var(--mono);font-size:clamp(15px,1.9vw,26px);letter-spacing:.1em;
     text-transform:uppercase;font-weight:800;white-space:nowrap;
-    color:#08120b;background:var(--green);border:2px solid rgba(0,0,0,.3);
-    padding:clamp(11px,1.6vh,18px) clamp(20px,2.6vw,38px);border-radius:100px;
-    box-shadow:0 12px 34px rgba(0,0,0,.6);
-    animation:kiosk-attract-pulse 2.4s ease-in-out infinite}
-  @keyframes kiosk-attract-pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.045)}}
-  @media(prefers-reduced-motion:reduce){.kiosk-attract-cue{animation:none}}
+    color:#08120b;background:var(--green);border-radius:100px;
+    padding:clamp(11px,1.6vh,18px) clamp(20px,2.6vw,38px);
+    animation:kiosk-attract-glow 2.2s ease-in-out infinite}
+  @keyframes kiosk-attract-glow{
+    0%,100%{box-shadow:0 0 16px 2px rgba(59,232,127,.32),0 0 42px 8px rgba(59,232,127,.10)}
+    50%{box-shadow:0 0 34px 6px rgba(59,232,127,.80),0 0 86px 20px rgba(59,232,127,.28)}}
+  /* No breathing for reduced-motion, but keep a steady halo so it still reads as
+     an invitation rather than a flat label. */
+  @media(prefers-reduced-motion:reduce){
+    .kiosk-attract-cue{animation:none;box-shadow:0 0 26px 4px rgba(59,232,127,.55)}}
   .kiosk-attract-dots{display:flex;gap:8px}
   .kiosk-attract-dots i{width:8px;height:8px;border-radius:100px;background:rgba(243,247,241,.22);
     transition:background .3s,width .3s}
