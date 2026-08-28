@@ -787,6 +787,12 @@
 
   /* search + filters */
   #proteus_shop .proteus-search-box,#proteus_shop .proteus-search-input,
+  /* Strain filter removed from the shop. JSCart has no config flag for it (only
+     showBrandFilter / showSort / showLabs), and it renders whenever the store has
+     strains, so hiding it is the only lever. It is a bare <select> with no label,
+     so nothing is orphaned. Covers the kiosk too, since that is the same embed. */
+  #proteus_shop #proteus-strain-filter{display:none!important}
+
   #proteus_shop .proteus-filter-select,#proteus_shop .proteus-mobile-filter-btn{
     background:var(--hlc-surf)!important;color:var(--hlc-ink)!important;border:1px solid var(--hlc-line)!important}
   #proteus_shop .proteus-search-input::placeholder{color:var(--hlc-muted)!important}
