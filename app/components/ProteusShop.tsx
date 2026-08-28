@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import AccountLinkPrompt from "./AccountLinkPrompt";
+import ProteusTextFix from "./ProteusTextFix";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -136,9 +137,12 @@ export default function ProteusShop({
 
   return (
     <>
-      {/* Offers a way forward when someone tries to register an email that already
-          exists in Proteus from an in-store visit. Lives here so it covers every
-          route the widget runs on — /menu, /deals and /kiosk. */}
+      {/* Both of these patch the widget's own DOM, so they live here and cover every
+          route it runs on — /menu, /deals and /kiosk. */}
+      {/* Repairs mojibake in JSCart's copy (their source file is double-encoded). */}
+      <ProteusTextFix />
+      {/* Offers a way forward when someone registers an email that already exists in
+          Proteus from an in-store visit. */}
       <AccountLinkPrompt />
       <div id="proteus_shop" className="proteus-full-container" />
     </>
