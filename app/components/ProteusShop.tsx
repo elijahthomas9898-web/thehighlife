@@ -5,7 +5,7 @@ import AccountLinkPrompt from "./AccountLinkPrompt";
 import ProteusTextFix from "./ProteusTextFix";
 import AuthModalGuard from "./AuthModalGuard";
 import ProteusSearchFix from "./ProteusSearchFix";
-import ProteusAgeFix from "./ProteusAgeFix";
+import ProteusConfigFix from "./ProteusConfigFix";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -155,9 +155,10 @@ export default function ProteusShop({
     <>
       {/* Both of these patch the widget's own DOM, so they live here and cover every
           route it runs on — /menu, /deals and /kiosk. */}
-      {/* Forces the signup form to 21+ (Proteus serves minimum_age 18). Must mount
-          before the widget script loads — see the component. */}
-      <ProteusAgeFix />
+      {/* Repairs the registration config Proteus serves us: forces 21+, and reveals
+          required fields their config hides (howcontact, which silently blocked every
+          signup). Must mount before the widget script loads — see the component. */}
+      <ProteusConfigFix />
       {/* Repairs mojibake in JSCart's copy (their source file is double-encoded). */}
       <ProteusTextFix />
       {/* Keeps the sign-in modal from closing on a retargeted click while typing. */}
