@@ -112,12 +112,22 @@ export default function ProteusShop({
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
+        // Guest / anonymous checkout OFF — everywhere, kiosk and public site alike.
+        // An unidentified order isn't something a licensed dispensary can take; every
+        // order has to tie to a customer.
+        //
+        // This MUST be passed explicitly. JSCart's own default is anonCheckout:true,
+        // so omitting it leaves guest checkout switched ON — which it silently was,
+        // under a comment here that claimed the opposite.
+        //
+        // Client-side only: this removes the "Continue as Guest" button from the
+        // checkout choice screen. checkout_init.cfm gates the actual guest order on
+        // Proteus's own anonCheckout setting, so it needs turning off there too.
+        anonCheckout: false,
         // Kiosk-only config. None of this changes how the public site behaves.
         //
         // quickCheckout: phone + birthdate. Nobody types an email and password
         //   standing at a tablet.
-        // Guest/anonymous checkout is deliberately OFF — an unidentified order isn't
-        //   something a licensed dispensary can take; every order ties to a customer.
         // collapseCategories reclaims the fixed 240px category sidebar into a drawer.
         //   JSCart added it for exactly this case: on a portrait kiosk that sidebar
         //   costs a third of the width and squeezes the grid down a column. The
