@@ -247,10 +247,12 @@
   .addr{display:flex;flex-direction:column;gap:20px}
   .addr .big{font-family:var(--groovy);font-weight:700;text-transform:uppercase;font-size:clamp(26px,3vw,38px);line-height:1;color:var(--white);text-shadow:var(--ol-md)}
   .addr p{color:var(--muted);margin:0;font-size:15px}
-  .map{height:200px;border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:radial-gradient(circle at 60% 40%,rgba(59,232,127,.18),transparent 45%),linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px),var(--panel);background-size:auto,26px 26px,26px 26px,auto}
-  .map .pin{position:absolute;top:42%;left:58%;width:14px;height:14px;border-radius:50%;background:var(--green);box-shadow:0 0 0 6px rgba(59,232,127,.25),var(--glow);transform:translate(-50%,-50%)}
-  .map .pin::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid var(--green);animation:ping 2s infinite}
-  @keyframes ping{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+  /* Real Google map (StoreMap). Was a decorative grid with a pulsing dot that
+     looked like a map but showed nothing — that and its  keyframes are gone. */
+  .map{height:200px;border-radius:16px;border:1px solid var(--line);overflow:hidden;background:var(--panel)}
+  .map iframe,.visit-map iframe{width:100%;height:100%;border:0;display:block}
+  .visit-map{height:260px;border-radius:16px;border:1px solid var(--line);overflow:hidden;
+    background:var(--panel);margin-top:18px}
 
   /* footer */
   footer{border-top:1px solid var(--line);text-align:center;overflow:hidden;position:relative}
@@ -903,7 +905,7 @@
   @media(prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1;transform:none;transition:none}
-    .scrollcue .dot,.map .pin::after,.marquee .mtrack{animation:none}
+    .scrollcue .dot,.marquee .mtrack{animation:none}
   }
 
 /* ══════════ SIGNAGE (/signage) — full-screen in-store TV display ══════════ */

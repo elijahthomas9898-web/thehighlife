@@ -3,6 +3,7 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import Hours from "../components/Hours";
 import { store } from "@/data/site";
+import StoreMap from "../components/StoreMap";
 
 export const metadata: Metadata = {
   title: "Visit Us | The High Life Dispensary",
@@ -42,6 +43,8 @@ export default function VisitPage() {
               </p>
 
               <div className="visit-photo" />
+
+              <StoreMap className="visit-map" />
 
               <div className="page-cta" style={{ marginTop: 0 }}>
                 <a className="btn primary" href={MAPS_URL} target="_blank" rel="noopener noreferrer">

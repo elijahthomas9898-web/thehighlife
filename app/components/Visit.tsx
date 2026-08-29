@@ -1,4 +1,5 @@
 import { store } from "@/data/site";
+import StoreMap from "./StoreMap";
 import Hours from "./Hours";
 
 export default function Visit() {
@@ -24,9 +25,7 @@ export default function Visit() {
                 {store.email}
               </a>
             </p>
-            <div className="map">
-              <div className="pin" />
-            </div>
+            <StoreMap />
             <a
               className="btn ghost"
               style={{ alignSelf: "flex-start" }}
