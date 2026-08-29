@@ -111,20 +111,21 @@ export default function ProteusShop({
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
-        // Kiosk checkout: phone + birthdate (quick) with guest as the fallback for
-        // a first-timer who has no Proteus record yet. Nobody types an email and
-        // password standing at a tablet. Deliberately kiosk-only — this does NOT
-        // change how the public site checks out.
+        // Kiosk-only config. None of this changes how the public site behaves.
+        //
+        // quickCheckout: phone + birthdate. Nobody types an email and password
+        //   standing at a tablet.
+        // Guest/anonymous checkout is deliberately OFF — an unidentified order isn't
+        //   something a licensed dispensary can take; every order ties to a customer.
         // collapseCategories reclaims the fixed 240px category sidebar into a drawer.
-        // JSCart added it for exactly this case — on a portrait kiosk that sidebar costs
-        // a third of the width and squeezes the product grid down a column. The
-        // horizontal category chips stay on screen, so navigation isn't lost.
+        //   JSCart added it for exactly this case: on a portrait kiosk that sidebar
+        //   costs a third of the width and squeezes the grid down a column. The
+        //   horizontal category chips stay on screen, so navigation isn't lost.
         ...(kiosk
           ? {
               kiosk: true,
               kioskTimeout,
               quickCheckout: true,
-              anonCheckout: true,
               collapseCategories: true,
             }
           : {}),
