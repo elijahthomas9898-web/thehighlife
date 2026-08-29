@@ -45,6 +45,8 @@ export const shopCategories: { label: string; href: string }[] = [
   { label: "Flower", href: "/menu#view=products&cat=8" },
   { label: "Vapes", href: "/menu#view=products&cat=6" },
   { label: "Edibles", href: "/menu#view=products&cat=4" },
+  // Drinks (13) is a child of Edibles in Proteus, hence its place in the strip.
+  { label: "Drinks", href: "/menu#view=products&cat=13" },
   { label: "Concentrates", href: "/menu#view=products&cat=11" },
   { label: "Tinctures", href: "/menu#view=products&cat=12" },
   { label: "Topicals", href: "/menu#view=products&cat=7" },
