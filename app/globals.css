@@ -1141,3 +1141,47 @@
     .evtbanner-link{display:block;line-height:0}
     .evtbanner-img{width:100%;height:auto;display:block}
   }
+
+  /* ---- FAQ (app/faq/page.tsx) ------------------------------------------
+     Built on native <details>/<summary>, so most of the work here is undoing
+     the browser's default disclosure triangle and replacing it with a +/−
+     that matches the site. */
+  .faq-lead{margin:14px 0 0;max-width:70ch;color:rgba(243,247,241,.8);
+    font-size:clamp(15px,1.8vw,17px);line-height:1.7}
+  .faq-lead a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+
+  .faq{margin-top:38px;max-width:82ch;display:flex;flex-direction:column;gap:34px}
+  .faq-group{display:flex;flex-direction:column;gap:10px}
+  .faq-group h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;
+    font-size:12px;font-weight:800;color:var(--green);margin:0 0 4px}
+
+  .faq-item{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;transition:border-color .18s ease,background .18s ease}
+  .faq-item[open]{border-color:var(--line-2);background:var(--bg-2)}
+  .faq-item:hover{border-color:var(--line-2)}
+
+  .faq-item summary{
+    /* Safari still paints its own triangle without BOTH of these. */
+    list-style:none;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:17px 18px;cursor:pointer;
+    /* 44px min so it's a comfortable tap target on a phone. */
+    min-height:44px;
+    color:var(--white);font-weight:650;font-size:clamp(15px,1.8vw,16.5px);line-height:1.45}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+
+  /* The +/− drawn with two bars: the vertical one rotates away when open. */
+  .faq-mark{position:relative;flex:0 0 auto;width:15px;height:15px}
+  .faq-mark::before,.faq-mark::after{content:"";position:absolute;inset:0;margin:auto;
+    background:var(--green);border-radius:2px}
+  .faq-mark::before{width:15px;height:2px}
+  .faq-mark::after{width:2px;height:15px;transition:transform .2s ease}
+  .faq-item[open] .faq-mark::after{transform:scaleY(0)}
+
+  .faq-a{margin:0;padding:0 18px 18px;color:rgba(243,247,241,.8);
+    font-size:15.5px;line-height:1.75;max-width:72ch}
+
+  @media(prefers-reduced-motion:reduce){
+    .faq-item,.faq-mark::after{transition:none}
+  }

@@ -27,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ["/merch", "weekly", 0.5],
     ["/about", "monthly", 0.5],
     ["/visit", "monthly", 0.6], // hours / directions — local SEO
+    ["/faq", "monthly", 0.6], // long-tail local queries: ID rules, pickup, "dispensary near me"
     ["/privacy", "yearly", 0.2],
     ["/terms", "yearly", 0.2],
   ];

@@ -22,6 +22,7 @@ export default function Footer() {
         <div className="footlinks" role="navigation" aria-label="Legal">
           <a href="/about">About</a>
           <a href="/visit">Visit</a>
+          <a href="/faq">FAQ</a>
           <a href="/privacy">Privacy Policy</a>
           <a href="/terms">Terms of Service</a>
         </div>
