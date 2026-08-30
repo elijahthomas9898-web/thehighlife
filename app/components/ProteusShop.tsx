@@ -112,6 +112,25 @@ export default function ProteusShop({
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
+        // Send checkout to OUR white-label cart host instead of the widget's default
+        // (cart.proteus420.com/highlife). Two reasons:
+        //
+        // 1. The shopper stays on our domain through checkout. Being thrown to a
+        //    stranger's hostname at the moment you enter payment details is exactly
+        //    where people abandon a cart.
+        // 2. USB printer pairing is PER ORIGIN. Proteus prints the kiosk ticket from
+        //    the checkout thank-you page (cart_checkout5), so the printer is paired
+        //    against whichever host serves checkout. Pair on cart.thehighlifeny.com
+        //    while checking out on cart.proteus420.com and nothing ever prints.
+        //
+        // Proteus's own hosted kiosk does the same thing for the same reason — its
+        // source says leaving the default "is a different host … the cookie is lost".
+        //
+        // ⚠️ Do NOT also point `baseUrl` here. That's a separate setting covering the
+        // product/cart/auth APIs, and this host does not serve them: api_cart_v2.cfm
+        // times out on cart.thehighlifeny.com at both / and /highlife. Those calls
+        // must keep going to cart.proteus420.com or the shop stops loading.
+        checkoutUrl: "https://cart.thehighlifeny.com",
         // Guest / anonymous checkout OFF — everywhere, kiosk and public site alike.
         // An unidentified order isn't something a licensed dispensary can take; every
         // order has to tie to a customer.
