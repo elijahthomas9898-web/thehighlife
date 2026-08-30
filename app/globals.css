@@ -1185,3 +1185,17 @@
   @media(prefers-reduced-motion:reduce){
     .faq-item,.faq-mark::after{transition:none}
   }
+
+  /* Pickup-time nudge above the cart's checkout button
+     (app/components/PickupTimeHint.tsx). Points at Proteus's own
+     "Notes / Requests / Instructions" field, which is the only channel that
+     actually carries a requested time onto the order. */
+  .hl-pickup-hint{
+    display:flex;flex-direction:column;gap:3px;
+    margin:0 0 12px;padding:11px 13px;
+    background:rgba(59,232,127,.07);
+    border:1px solid rgba(59,232,127,.26);
+    border-radius:10px;
+    font-size:13px;line-height:1.5}
+  .hl-pickup-hint strong{color:var(--hlc-ink,#f1f5ef);font-weight:650}
+  .hl-pickup-hint span{color:var(--hlc-muted,#9aa89d)}

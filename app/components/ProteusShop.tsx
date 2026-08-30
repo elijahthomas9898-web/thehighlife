@@ -6,6 +6,7 @@ import ProteusTextFix from "./ProteusTextFix";
 import AuthModalGuard from "./AuthModalGuard";
 import ProteusSearchFix from "./ProteusSearchFix";
 import ProteusConfigFix from "./ProteusConfigFix";
+import PickupTimeHint from "./PickupTimeHint";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -178,6 +179,10 @@ export default function ProteusShop({
       {/* Offers a way forward when someone registers an email that already exists in
           Proteus from an in-store visit. */}
       <AccountLinkPrompt />
+      {/* Asks online shoppers to put their pickup time in Proteus's checkout Notes
+          field — the only channel that carries one onto the real order. Off on the
+          kiosk, where the shopper is already in the building. */}
+      {!kiosk && <PickupTimeHint />}
       <div id="proteus_shop" className="proteus-full-container" />
     </>
   );
