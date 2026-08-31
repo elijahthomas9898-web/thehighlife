@@ -4,6 +4,7 @@ import KioskInputHints from "../components/KioskInputHints";
 import KioskCartBar from "../components/KioskCartBar";
 import KioskDealsPanel from "../components/KioskDealsPanel";
 import KioskAttract from "../components/KioskAttract";
+import KioskTicketPrinter from "../components/KioskTicketPrinter";
 import MenuDealsMore from "../components/MenuDealsMore";
 
 export const metadata: Metadata = {
@@ -35,6 +36,8 @@ export default function KioskPage() {
       <KioskCartBar />
       <KioskDealsPanel />
       <KioskAttract />
+      {/* Prints a pickup ticket on order, when switched on at /kiosk/settings. */}
+      <KioskTicketPrinter />
     </div>
   );
 }

@@ -22,6 +22,13 @@ import { loadKioskSettings } from "@/lib/kioskSettings";
  */
 const WIDGET_SRC = "https://cart.proteus420.com/highlife/cart-widget.js.cfm?v=4";
 
+/**
+ * Raised on `window` when JSCart reports a completed order, carrying
+ * `{ invoice }` - the only order data the widget hands back.
+ * KioskTicketPrinter listens for it.
+ */
+export const KIOSK_ORDER_EVENT = "hl-kiosk-order";
+
 // The widget attaches a global; it's untyped.
 declare global {
   interface Window {
@@ -142,6 +149,11 @@ export default function ProteusShop({
               kioskTimeout: loadKioskSettings().resetMinutes || kioskTimeout,
               quickCheckout: true,
               collapseCategories: true,
+              // Fires when the shopper returns from checkout having ordered. The
+              // widget gives us the invoice number only - no name, items or total.
+              onOrderComplete: (data: { invoice?: string }) => {
+                window.dispatchEvent(new CustomEvent(KIOSK_ORDER_EVENT, { detail: data }));
+              },
             }
           : {}),
       });

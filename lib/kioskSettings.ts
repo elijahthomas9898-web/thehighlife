@@ -21,6 +21,14 @@ export type KioskSettings = {
   attractEnabled: boolean;
   /** Show the slide-up deals panel. */
   dealsPanelEnabled: boolean;
+  /**
+   * Hand a pickup ticket to RawBT when a kiosk order is placed.
+   *
+   * OFF by default and deliberately a switch: Proteus Server Direct Printing may
+   * also be printing these, and two systems printing means every customer gets two
+   * tickets. Turn this on only while SDP is not doing the job.
+   */
+  autoPrintTickets: boolean;
 };
 
 export const KIOSK_DEFAULTS: KioskSettings = {
@@ -29,6 +37,7 @@ export const KIOSK_DEFAULTS: KioskSettings = {
   attractRotateSeconds: 6,
   attractEnabled: true,
   dealsPanelEnabled: true,
+  autoPrintTickets: false,
 };
 
 export const KIOSK_SETTINGS_KEY = "hl_kiosk_settings";
@@ -82,6 +91,10 @@ export function loadKioskSettings(): KioskSettings {
         typeof parsed.dealsPanelEnabled === "boolean"
           ? parsed.dealsPanelEnabled
           : KIOSK_DEFAULTS.dealsPanelEnabled,
+      autoPrintTickets:
+        typeof parsed.autoPrintTickets === "boolean"
+          ? parsed.autoPrintTickets
+          : KIOSK_DEFAULTS.autoPrintTickets,
     };
   } catch {
     return { ...KIOSK_DEFAULTS };

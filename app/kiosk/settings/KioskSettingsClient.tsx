@@ -300,11 +300,27 @@ export default function KioskSettingsClient() {
           whether it worked, so the paper is the only confirmation.
         </p>
 
-        <p className="kset-warn">
-          Nothing prints automatically yet. Proteus&apos;s Server Direct Printing is also on,
-          and printing from both places would hand every customer two tickets — so this stays
-          manual until we know which one is doing the job.
-        </p>
+        <label className="kset-toggle" style={{ marginTop: 6 }}>
+          <input
+            type="checkbox"
+            checked={settings.autoPrintTickets}
+            onChange={(e) => set("autoPrintTickets", e.target.checked)}
+          />
+          <span>
+            <strong>Print a ticket automatically on each order</strong>
+            <small>
+              RawBT will come to the front, print, and drop back — Android gives a web page
+              no way to print without something appearing. Remember to Save below.
+            </small>
+          </span>
+        </label>
+
+        {settings.autoPrintTickets && (
+          <p className="kset-warn">
+            Turn this OFF if Proteus&apos;s Server Direct Printing starts producing tickets —
+            two systems printing hands every customer two copies.
+          </p>
+        )}
       </section>
 
       {/* ── printer: direct USB, kept for diagnosis ─────────────── */}
