@@ -50,6 +50,7 @@ type UsbDevice = {
   releaseInterface(n: number): Promise<void>;
   selectAlternateInterface(n: number, alt: number): Promise<void>;
   transferOut(endpoint: number, data: Uint8Array): Promise<{ status: string }>;
+  reset(): Promise<void>;
 };
 
 /** An interface/endpoint pair we could plausibly print through. */
@@ -179,14 +180,33 @@ export default function KioskSettingsClient() {
       // work down the list instead of giving up on the first refusal.
       let claimed: PrintTarget | null = null;
       let lastError = "";
-      for (const t of targets) {
-        try {
-          await printer.claimInterface(t.interfaceNumber);
-          if (t.alternateSetting > 0) {
-            await printer.selectAlternateInterface(t.interfaceNumber, t.alternateSetting);
+
+      const tryClaim = async () => {
+        for (const t of targets) {
+          try {
+            await printer.claimInterface(t.interfaceNumber);
+            if (t.alternateSetting > 0) {
+              await printer.selectAlternateInterface(t.interfaceNumber, t.alternateSetting);
+            }
+            return t;
+          } catch (e) {
+            lastError = e instanceof Error ? e.message : String(e);
           }
-          claimed = t;
-          break;
+        }
+        return null;
+      };
+
+      claimed = await tryClaim();
+
+      // Android binds printer-class devices to its own driver on plug-in, and that
+      // driver won't share. A USB-level reset makes some devices re-enumerate and
+      // drop that hold, which is the one lever available from a browser.
+      if (!claimed && typeof printer.reset === "function") {
+        setPrinterMsg("Printer busy — resetting it and retrying…");
+        try {
+          await printer.reset();
+          await new Promise((r) => setTimeout(r, 600)); // let it come back up
+          claimed = await tryClaim();
         } catch (e) {
           lastError = e instanceof Error ? e.message : String(e);
         }
@@ -200,9 +220,12 @@ export default function KioskSettingsClient() {
           .map((t) => `#${t.interfaceNumber}.${t.alternateSetting}${t.isPrinterClass ? "(printer)" : ""}`)
           .join(", ");
         throw new Error(
-          `could not claim the printer. Tried ${targets.length} interface${targets.length === 1 ? "" : "s"}: ${detail}. ` +
-            `Something else on this tablet is probably holding it — close any printer or print-service app, ` +
-            `unplug and replug the cable, then try again. Last error: ${lastError}`,
+          `could not claim the printer, even after a reset. Tried: ${detail}. ` +
+            `Android has bound this printer to its own driver and won't release it. ` +
+            `Try: Settings → Connected devices → Printing → turn OFF the default print service, ` +
+            `then unplug and replug the printer. If that doesn't do it, printing from the browser ` +
+            `isn't going to work on this tablet — use Proteus's Server Direct Printing instead. ` +
+            `Last error: ${lastError}`,
         );
       }
 
