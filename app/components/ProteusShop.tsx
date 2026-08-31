@@ -7,6 +7,7 @@ import AuthModalGuard from "./AuthModalGuard";
 import ProteusSearchFix from "./ProteusSearchFix";
 import ProteusConfigFix from "./ProteusConfigFix";
 import PickupTimeHint from "./PickupTimeHint";
+import { loadKioskSettings } from "@/lib/kioskSettings";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -136,7 +137,9 @@ export default function ProteusShop({
         ...(kiosk
           ? {
               kiosk: true,
-              kioskTimeout,
+              // Per-device, set at /kiosk/settings. The prop is the fallback for a
+              // tablet nobody has configured yet.
+              kioskTimeout: loadKioskSettings().resetMinutes || kioskTimeout,
               quickCheckout: true,
               collapseCategories: true,
             }

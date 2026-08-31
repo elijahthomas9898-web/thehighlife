@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { KIOSK_SETTINGS_EVENT, loadKioskSettings } from "@/lib/kioskSettings";
 
 /**
  * Idle "attract" screen for the in-store tablets: after 45s untouched, the kiosk
@@ -22,8 +23,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * If you ever loosen those conditions, remove the keep-alive with them.
  */
 
-const IDLE_MS = 45_000; // untouched before the showcase takes over
-const ROTATE_MS = 6_000; // per deal
+// Idle + rotate are per-device now, set at /kiosk/settings; these are the
+// fallbacks when a tablet has never been configured.
 const TICK_MS = 1_000;
 const KEEPALIVE_EVERY = 30; // ticks (~30s)
 
@@ -44,6 +45,14 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
   const [open, setOpen] = useState(forceOpen);
   const [deals, setDeals] = useState<Deal[]>([]);
   const [idx, setIdx] = useState(0);
+  // Per-device config from /kiosk/settings. Re-read on save so a tablet picks up
+  // changes without being restarted.
+  const [cfg, setCfg] = useState(loadKioskSettings);
+  useEffect(() => {
+    const sync = () => setCfg(loadKioskSettings());
+    window.addEventListener(KIOSK_SETTINGS_EVENT, sync);
+    return () => window.removeEventListener(KIOSK_SETTINGS_EVENT, sync);
+  }, []);
   const lastActive = useRef(Date.now());
   const tick = useRef(0);
 
@@ -105,7 +114,7 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
   useEffect(() => {
     if (forceOpen) return;
     const t = setInterval(() => {
-      const idle = Date.now() - lastActive.current >= IDLE_MS;
+      const idle = Date.now() - lastActive.current >= cfg.attractIdleSeconds * 1000;
       const ok = idle && deals.length > 0 && shouldShow();
       setOpen(ok);
       if (ok) {
@@ -118,7 +127,7 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
       }
     }, TICK_MS);
     return () => clearInterval(t);
-  }, [forceOpen, deals.length, shouldShow]);
+  }, [forceOpen, deals.length, shouldShow, cfg.attractIdleSeconds]);
 
   // Rotate, and preload the next image so the change doesn't flash.
   useEffect(() => {
@@ -133,10 +142,11 @@ export default function KioskAttract({ forceOpen = false }: { forceOpen?: boolea
         }
         return next;
       });
-    }, ROTATE_MS);
+    }, cfg.attractRotateSeconds * 1000);
     return () => clearInterval(t);
-  }, [open, deals]);
+  }, [open, deals, cfg.attractRotateSeconds]);
 
+  if (!forceOpen && !cfg.attractEnabled) return null;
   if (!open || deals.length === 0) return null;
 
   const deal = deals[idx % deals.length];
