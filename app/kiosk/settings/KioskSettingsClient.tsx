@@ -8,7 +8,8 @@ import {
   saveKioskSettings,
   type KioskSettings,
 } from "@/lib/kioskSettings";
-import { buildTestPage } from "@/lib/escpos";
+import { buildPickupTicket, buildTestPage } from "@/lib/escpos";
+import { RAWBT_PLAY_URL, sendToRawbt } from "@/lib/rawbt";
 import { store } from "@/data/site";
 
 /**
@@ -111,6 +112,7 @@ export default function KioskSettingsClient() {
   const [saved, setSaved] = useState<null | string>(null);
   const [printer, setPrinter] = useState<UsbDevice | null>(null);
   const [printerMsg, setPrinterMsg] = useState<string>("");
+  const [rawbtMsg, setRawbtMsg] = useState<string>("");
 
   useEffect(() => {
     setSettings(loadKioskSettings());
@@ -249,9 +251,65 @@ export default function KioskSettingsClient() {
         </p>
       </header>
 
-      {/* ── printer ─────────────────────────────────────────────── */}
+      {/* ── printer: the app route, which is the one that works ── */}
       <section className="kset-card">
         <h2>Receipt printer</h2>
+        <p className="kset-muted" style={{ marginTop: 0 }}>
+          Printing goes through the <strong>RawBT</strong> app. Android hands USB printers to
+          its own driver and won&apos;t let the browser have them, so the app holds the printer
+          and we pass it the ticket.
+        </p>
+
+        <div className="kset-row">
+          <button
+            type="button"
+            className="kset-btn"
+            onClick={() => {
+              setRawbtMsg("Sent to RawBT. If nothing prints, the app isn't installed or set up.");
+              sendToRawbt(buildTestPage(store.name, new Date()));
+            }}
+          >
+            Test print
+          </button>
+          <button
+            type="button"
+            className="kset-btn kset-btn-ghost"
+            onClick={() => {
+              setRawbtMsg("Sent a sample ticket to RawBT.");
+              sendToRawbt(
+                buildPickupTicket({
+                  storeName: store.name,
+                  addressLine: store.addressLine1,
+                  orderNumber: "TEST",
+                  placedAt: new Date(),
+                }),
+              );
+            }}
+          >
+            Sample pickup ticket
+          </button>
+        </div>
+        {rawbtMsg && <p className="kset-note">{rawbtMsg}</p>}
+
+        <p className="kset-muted">
+          Nothing happened at all? RawBT isn&apos;t installed —{" "}
+          <a href={RAWBT_PLAY_URL} target="_blank" rel="noopener noreferrer">
+            get it from Google Play
+          </a>
+          , open it once, and choose your printer inside the app. The browser can&apos;t tell
+          whether it worked, so the paper is the only confirmation.
+        </p>
+
+        <p className="kset-warn">
+          Nothing prints automatically yet. Proteus&apos;s Server Direct Printing is also on,
+          and printing from both places would hand every customer two tickets — so this stays
+          manual until we know which one is doing the job.
+        </p>
+      </section>
+
+      {/* ── printer: direct USB, kept for diagnosis ─────────────── */}
+      <details className="kset-card kset-fallback">
+        <summary>Direct USB printing (not working on these tablets)</summary>
 
         {diag === null ? (
           <p className="kset-muted">Checking this device…</p>
@@ -290,14 +348,9 @@ export default function KioskSettingsClient() {
               Pairing is once per tablet and survives restarts. It is lost if the tablet&apos;s
               site data is cleared.
             </p>
-            <p className="kset-warn">
-              Nothing prints automatically yet. Proteus&apos;s Server Direct Printing is also
-              on, and printing from both places would hand every customer two tickets — so
-              this stays manual until we know which one is doing the job.
-            </p>
           </>
         )}
-      </section>
+      </details>
 
       {/* ── timing ──────────────────────────────────────────────── */}
       <section className="kset-card">
