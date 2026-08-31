@@ -22,19 +22,65 @@ import { store } from "@/data/site";
  * question in one tap.
  */
 
+type UsbEndpoint = {
+  direction: string;
+  endpointNumber: number;
+  type: string; // "bulk" | "interrupt" | "isochronous"
+};
+type UsbAlternate = {
+  alternateSetting: number;
+  interfaceClass: number;
+  endpoints: UsbEndpoint[];
+};
+type UsbInterface = {
+  interfaceNumber: number;
+  alternate: UsbAlternate;
+  alternates: UsbAlternate[];
+};
 type UsbDevice = {
   productName?: string;
   manufacturerName?: string;
   serialNumber?: string;
   opened: boolean;
-  configuration: { interfaces: { interfaceNumber: number; alternate: { endpoints: { direction: string; endpointNumber: number }[] } }[] } | null;
+  configuration: { interfaces: UsbInterface[] } | null;
   open(): Promise<void>;
   close(): Promise<void>;
   selectConfiguration(n: number): Promise<void>;
   claimInterface(n: number): Promise<void>;
   releaseInterface(n: number): Promise<void>;
+  selectAlternateInterface(n: number, alt: number): Promise<void>;
   transferOut(endpoint: number, data: Uint8Array): Promise<{ status: string }>;
 };
+
+/** An interface/endpoint pair we could plausibly print through. */
+type PrintTarget = { interfaceNumber: number; alternateSetting: number; endpoint: number; isPrinterClass: boolean };
+
+/**
+ * Every route to a bulk OUT endpoint on the device, best candidate first.
+ *
+ * Taking `interfaces[0]` and hoping is wrong: thermal printers routinely expose
+ * several interfaces — a vendor-specific one, a printer-class one, sometimes a
+ * composite device's other functions entirely — and only some are claimable.
+ * Class 7 (printer) is tried first, then anything else with a bulk OUT.
+ */
+function findPrintTargets(device: UsbDevice): PrintTarget[] {
+  const targets: PrintTarget[] = [];
+  for (const iface of device.configuration?.interfaces ?? []) {
+    const alts = iface.alternates?.length ? iface.alternates : [iface.alternate];
+    for (const alt of alts) {
+      if (!alt) continue;
+      const out = alt.endpoints?.find((e) => e.direction === "out" && e.type === "bulk");
+      if (!out) continue;
+      targets.push({
+        interfaceNumber: iface.interfaceNumber,
+        alternateSetting: alt.alternateSetting ?? 0,
+        endpoint: out.endpointNumber,
+        isPrinterClass: alt.interfaceClass === 7,
+      });
+    }
+  }
+  return targets.sort((a, b) => Number(b.isPrinterClass) - Number(a.isPrinterClass));
+}
 
 type Diagnostics = {
   webusb: boolean;
@@ -124,14 +170,47 @@ export default function KioskSettingsClient() {
       if (!printer.opened) await printer.open();
       if (printer.configuration === null) await printer.selectConfiguration(1);
 
-      const iface = printer.configuration?.interfaces?.[0];
-      const endpoint = iface?.alternate?.endpoints?.find((e) => e.direction === "out");
-      if (!iface || !endpoint) throw new Error("no output endpoint on this device");
+      const targets = findPrintTargets(printer);
+      if (targets.length === 0) {
+        throw new Error("this device has no bulk output — it may not be a printer");
+      }
 
-      await printer.claimInterface(iface.interfaceNumber);
-      await printer.transferOut(endpoint.endpointNumber, buildTestPage(store.name, new Date()));
-      await printer.releaseInterface(iface.interfaceNumber);
-      setPrinterMsg("Sent. A test slip should have printed.");
+      // Claiming can fail because something else already holds the interface, so
+      // work down the list instead of giving up on the first refusal.
+      let claimed: PrintTarget | null = null;
+      let lastError = "";
+      for (const t of targets) {
+        try {
+          await printer.claimInterface(t.interfaceNumber);
+          if (t.alternateSetting > 0) {
+            await printer.selectAlternateInterface(t.interfaceNumber, t.alternateSetting);
+          }
+          claimed = t;
+          break;
+        } catch (e) {
+          lastError = e instanceof Error ? e.message : String(e);
+        }
+      }
+
+      if (!claimed) {
+        // Almost always another process holding the device: Android's own print
+        // service, or the printer vendor's app. The interface list goes in the
+        // message so a photo of this screen is enough to diagnose it.
+        const detail = targets
+          .map((t) => `#${t.interfaceNumber}.${t.alternateSetting}${t.isPrinterClass ? "(printer)" : ""}`)
+          .join(", ");
+        throw new Error(
+          `could not claim the printer. Tried ${targets.length} interface${targets.length === 1 ? "" : "s"}: ${detail}. ` +
+            `Something else on this tablet is probably holding it — close any printer or print-service app, ` +
+            `unplug and replug the cable, then try again. Last error: ${lastError}`,
+        );
+      }
+
+      await printer.transferOut(claimed.endpoint, buildTestPage(store.name, new Date()));
+      await printer.releaseInterface(claimed.interfaceNumber);
+      setPrinterMsg(
+        `Sent on interface ${claimed.interfaceNumber}, endpoint ${claimed.endpoint}. A test slip should have printed.`,
+      );
     } catch (e) {
       setPrinterMsg(`Print failed: ${e instanceof Error ? e.message : String(e)}`);
     }
