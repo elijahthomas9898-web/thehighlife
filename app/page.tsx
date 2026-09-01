@@ -1,6 +1,5 @@
 import ScrollEffects from "./components/ScrollEffects";
 import Nav from "./components/Nav";
-import EventBanner from "./components/EventBanner";
 import Hero from "./components/Hero";
 import { Marquee, DealsBand } from "./components/Deals";
 import OnSaleRail from "./components/OnSaleRail";
@@ -16,8 +15,6 @@ export default function Page() {
       <ScrollEffects />
       <div className="rail" id="rail" />
       <Nav />
-      {/* temporary promo — removes itself after the event, see EventBanner */}
-      <EventBanner />
       <Hero />
       <Marquee />
       <DealsBand />

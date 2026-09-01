@@ -1128,19 +1128,6 @@
     .onsale-card{width:clamp(168px,60vw,200px)}
   }
 
-  /* Temporary event banner (app/components/EventBanner.tsx) — MOBILE ONLY.
-     The source is 16:9, so on desktop full-bleed it rendered 941px tall on a
-     1440x900 screen and swallowed the whole first screen. Rather than shrink it
-     there, it's hidden outright above 560px so the desktop homepage is exactly as
-     it was before the promo. On phones the same image is only ~219px tall (26% of
-     the screen) and reads well, so that's where it runs. */
-  .evtbanner{display:none}
-  @media(max-width:560px){
-    .evtbanner{display:block;background:var(--bg);
-      padding-top:calc(var(--header-h,116px) + 8px)}
-    .evtbanner-link{display:block;line-height:0}
-    .evtbanner-img{width:100%;height:auto;display:block}
-  }
 
   /* ---- FAQ (app/faq/page.tsx) ------------------------------------------
      Built on native <details>/<summary>, so most of the work here is undoing
