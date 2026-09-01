@@ -20,7 +20,7 @@ import { loadKioskSettings } from "@/lib/kioskSettings";
  * to the brand via the `#proteus_shop` rules in globals.css.
  * Recipe reverse-engineered from the live embed on thehighlifeny.com/shop.
  */
-const WIDGET_SRC = "https://cart.proteus420.com/highlife/cart-widget.js.cfm?v=4";
+export const WIDGET_SRC = "https://cart.proteus420.com/highlife/cart-widget.js.cfm?v=4";
 
 /**
  * Raised on `window` when JSCart reports a completed order, carrying

@@ -2,10 +2,24 @@ import type { Metadata } from "next";
 import ProteusShop from "../components/ProteusShop";
 import KioskInputHints from "../components/KioskInputHints";
 import KioskCartBar from "../components/KioskCartBar";
-import KioskDealsPanel from "../components/KioskDealsPanel";
-import KioskAttract from "../components/KioskAttract";
-import KioskTicketPrinter from "../components/KioskTicketPrinter";
 import MenuDealsMore from "../components/MenuDealsMore";
+import KioskPreload from "../components/KioskPreload";
+import dynamic from "next/dynamic";
+
+/**
+ * None of these three are needed for the shopper to start browsing, so they are
+ * split out of the initial bundle rather than parsed before first paint:
+ *   KioskAttract       - idle screen, first shows 45s in
+ *   KioskDealsPanel    - only when someone taps View All Deals
+ *   KioskTicketPrinter - only fires once an order completes
+ *
+ * This matters more here than on a normal page: the kiosk hard-reloads after
+ * every order and every idle timeout, so it pays its startup cost per customer,
+ * all day.
+ */
+const KioskDealsPanel = dynamic(() => import("../components/KioskDealsPanel"));
+const KioskAttract = dynamic(() => import("../components/KioskAttract"));
+const KioskTicketPrinter = dynamic(() => import("../components/KioskTicketPrinter"));
 
 export const metadata: Metadata = {
   title: "Kiosk | The High Life Dispensary",
@@ -30,6 +44,8 @@ export const metadata: Metadata = {
 export default function KioskPage() {
   return (
     <div className="kiosk-page">
+      {/* Starts the 560KB JSCart download during HTML parse, not after hydration. */}
+      <KioskPreload />
       <KioskInputHints />
       <MenuDealsMore kiosk />
       <ProteusShop kiosk kioskTimeout={3} />
