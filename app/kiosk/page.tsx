@@ -7,11 +7,10 @@ import KioskPreload from "../components/KioskPreload";
 import dynamic from "next/dynamic";
 
 /**
- * None of these three are needed for the shopper to start browsing, so they are
+ * None of these two are needed for the shopper to start browsing, so they are
  * split out of the initial bundle rather than parsed before first paint:
  *   KioskAttract       - idle screen, first shows 45s in
  *   KioskDealsPanel    - only when someone taps View All Deals
- *   KioskTicketPrinter - only fires once an order completes
  *
  * This matters more here than on a normal page: the kiosk hard-reloads after
  * every order and every idle timeout, so it pays its startup cost per customer,
@@ -19,7 +18,6 @@ import dynamic from "next/dynamic";
  */
 const KioskDealsPanel = dynamic(() => import("../components/KioskDealsPanel"));
 const KioskAttract = dynamic(() => import("../components/KioskAttract"));
-const KioskTicketPrinter = dynamic(() => import("../components/KioskTicketPrinter"));
 
 export const metadata: Metadata = {
   title: "Kiosk | The High Life Dispensary",
@@ -52,8 +50,6 @@ export default function KioskPage() {
       <KioskCartBar />
       <KioskDealsPanel />
       <KioskAttract />
-      {/* Prints a pickup ticket on order, when switched on at /kiosk/settings. */}
-      <KioskTicketPrinter />
     </div>
   );
 }

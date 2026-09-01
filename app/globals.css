@@ -1252,16 +1252,4 @@
     .kset-diag dd{margin-bottom:8px}
   }
 
-  /* Direct-USB printing is demoted to a collapsed section — it doesn't work on
-     the shop tablets (Android holds the printer), but it's kept for diagnosis. */
-  .kset-fallback > summary{
-    list-style:none;cursor:pointer;
-    font-family:var(--display);font-size:12px;font-weight:800;
-    text-transform:uppercase;letter-spacing:.09em;color:var(--muted);
-    min-height:44px;display:flex;align-items:center;gap:8px}
-  .kset-fallback > summary::-webkit-details-marker{display:none}
-  .kset-fallback > summary::after{content:"+";font-family:var(--mono);font-size:15px;color:var(--muted)}
-  .kset-fallback[open] > summary::after{content:"–"}
-  .kset-fallback > summary:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-  .kset-fallback[open] > summary{margin-bottom:12px}
   .kset-card a{color:var(--green);text-decoration:underline;text-underline-offset:2px}
