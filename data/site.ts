@@ -240,37 +240,37 @@ export const categories: Category[] = [
   {
     name: "Flower",
     desc: "Jarred eighths, ounces & singles from New York growers",
-    image: "/images/categories/flower.jpg",
+    image: "/images/categories/flower.webp",
     slug: "flower",
   },
   {
     name: "Pre-Rolls",
     desc: "Singles, packs & infused — rolled and ready to spark",
-    image: "/images/categories/prerolls.jpg",
+    image: "/images/categories/prerolls.webp",
     slug: "pre-rolls",
   },
   {
     name: "Vapes",
     desc: "510 carts, all-in-one disposables & live-resin pens",
-    image: "/images/categories/vapes.jpg",
+    image: "/images/categories/vapes.webp",
     slug: "vapes",
   },
   {
     name: "Edibles",
     desc: "Gummies, chocolate & drinks, precisely dosed",
-    image: "/images/categories/edibles.jpg",
+    image: "/images/categories/edibles.webp",
     slug: "edibles",
   },
   {
     name: "Concentrate",
     desc: "Rosin, badder, diamonds, sauce & sugar",
-    image: "/images/categories/concentrate.jpg",
+    image: "/images/categories/concentrate.webp",
     slug: "concentrate",
   },
   {
     name: "Topicals",
     desc: "Balms, lotions & roll-ons for targeted relief",
-    image: "/images/categories/topicals.jpg",
+    image: "/images/categories/topicals.webp",
     slug: "topicals",
   },
   // ── no photo yet: these render an on-brand gradient tile until you add one ──

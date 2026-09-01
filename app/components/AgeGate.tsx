@@ -75,7 +75,7 @@ export default function AgeGate() {
         ) : (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="gate-logo" src="/images/logo.png" alt={store.name} />
+            <img className="gate-logo" src="/images/logo.webp" alt={store.name} />
             <h2 className="gate-q" id="gateQ">
               Are You
               <br />

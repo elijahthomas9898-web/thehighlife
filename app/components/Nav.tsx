@@ -89,7 +89,7 @@ export default function Nav() {
       <div className="nav-main">
         <a className="brand" href="/" aria-label={`${store.name} — home`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="brand-logo" src="/images/logo.png" alt={store.name} />
+          <img className="brand-logo" src="/images/logo.webp" alt={store.name} />
         </a>
 
         {/* desktop links */}

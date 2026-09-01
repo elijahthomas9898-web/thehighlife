@@ -117,6 +117,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InlineScript html={BOOT_SCRIPT} />
+        {/*
+          Warm up the shop's hosts before anything asks for them.
+
+          ProteusShop creates the JSCart <script> inside a useEffect, so the browser
+          doesn't even learn cart.proteus420.com exists until our JS has downloaded,
+          parsed and hydrated — and only THEN does it start a DNS lookup and TLS
+          handshake for a ~570KB script. That's a long serial chain on a phone.
+
+          preconnect does the DNS + TCP + TLS up front, in parallel with our own
+          bundle, so the moment the effect runs the connection is already open.
+          Costs a few bytes of HTML and no requests.
+
+          The other three are hosts JSCart itself reaches for once it boots:
+          Font Awesome (~100KB) and the two image hosts serving product artwork.
+        */}
+        <link rel="preconnect" href="https://cart.proteus420.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="" />
+        <link rel="preconnect" href="https://proteusimages.s3.us-west-1.amazonaws.com" />
+        <link rel="dns-prefetch" href="https://d3ilo4wq1uvg39.cloudfront.net" />
       </head>
       <body>
         {/* Gate is always in the DOM; CSS decides whether it's visible. */}

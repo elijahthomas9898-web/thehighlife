@@ -3,7 +3,7 @@ export default function Hero() {
     <header className="hero" id="top">
       <div
         className="hero-photo"
-        style={{ backgroundImage: "url('/images/storefront.jpg')" }}
+        style={{ backgroundImage: "url('/images/storefront.webp')" }}
         role="img"
         aria-label="The High Life Dispensary storefront on Wellwood Ave, West Babylon"
       />

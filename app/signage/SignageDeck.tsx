@@ -77,7 +77,7 @@ export default function SignageDeck({
     <div className="sg">
       <header className="sg-top">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="sg-logo" src="/images/logo.png" alt="The High Life Dispensary" />
+        <img className="sg-logo" src="/images/logo.webp" alt="The High Life Dispensary" />
         <div className="sg-hours">
           {hours.map((h, idx) => (
             <span key={h.day} className={idx === todayIdx ? "on" : undefined}>
