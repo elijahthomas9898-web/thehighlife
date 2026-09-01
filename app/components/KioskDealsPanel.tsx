@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { KIOSK_SETTINGS_EVENT, loadKioskSettings } from "@/lib/kioskSettings";
 
 /**
  * Full-screen deals view for the kiosk — the same enlarged 16:9 picture tiles the
@@ -40,13 +39,6 @@ function encodeImage(url: string): string {
 }
 
 export default function KioskDealsPanel() {
-  // Switched per device at /kiosk/settings.
-  const [enabled, setEnabled] = useState(() => loadKioskSettings().dealsPanelEnabled);
-  useEffect(() => {
-    const sync = () => setEnabled(loadKioskSettings().dealsPanelEnabled);
-    window.addEventListener(KIOSK_SETTINGS_EVENT, sync);
-    return () => window.removeEventListener(KIOSK_SETTINGS_EVENT, sync);
-  }, []);
   const [open, setOpen] = useState(false);
   const [deals, setDeals] = useState<Deal[]>([]);
 
@@ -75,7 +67,7 @@ export default function KioskDealsPanel() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open, close]);
 
-  if (!enabled || !open) return null;
+  if (!open) return null;
 
   const pick = (d: Deal) => {
     close();

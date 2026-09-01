@@ -72,6 +72,19 @@ location.replace("/menu"+location.search+location.hash);return}}catch(e){}
 try{if(location.pathname.indexOf("/kiosk")===0){
 localStorage.removeItem("proteus_recent_highlife");
 localStorage.removeItem("proteus_wishlist_highlife")}}catch(e){}
+// Skip JSCart’s KIOSK SETUP dialog. Its check is "if (!kioskSettings) showKioskSetup()"
+// and it runs BEFORE the lockSelections branch, so a tablet whose storage has been
+// cleared greets the next CUSTOMER with a staff form asking for shop type, timeout
+// and an exit PIN. Seeding the key the widget reads sends it straight to the shop.
+//
+// Only when absent, so a device someone configured by hand (and its PIN) is left alone.
+// Deliberately minimal: no locationId (one location, the widget picks it), and NO
+// timeout — kioskTimeoutMs() is "kioskSettings.timeout || config.kioskTimeout", so
+// omitting it keeps the kioskTimeout prop in ProteusShop as the single source.
+try{if(location.pathname.indexOf("/kiosk")===0){
+var _kk="proteus_kiosk_highlife";
+if(!localStorage.getItem(_kk)){
+localStorage.setItem(_kk,JSON.stringify({shopType:"pickup",pin:""}))}}}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
 // /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong

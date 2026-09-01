@@ -7,7 +7,6 @@ import AuthModalGuard from "./AuthModalGuard";
 import ProteusSearchFix from "./ProteusSearchFix";
 import ProteusConfigFix from "./ProteusConfigFix";
 import PickupTimeHint from "./PickupTimeHint";
-import { loadKioskSettings } from "@/lib/kioskSettings";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -137,11 +136,25 @@ export default function ProteusShop({
         ...(kiosk
           ? {
               kiosk: true,
-              // Per-device, set at /kiosk/settings. The prop is the fallback for a
-              // tablet nobody has configured yet.
-              kioskTimeout: loadKioskSettings().resetMinutes || kioskTimeout,
+              kioskTimeout,
               quickCheckout: true,
               collapseCategories: true,
+              // Skip JSCart’s own KIOSK SETUP dialog. Without this a tablet whose storage
+              //   has been cleared greets the next CUSTOMER with a staff config form asking
+              //   for shop type, timeout and an exit PIN. There is nothing to ask: this store
+              //   has one location and pickup only (the locations API returns exactly that),
+              //   so config.shopType is the answer and neither modal is needed.
+              //   It also stops a customer tapping the location chip into a store picker.
+              //
+              //   Side effect worth knowing: that dialog was also the ONLY way to set the
+              //   staff exit PIN — the widget exposes no config option for it — so kiosk mode
+              //   can now be exited without one. Fine on a tablet locked to this URL with no
+              //   address bar; it is not a customer-reachable control.
+              //
+              //   It also settles a conflict: the dialog wrote a per-device timeout that
+              //   OVERRODE kioskTimeout here (kioskSettings.timeout || config.kioskTimeout).
+              //   With no dialog nothing is written, so this prop is the single source.
+              lockSelections: true,
             }
           : {}),
       });
