@@ -145,6 +145,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           The other three are hosts JSCart itself reaches for once it boots:
           Font Awesome (~100KB) and the two image hosts serving product artwork.
         */}
+        {/* Both hosts are in play: the widget script and checkout come from our own
+            cart subdomain, while the product/cart/auth APIs still resolve on
+            proteus420 (see the baseUrl note in ProteusShop). */}
+        <link rel="preconnect" href="https://cart.thehighlifeny.com" />
         <link rel="preconnect" href="https://cart.proteus420.com" />
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="" />
         <link rel="preconnect" href="https://proteusimages.s3.us-west-1.amazonaws.com" />

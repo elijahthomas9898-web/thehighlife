@@ -19,7 +19,7 @@ import PickupTimeHint from "./PickupTimeHint";
  * to the brand via the `#proteus_shop` rules in globals.css.
  * Recipe reverse-engineered from the live embed on thehighlifeny.com/shop.
  */
-export const WIDGET_SRC = "https://cart.proteus420.com/highlife/cart-widget.js.cfm?v=4";
+export const WIDGET_SRC = "https://cart.thehighlifeny.com/cart-widget.js.cfm?v=4";
 
 // The widget attaches a global; it's untyped.
 declare global {
@@ -113,6 +113,19 @@ export default function ProteusShop({
         theme: "dark", // brand skin lives in globals.css (#proteus_shop)
         headerTitle: "Shop The High Life",
         logoImage: "",
+        // Keep the shopper on the High Life domain through checkout. Proteus’s
+        // white-label host serves the same cart, so the only thing that changes is
+        // the hostname in the address bar at the moment someone is deciding whether
+        // to trust us with their details.
+        //
+        // ⚠️ Do NOT also set `baseUrl` here. It looks like the obvious next step and
+        // it takes the shop down. The widget builds API calls as
+        //     baseUrl + "/" + client + "/api_cart_v2.cfm"
+        // and the white-label host serves everything at its ROOT —
+        // cart.thehighlifeny.com/highlife/... is a 404. checkoutUrl is safe because it
+        // is used without the client segment (checkoutUrl + "/checkout_init.cfm").
+        // So baseUrl stays unset and keeps defaulting to cart.proteus420.com.
+        checkoutUrl: "https://cart.thehighlifeny.com",
         // Guest / anonymous checkout OFF — everywhere, kiosk and public site alike.
         // An unidentified order isn't something a licensed dispensary can take; every
         // order has to tie to a customer.
