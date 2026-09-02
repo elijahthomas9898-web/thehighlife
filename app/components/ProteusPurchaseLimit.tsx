@@ -1,34 +1,35 @@
 "use client";
 
 import { useEffect } from "react";
-import {
-  LIMITS,
-  formatAmount,
-  tally,
-  wouldExceed,
-  type Bucket,
-  type CartLine,
-} from "@/lib/limits";
+import { LIMITS, formatAmount, tally, type Bucket, type CartLine } from "@/lib/limits";
 
 /**
- * Keeps a cart inside New York's purchase limits: 3 oz (85 g) of cannabis and
- * 24 g of concentrated cannabis.
+ * Shows how much of New York's purchase limit a cart uses: 3 oz (85 g) of
+ * cannabis, 24 g of concentrated cannabis.
  *
- * Proteus does not do this. Their `action=validate_cart` caps by STOCK — verified
- * with a live call that reduced 10 to 7 for "limited stock" — and then returned
- * 7 × 14 g = 98 g = 3.46 oz without a word. Stock is enforced; the legal cap is not.
+ * ── Warning only, on purpose ─────────────────────────────────────────────────
+ * Proteus now enforces this at checkout — an over-limit order gets "Sorry, you
+ * have exceeded your current purchase limits" and cannot proceed. That is the
+ * real enforcement and it lives where it belongs, on their server.
  *
- * Two pieces of data, from two places, because neither has both:
+ * The problem this solves is that the customer only finds out AFTER leaving the
+ * cart, filling in contact details and reaching the order summary. This tells
+ * them in the cart, while the quantity steppers are still in front of them.
+ *
+ * So it deliberately does NOT block. Blocking here would duplicate a rule that
+ * already exists in a better place, and any disagreement between our
+ * classification and the register's would silently cost a legal sale.
+ *
+ * Two pieces of data, because neither source has both:
  *   - which limit a product counts against -> /api/purchase-limits (the browser
- *     cannot tell: categoryId is empty in the widget's response and the
- *     by-category endpoint only returns a preview of the catalogue)
- *   - grams per unit -> read from the widget's own product responses, the same
- *     technique ProteusStockLimit uses. No extra requests.
+ *     cannot tell: categoryId is empty in the widget's response, and the
+ *     by-category endpoint returns only a preview of the catalogue)
+ *   - grams per unit -> read from the widget's own product responses, no extra
+ *     requests, the same technique ProteusStockLimit uses
  *
- * ⚠️ The register is the authority, not this. It fails OPEN throughout: a product
- * we cannot classify or weigh is not counted and never blocks. Under-counting
- * means the counter catches an over-limit order — irritating. Over-counting would
- * silently kill a legal sale, which is worse and invisible.
+ * Anything we cannot classify or weigh is simply not counted, so the worst case
+ * is a total that reads low and no warning shown — never a false alarm telling
+ * someone they cannot buy something they can.
  */
 
 /** grams per unit, learned from the widget's traffic */
@@ -64,7 +65,7 @@ function remember(payload: unknown) {
   }
 }
 
-type WidgetCartItem = { id?: number | string; qty?: number; name?: string };
+type WidgetCartItem = { id?: number | string; qty?: number };
 
 function readCart(): CartLine[] {
   const w = window.ProteusWidget as { getCart?: () => { items?: WidgetCartItem[] } } | undefined;
@@ -87,6 +88,54 @@ export default function ProteusPurchaseLimit() {
     if (!shop) return;
     let cancelled = false;
 
+    const render = () => {
+      const summary = shop.querySelector(".proteus-cart-summary");
+      const existing = document.getElementById(PANEL_ID);
+
+      // Only meaningful in the cart view.
+      if (!summary) {
+        existing?.remove();
+        return;
+      }
+
+      const t = tally(readCart());
+      const rows: string[] = [];
+      let over = false;
+
+      (["cannabis", "concentrate"] as Bucket[]).forEach((b) => {
+        const used = t[b];
+        if (used <= 0) return;
+        const isOver = used > LIMITS[b];
+        const isNear = !isOver && used >= LIMITS[b] * 0.8;
+        if (isOver) over = true;
+        rows.push(
+          `<div class="hl-limit-row${isOver ? " is-over" : isNear ? " is-near" : ""}">` +
+            `<span>${b === "cannabis" ? "Flower &amp; pre-rolls" : "Concentrate &amp; edibles"}</span>` +
+            `<span>${formatAmount(used, b)} / ${formatAmount(LIMITS[b], b)}</span>` +
+            `</div>`,
+        );
+      });
+
+      // Nothing countable in the cart — say nothing rather than show empty rows.
+      if (!rows.length) {
+        existing?.remove();
+        return;
+      }
+
+      const panel = existing ?? document.createElement("div");
+      panel.id = PANEL_ID;
+      panel.className = "hl-limit" + (over ? " is-over" : "");
+      // Built only from numbers computed above, never from product text.
+      panel.innerHTML =
+        `<div class="hl-limit-title">New York purchase limit</div>` +
+        rows.join("") +
+        (over
+          ? `<p class="hl-limit-msg">This is over the legal limit for one purchase. ` +
+            `Checkout won't accept it — lower a quantity above and you're set.</p>`
+          : "");
+      if (!existing) summary.insertBefore(panel, summary.firstChild);
+    };
+
     // ── the bucket map, once ──────────────────────────────────────────────
     fetch("/api/purchase-limits")
       .then((r) => r.json())
@@ -96,8 +145,8 @@ export default function ProteusPurchaseLimit() {
         render();
       })
       .catch(() => {
-        // No map means nothing is classified, so nothing is counted and nothing
-        // blocks. The shop behaves exactly as it did before this component.
+        // No map means nothing is classified, so nothing is counted and no panel
+        // appears. The cart behaves exactly as it did before this component.
       });
 
     // ── weights, from the widget's own traffic ────────────────────────────
@@ -125,89 +174,8 @@ export default function ProteusPurchaseLimit() {
     };
     window.fetch = patched;
 
-    // ── the running total, shown in the cart view ─────────────────────────
-    const render = () => {
-      const summary = shop.querySelector(".proteus-cart-summary");
-      const existing = document.getElementById(PANEL_ID);
-      if (!summary) {
-        existing?.remove();
-        return;
-      }
-
-      const t = tally(readCart());
-      const rows: string[] = [];
-      (["cannabis", "concentrate"] as Bucket[]).forEach((b) => {
-        const used = t[b];
-        if (used <= 0) return;
-        const over = used > LIMITS[b];
-        const near = !over && used >= LIMITS[b] * 0.8;
-        rows.push(
-          `<div class="hl-limit-row${over ? " is-over" : near ? " is-near" : ""}">` +
-            `<span>${b === "cannabis" ? "Cannabis" : "Concentrate"}</span>` +
-            `<span>${formatAmount(used, b)} / ${formatAmount(LIMITS[b], b)}</span>` +
-            `</div>`,
-        );
-      });
-      if (!rows.length) {
-        existing?.remove();
-        return;
-      }
-
-      const over = t.cannabis > LIMITS.cannabis || t.concentrate > LIMITS.concentrate;
-      const panel = existing ?? document.createElement("div");
-      panel.id = PANEL_ID;
-      panel.className = "hl-limit" + (over ? " is-over" : "");
-      // Built from numbers we computed, never from product text.
-      panel.innerHTML =
-        `<div class="hl-limit-title">New York purchase limit</div>` +
-        rows.join("") +
-        (over
-          ? `<p class="hl-limit-msg">This cart is over the legal limit. Remove some items to check out.</p>`
-          : "");
-      if (!existing) summary.insertBefore(panel, summary.firstChild);
-    };
-
-    // ── stop an add that would cross the line ─────────────────────────────
-    type Widget = { add?: (...args: unknown[]) => unknown; _cardQuickAdd?: (...a: unknown[]) => unknown };
-    const install = () => {
-      const w = window.ProteusWidget as Widget | undefined;
-      if (!w?.add || (w.add as { __hlLimited?: boolean }).__hlLimited) return !!w?.add;
-      const original = w.add.bind(w);
-
-      const guarded = (...args: unknown[]) => {
-        const id = String(args[0] ?? "");
-        const bucket = buckets.get(id);
-        const per = grams.get(id);
-        // Unknown either way -> let it through untouched.
-        if (bucket && per !== undefined) {
-          const asked = Number(args[1]);
-          const qty = Number.isFinite(asked) && asked > 0 ? asked : 1;
-          const now = tally(readCart())[bucket];
-          if (wouldExceed(now, per * qty, bucket)) {
-            const w2 = window.ProteusWidget as { showNotification?: (m: string) => void } | undefined;
-            const msg =
-              `That would put you over New York's ${formatAmount(LIMITS[bucket], bucket)} ` +
-              `${bucket === "cannabis" ? "cannabis" : "concentrate"} limit for one purchase.`;
-            if (w2?.showNotification) w2.showNotification(msg);
-            else alert(msg);
-            render();
-            return;
-          }
-        }
-        const result = original(...args);
-        setTimeout(render, 60);
-        return result;
-      };
-      (guarded as { __hlLimited?: boolean }).__hlLimited = true;
-      w.add = guarded;
-      return true;
-    };
-
-    let tries = 0;
-    const timer = setInterval(() => {
-      if (install() || tries++ > 80) clearInterval(timer);
-    }, 150);
-
+    // The widget rebuilds the cart on every quantity change, so this keeps the
+    // totals live as someone adjusts them.
     const obs = new MutationObserver(render);
     obs.observe(shop, { childList: true, subtree: true });
     render();
@@ -215,7 +183,6 @@ export default function ProteusPurchaseLimit() {
     return () => {
       cancelled = true;
       obs.disconnect();
-      clearInterval(timer);
       if (window.fetch === patched) window.fetch = originalFetch;
       document.getElementById(PANEL_ID)?.remove();
     };
