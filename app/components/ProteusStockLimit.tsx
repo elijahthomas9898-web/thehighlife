@@ -36,13 +36,32 @@ const LABEL_CLASS = "hl-stock-note";
 
 type ApiProduct = { id?: number | string; inventory?: number | string };
 
-function remember(payload: unknown) {
-  const list: ApiProduct[] = Array.isArray(payload)
-    ? (payload as ApiProduct[])
-    : ((payload as { products?: ApiProduct[]; product?: ApiProduct })?.products ??
-      [(payload as { product?: ApiProduct })?.product].filter(Boolean as unknown as (v: unknown) => v is ApiProduct));
+type ApiPayload =
+  | ApiProduct[]
+  | { products?: ApiProduct[]; product?: ApiProduct; categories?: { products?: ApiProduct[] }[] };
 
-  for (const p of list ?? []) {
+/**
+ * Product lists arrive in three shapes depending on the call:
+ *   action=products             -> { products: [...] }
+ *   action=product              -> { product: {...} }
+ *   action=products_by_category -> { categories: [ { products: [...] } ] }
+ *
+ * That third one is why counts appeared on the default view and then vanished the
+ * moment you clicked a category: the products sit a level deeper and the shape
+ * was never read.
+ */
+function collect(payload: ApiPayload): ApiProduct[] {
+  if (Array.isArray(payload)) return payload;
+  if (payload?.products?.length) return payload.products;
+  if (payload?.product) return [payload.product];
+  if (payload?.categories?.length) return payload.categories.flatMap((c) => c?.products ?? []);
+  return [];
+}
+
+function remember(payload: unknown) {
+  const list = collect(payload as ApiPayload);
+
+  for (const p of list) {
     if (!p || p.id === undefined || p.id === null) continue;
     const n = Number(p.inventory);
     // Only trust a real, finite count. Missing inventory must leave the card
@@ -66,7 +85,9 @@ export default function ProteusStockLimit() {
       } catch {
         return response;
       }
-      if (!/action=products?(&|$)/.test(url)) return response;
+      if (!/[?&]action=(products_by_category|products|product|related)(?=&|$)/.test(url)) {
+        return response;
+      }
       // Read a clone so the widget still gets an unconsumed body.
       response
         .clone()
