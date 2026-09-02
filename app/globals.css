@@ -1197,3 +1197,20 @@
     color:var(--hlc-muted,#9aa89d);
     font-variant-numeric:tabular-nums;letter-spacing:.01em}
   .hl-stock-note.is-low{color:#E8A33C;font-weight:600}
+
+  /* NY purchase-limit totals, shown at the top of the cart summary
+     (app/components/ProteusPurchaseLimit.tsx). */
+  .hl-limit{
+    background:rgba(59,232,127,.07);border:1px solid rgba(59,232,127,.24);
+    border-radius:10px;padding:11px 13px;margin:0 0 12px}
+  .hl-limit.is-over{background:rgba(242,112,95,.09);border-color:rgba(242,112,95,.4)}
+  .hl-limit-title{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--hlc-muted,#9aa89d);margin-bottom:7px}
+  .hl-limit-row{
+    display:flex;justify-content:space-between;gap:14px;
+    font-size:13.5px;line-height:1.7;color:var(--hlc-ink,#f1f5ef);
+    font-variant-numeric:tabular-nums}
+  .hl-limit-row.is-near span:last-child{color:#E8A33C;font-weight:600}
+  .hl-limit-row.is-over span:last-child{color:#F2705F;font-weight:700}
+  .hl-limit-msg{margin:8px 0 0;font-size:12.5px;line-height:1.55;color:#F2705F}
