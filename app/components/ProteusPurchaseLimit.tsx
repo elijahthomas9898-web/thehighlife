@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { LIMITS, formatAmount, tally, type Bucket, type CartLine } from "@/lib/limits";
+import { buildPanel, tally, type Bucket, type CartLine } from "@/lib/limits";
 
 /**
  * Shows how much of New York's purchase limit a cart uses: 3 oz (85 g) of
@@ -98,40 +98,31 @@ export default function ProteusPurchaseLimit() {
         return;
       }
 
-      const t = tally(readCart());
-      const rows: string[] = [];
-      let over = false;
-
-      (["cannabis", "concentrate"] as Bucket[]).forEach((b) => {
-        const used = t[b];
-        if (used <= 0) return;
-        const isOver = used > LIMITS[b];
-        const isNear = !isOver && used >= LIMITS[b] * 0.8;
-        if (isOver) over = true;
-        rows.push(
-          `<div class="hl-limit-row${isOver ? " is-over" : isNear ? " is-near" : ""}">` +
-            `<span>${b === "cannabis" ? "Flower &amp; pre-rolls" : "Concentrate &amp; edibles"}</span>` +
-            `<span>${formatAmount(used, b)} / ${formatAmount(LIMITS[b], b)}</span>` +
-            `</div>`,
-        );
-      });
-
-      // Nothing countable in the cart — say nothing rather than show empty rows.
-      if (!rows.length) {
+      // Rows and thresholds come from buildPanel() in lib/limits.ts — a pure
+      // function with its own tests, so what shows here cannot drift from what is
+      // verified. This only paints it.
+      const p = buildPanel(tally(readCart()));
+      if (!p) {
         existing?.remove();
         return;
       }
 
+      const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
       const panel = existing ?? document.createElement("div");
       panel.id = PANEL_ID;
-      panel.className = "hl-limit" + (over ? " is-over" : "");
-      // Built only from numbers computed above, never from product text.
+      panel.className = "hl-limit" + (p.over ? " is-over" : "");
       panel.innerHTML =
         `<div class="hl-limit-title">New York purchase limit</div>` +
-        rows.join("") +
-        (over
+        p.rows
+          .map(
+            (r) =>
+              `<div class="hl-limit-row${r.state === "over" ? " is-over" : r.state === "near" ? " is-near" : ""}">` +
+              `<span>${esc(r.label)}</span><span>${esc(r.amount)}</span></div>`,
+          )
+          .join("") +
+        (p.over
           ? `<p class="hl-limit-msg">This is over the legal limit for one purchase. ` +
-            `Checkout won't accept it — lower a quantity above and you're set.</p>`
+            `Checkout won&rsquo;t accept it — lower a quantity above and you&rsquo;re set.</p>`
           : "");
       if (!existing) summary.insertBefore(panel, summary.firstChild);
     };

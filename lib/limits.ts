@@ -104,3 +104,40 @@ export function formatAmount(grams: number, bucket: Bucket): string {
   }
   return `${Number(grams.toFixed(2))} g`;
 }
+
+/** One row of the cart panel: which limit, how much used, how alarmed to look. */
+export type PanelRow = { label: string; amount: string; state: "ok" | "near" | "over" };
+
+export type Panel = { rows: PanelRow[]; over: boolean };
+
+/**
+ * Turn a tally into the rows the cart panel shows, or null when there is nothing
+ * worth saying.
+ *
+ * Pure on purpose. This used to live inside the component, which meant the only
+ * way to check a threshold was to hand-build a three-ounce cart in a browser and
+ * squint — and the preview pane would not run scripts on the shop page anyway. As
+ * a function it can be tested directly, which is how the thresholds below are
+ * actually verified.
+ */
+export function buildPanel(t: Tally): Panel | null {
+  const rows: PanelRow[] = [];
+  let over = false;
+
+  const add = (bucket: Bucket, label: string) => {
+    const used = t[bucket];
+    if (used <= 0) return;
+    const limit = LIMITS[bucket];
+    const isOver = used > limit;
+    // Amber from 80% — far enough out that there is still room to adjust, close
+    // enough that the warning means something.
+    const state: PanelRow["state"] = isOver ? "over" : used >= limit * 0.8 ? "near" : "ok";
+    if (isOver) over = true;
+    rows.push({ label, amount: `${formatAmount(used, bucket)} / ${formatAmount(limit, bucket)}`, state });
+  };
+
+  add("cannabis", "Flower & pre-rolls");
+  add("concentrate", "Concentrate & edibles");
+
+  return rows.length ? { rows, over } : null;
+}
