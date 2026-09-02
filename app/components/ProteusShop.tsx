@@ -204,7 +204,7 @@ export default function ProteusShop({
       <ProteusTextFix />
       {/* Keeps the sign-in modal from closing on a retargeted click while typing. */}
       <AuthModalGuard />
-      {/* Shows real stock on each card and stops the + button going past it. */}      <ProteusStockLimit />      {/* Corrects the 404 path JSCart uses for search suggestions. */}
+      {/* Caps the quantity stepper at real stock. Silent — no count is shown. */}      <ProteusStockLimit />      {/* Corrects the 404 path JSCart uses for search suggestions. */}
       <ProteusSearchFix />
       {/* Offers a way forward when someone registers an email that already exists in
           Proteus from an in-store visit. */}
