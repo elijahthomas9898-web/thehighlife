@@ -7,6 +7,7 @@ import AuthModalGuard from "./AuthModalGuard";
 import ProteusSearchFix from "./ProteusSearchFix";
 import ProteusConfigFix from "./ProteusConfigFix";
 import PickupTimeHint from "./PickupTimeHint";
+import ProteusStockLimit from "./ProteusStockLimit";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -203,7 +204,7 @@ export default function ProteusShop({
       <ProteusTextFix />
       {/* Keeps the sign-in modal from closing on a retargeted click while typing. */}
       <AuthModalGuard />
-      {/* Corrects the 404 path JSCart uses for search suggestions. */}
+      {/* Shows real stock on each card and stops the + button going past it. */}      <ProteusStockLimit />      {/* Corrects the 404 path JSCart uses for search suggestions. */}
       <ProteusSearchFix />
       {/* Offers a way forward when someone registers an email that already exists in
           Proteus from an in-store visit. */}

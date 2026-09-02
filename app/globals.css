@@ -1188,3 +1188,12 @@
   .hl-pickup-hint span{color:var(--hlc-muted,#9aa89d)}
 
 
+
+  /* Stock note above the card's quantity stepper
+     (app/components/ProteusStockLimit.tsx). Quiet by default — a count on every
+     card is noise — and only raises its voice when the number is genuinely low. */
+  .hl-stock-note{
+    font-size:11.5px;line-height:1.3;margin:0 0 5px;
+    color:var(--hlc-muted,#9aa89d);
+    font-variant-numeric:tabular-nums;letter-spacing:.01em}
+  .hl-stock-note.is-low{color:#E8A33C;font-weight:600}
