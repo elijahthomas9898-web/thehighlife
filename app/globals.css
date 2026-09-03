@@ -1204,9 +1204,9 @@
      the footer links below. */
   html.proteus-kiosk-active[data-hl-quickauth-on] #proteus-auth-back{display:none!important}
 
-  /* The two ways out, for the minorities: people who set a password online, and
-     genuinely new customers. Both are real doors; neither should shout over the
-     two fields that most people came here to fill in. */
+  /* The one way out: a genuinely new customer, who has no account for the two
+     fields above to find. It should be findable, not loud — everyone else came
+     here to type a phone number and leave. */
   html.proteus-kiosk-active .hl-auth-footer{
     margin:18px 0 0;padding:16px 20px 4px;
     border-top:.8px solid #404040;text-align:center}
@@ -1216,12 +1216,6 @@
     background:none;border:0;padding:0;cursor:pointer;
     font-size:14px;font-weight:700;color:var(--green);
     text-decoration:underline;text-underline-offset:3px}
-  html.proteus-kiosk-active .hl-auth-alt{
-    display:block;width:100%;margin:10px 0 0;padding:8px 0;
-    background:none;border:0;cursor:pointer;
-    font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
-    color:rgba(255,255,255,.42);text-decoration:underline;text-underline-offset:3px}
-  html.proteus-kiosk-active .hl-auth-alt:active{color:rgba(255,255,255,.75)}
 
   /* "Create an account", appended inside the not-found error. That message is the
      one wall a new customer hits, so the way past it has to be a real,

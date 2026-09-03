@@ -128,9 +128,15 @@ export default function KioskQuickAuth() {
 
         // The widget ships this panel with NO footer, and we hide its Back button
         // (it returns to the choice screen, which no longer exists here). Without
-        // these two links the only ways out are Continue and the × — a genuinely
-        // new customer would be stuck. They are the small print under the form,
-        // not competition for it.
+        // this link the only ways out are Continue and the × — a genuinely new
+        // customer would be stuck. It is the small print under the form, not
+        // competition for it.
+        //
+        // There is deliberately no "sign in with a password" link. Password
+        // sign-in is not gone — the header's own Sign In button still opens it —
+        // but offering it HERE reintroduces the choice this screen exists to
+        // remove, and the people most likely to take it are the imported
+        // customers who have no password to sign in with.
         if (!panel.querySelector(".hl-auth-footer")) {
           const footer = document.createElement("div");
           footer.className = "hl-auth-footer";
@@ -141,7 +147,6 @@ export default function KioskQuickAuth() {
           first.appendChild(link("Create an account", "hl-auth-link", "register"));
           footer.appendChild(first);
 
-          footer.appendChild(link("Sign in with a password instead", "hl-auth-alt", "login"));
           panel.appendChild(footer);
         }
         panel.setAttribute(MARK, "1");
