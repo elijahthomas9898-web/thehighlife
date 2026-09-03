@@ -11,10 +11,13 @@ import { useEffect } from "react";
  * email field and no next step (registration only branches on contract /
  * verify_email / complete — there's no "you already exist" path).
  *
- * So we watch for that error and offer the real answer: they don't need a new
- * account, they need a password on the one they have. The button drops them into
- * the Forgot Password panel with their email already filled in, which emails a
- * link that sets a password on the existing record — connecting the two.
+ * So we watch for that error and offer the real answer, which differs by where
+ * they're standing:
+ *
+ *   kiosk  — sign in with phone + birthday (Quick Checkout). Same account, no
+ *            password, no leaving the tablet.
+ *   online — email a link that sets a password on the existing record, so the
+ *            two are connected for good.
  *
  * The widget rebuilds this modal itself, so we re-check on an interval and guard
  * against duplicate injection (same approach as MenuDealsMore).
@@ -64,20 +67,29 @@ export default function AccountLinkPrompt() {
       const email =
         (document.getElementById("proteus-reg-email") as HTMLInputElement | null)?.value || "";
 
+      // On a shop-floor tablet an emailed link is a dead end: the customer would
+      // have to walk away from the kiosk, find their email, click through and come
+      // back. Phone + birthday signs them into the SAME account on the spot, with no
+      // password involved. On the website email is a fine route, so it stays there.
+      const onKiosk = location.pathname.startsWith("/kiosk");
+
       const box = document.createElement("div");
       box.className = MARK;
       box.innerHTML = `
         <div class="${MARK}-title">Looks like you already shop with us</div>
-        <p class="${MARK}-body">
-          You have an account from visiting the store — it just doesn't have a password yet.
-          Add one and you'll be able to order online with the same account.
-        </p>`;
+        <p class="${MARK}-body">${
+          onKiosk
+            ? "You have an account from shopping in the store. Sign in with your phone number and birthday — no password needed."
+            : "You have an account from visiting the store — it just doesn&rsquo;t have a password yet. Add one and you&rsquo;ll be able to order online with the same account."
+        }</p>`;
 
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `${MARK}-btn`;
-      btn.textContent = "Set my password →";
-      btn.addEventListener("click", () => openForgot(email));
+      btn.textContent = onKiosk ? "Use my phone number →" : "Set my password →";
+      btn.addEventListener("click", () =>
+        onKiosk ? window.ProteusWidget?.switchAuthTab?.("quick") : openForgot(email),
+      );
       box.appendChild(btn);
 
       hit.parentElement?.insertBefore(box, hit.nextSibling);

@@ -1190,17 +1190,46 @@
 
 
 
-  /* Kiosk checkout choice: Quick Checkout leads, Sign In steps back
-     (app/components/KioskCheckoutChoice.tsx). Most customers here have a
-     passwordless in-store account, so the phone+birthday route is the one that
-     works for them — it should look like the answer, not the alternative. */
-  html.proteus-kiosk-active .proteus-choice-btn.hl-choice-primary{
-    background:var(--green)!important;border-color:var(--green)!important;
-    color:#08120b!important}
-  html.proteus-kiosk-active .hl-choice-primary .proteus-choice-btn-label{
-    font-weight:800;font-size:16px}
-  html.proteus-kiosk-active .hl-choice-primary .proteus-choice-btn-sub{
-    color:rgba(8,18,11,.72)!important}
-  html.proteus-kiosk-active .hl-choice-primary i{
-    background:rgba(8,18,11,.14)!important;color:#08120b!important}
-  html.proteus-kiosk-active .proteus-choice-btn.hl-choice-secondary{opacity:.72}
+  /* Kiosk sign-in: one screen, phone + birthday
+     (app/components/KioskQuickAuth.tsx). */
+
+  /* The choice screen never gets to be the thing on screen. KioskQuickAuth
+     switches the modal to the quick panel as soon as it appears, and
+     MutationObserver callbacks run before paint — but only because this rule
+     guarantees the choice panel has nothing to paint even if that switch is a
+     frame late. Belt and braces: the flash it prevents would land on a 32"
+     tablet in front of a customer. */
+  html.proteus-kiosk-active[data-hl-quickauth-on] #proteus-choice-panel{display:none!important}
+  /* "Back" returns to that screen, so it has nowhere to go here. The way out is
+     the footer links below. */
+  html.proteus-kiosk-active[data-hl-quickauth-on] #proteus-auth-back{display:none!important}
+
+  /* The two ways out, for the minorities: people who set a password online, and
+     genuinely new customers. Both are real doors; neither should shout over the
+     two fields that most people came here to fill in. */
+  html.proteus-kiosk-active .hl-auth-footer{
+    margin:18px 0 0;padding:16px 20px 4px;
+    border-top:.8px solid #404040;text-align:center}
+  html.proteus-kiosk-active .hl-auth-first{
+    margin:0;font-size:14px;color:rgba(255,255,255,.62)}
+  html.proteus-kiosk-active .hl-auth-link{
+    background:none;border:0;padding:0;cursor:pointer;
+    font-size:14px;font-weight:700;color:var(--green);
+    text-decoration:underline;text-underline-offset:3px}
+  html.proteus-kiosk-active .hl-auth-alt{
+    display:block;width:100%;margin:10px 0 0;padding:8px 0;
+    background:none;border:0;cursor:pointer;
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;
+    color:rgba(255,255,255,.42);text-decoration:underline;text-underline-offset:3px}
+  html.proteus-kiosk-active .hl-auth-alt:active{color:rgba(255,255,255,.75)}
+
+  /* "Create an account", appended inside the not-found error. That message is the
+     one wall a new customer hits, so the way past it has to be a real,
+     thumb-sized button — not another line of red text. */
+  html.proteus-kiosk-active .hl-auth-newbtn{
+    display:block;width:100%;margin:12px 0 2px;padding:14px 18px;
+    border:0;border-radius:10px;cursor:pointer;
+    background:var(--green);color:#08120b;
+    font-family:var(--groovy);font-weight:800;font-size:15px;
+    text-transform:uppercase;letter-spacing:.03em}
+  html.proteus-kiosk-active .hl-auth-newbtn:active{transform:scale(.98)}
