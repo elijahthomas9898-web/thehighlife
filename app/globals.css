@@ -1204,6 +1204,20 @@
      the footer links below. */
   html.proteus-kiosk-active[data-hl-quickauth-on] #proteus-auth-back{display:none!important}
 
+  /* "Check in with a budtender." The one problem the screen cannot solve for
+     itself: a register-scanned record missing a phone or birthdate can never
+     match here, and registering again collides with the email on file. Green,
+     not red — it is a way forward, not a failure — and tinted so it reads as a
+     note rather than another line of form copy. Appears under Continue and at
+     the top of the registration form. */
+  html.proteus-kiosk-active .hl-auth-caption{
+    margin:14px 0 0;padding:12px 14px;border-radius:10px;
+    background:rgba(59,232,127,.09);border:1px solid rgba(59,232,127,.22);
+    color:var(--green);font-size:13.5px;line-height:1.5;text-align:center}
+  /* At the top of the register panel it needs to clear the panel edge. */
+  html.proteus-kiosk-active #proteus-register-panel > .hl-auth-caption{
+    margin:0 20px 14px}
+
   /* The one way out: a genuinely new customer, who has no account for the two
      fields above to find. It should be findable, not loud — everyone else came
      here to type a phone number and leave. */

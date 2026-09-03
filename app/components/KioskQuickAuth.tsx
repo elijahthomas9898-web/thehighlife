@@ -82,6 +82,30 @@ export default function KioskQuickAuth() {
     const widget = () =>
       window.ProteusWidget as { switchAuthTab?: (t: string) => void } | undefined;
 
+    /**
+     * The case neither screen can solve on its own.
+     *
+     * Quick Checkout matches on phone + birthdate, so it only finds people whose
+     * Proteus record actually carries both. A register-scanned record that is
+     * missing either one will fail here no matter how carefully the customer
+     * types, and registering again just collides with the email already on file.
+     * There is no self-service way out of that — but a budtender can fix it at the
+     * counter in seconds, and the customer is standing in the building.
+     *
+     * Shown in both places a customer can get stuck: under Continue, and at the
+     * top of the registration form.
+     */
+    const CAPTION =
+      "Shopped here before but never set up an online account? " +
+      "Check in with a budtender and they'll take care of it.";
+
+    const caption = () => {
+      const p = document.createElement("p");
+      p.className = "hl-auth-caption";
+      p.textContent = CAPTION;
+      return p;
+    };
+
     /** A link styled like the widget's own footer links. */
     const link = (text: string, cls: string, tab: string) => {
       const a = document.createElement("button");
@@ -94,6 +118,16 @@ export default function KioskQuickAuth() {
 
     const apply = () => {
       const panel = document.getElementById("proteus-quick-panel");
+
+      // ── 0. the same nudge above the registration form ───────────────────
+      // Sits in the panel rather than inside #proteus-reg-content, which the
+      // widget replaces wholesale when initRegistrationForm() renders — as a
+      // sibling it survives that, and the existence check covers the case where
+      // the whole panel is rebuilt.
+      const reg = document.getElementById("proteus-register-panel");
+      if (reg && !reg.querySelector(".hl-auth-caption")) {
+        reg.insertBefore(caption(), reg.firstChild);
+      }
 
       // ── 1. never let the choice screen be the thing on screen ───────────
       const choice = document.getElementById("proteus-choice-panel");
@@ -137,6 +171,13 @@ export default function KioskQuickAuth() {
         // but offering it HERE reintroduces the choice this screen exists to
         // remove, and the people most likely to take it are the imported
         // customers who have no password to sign in with.
+        // Directly under Continue, where someone whose details just failed — or
+        // who is about to hit that — is already looking.
+        const submit = panel.querySelector("#proteus-quick-submit");
+        if (submit && !panel.querySelector(".hl-auth-caption")) {
+          submit.insertAdjacentElement("afterend", caption());
+        }
+
         if (!panel.querySelector(".hl-auth-footer")) {
           const footer = document.createElement("div");
           footer.className = "hl-auth-footer";
