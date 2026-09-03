@@ -85,6 +85,33 @@ try{if(location.pathname.indexOf("/kiosk")===0){
 var _kk="proteus_kiosk_highlife";
 if(!localStorage.getItem(_kk)){
 localStorage.setItem(_kk,JSON.stringify({shopType:"pickup",pin:""}))}}}catch(e){}
+// Don't offer the customer the EXIT KIOSK prompt on the way back from checkout.
+//
+// checkout() stamps kiosk=1 onto the return URL it hands Proteus:
+//     if (!/[?&]kiosk=/.test(base)) kioskReturnUrl = base + '?kiosk=1'
+// and the bootstrap reads that same param as a STAFF request to leave:
+//     else if (kioskParamPresent && wasKioskEngaged && !urlParams.has('orderComplete'))
+//         showKioskExitPrompt();
+// Those two cannot tell each other apart. Finish an order and orderComplete
+// saves you; tap "go back" instead and the widget hands the customer a dialog
+// whose Exit button ends kiosk mode — with no PIN, because the check is
+// "if (pin && val !== pin)" and the PIN we seed above is empty. So a customer
+// changing their mind at checkout could drop the tablet out of kiosk mode.
+//
+// Dropping the param costs nothing: isKioskRequested() falls back to
+// config.kiosk === true, which /kiosk passes, so kiosk mode stays on. The
+// post-order path keeps working too — kioskJustOrdered keys off that same
+// kioskRequested, not off the param. The widget already cleans this param out
+// of the address bar itself and leans on sessionStorage to remember.
+//
+// staff=1 keeps a deliberate way in: /kiosk?kiosk=1&staff=1 still shows the
+// prompt. Customers have no way to reach that; the return URL never carries it.
+try{if(location.pathname.indexOf("/kiosk")===0){
+var _u=new URL(location.href);
+if(_u.searchParams.has("kiosk")&&_u.searchParams.get("staff")!=="1"){
+_u.searchParams.delete("kiosk");
+var _qs=_u.searchParams.toString();
+history.replaceState(null,"",_u.pathname+(_qs?"?"+_qs:"")+_u.hash)}}}catch(e){}
 // In-store signage (/signage) is inside a 21+-verified space — bypass the gate
 // before first paint so a TV never shows the "Are you 21?" prompt.
 // /kiosk is the in-store tablet: ID is checked at the door, so the gate is wrong
