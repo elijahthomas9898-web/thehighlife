@@ -1189,3 +1189,18 @@
 
 
 
+
+  /* Kiosk checkout choice: Quick Checkout leads, Sign In steps back
+     (app/components/KioskCheckoutChoice.tsx). Most customers here have a
+     passwordless in-store account, so the phone+birthday route is the one that
+     works for them — it should look like the answer, not the alternative. */
+  html.proteus-kiosk-active .proteus-choice-btn.hl-choice-primary{
+    background:var(--green)!important;border-color:var(--green)!important;
+    color:#08120b!important}
+  html.proteus-kiosk-active .hl-choice-primary .proteus-choice-btn-label{
+    font-weight:800;font-size:16px}
+  html.proteus-kiosk-active .hl-choice-primary .proteus-choice-btn-sub{
+    color:rgba(8,18,11,.72)!important}
+  html.proteus-kiosk-active .hl-choice-primary i{
+    background:rgba(8,18,11,.14)!important;color:#08120b!important}
+  html.proteus-kiosk-active .proteus-choice-btn.hl-choice-secondary{opacity:.72}

@@ -8,6 +8,7 @@ import ProteusSearchFix from "./ProteusSearchFix";
 import ProteusConfigFix from "./ProteusConfigFix";
 import PickupTimeHint from "./PickupTimeHint";
 import ProteusStockLimit from "./ProteusStockLimit";
+import KioskCheckoutChoice from "./KioskCheckoutChoice";
 
 /**
  * Embeds Proteus's JSCart widget (the store's real cart / checkout / delivery /
@@ -206,7 +207,7 @@ export default function ProteusShop({
       <AuthModalGuard />
       {/* Caps the quantity stepper at real stock. Silent — no count is shown. */}      <ProteusStockLimit />      {/* Corrects the 404 path JSCart uses for search suggestions. */}
       <ProteusSearchFix />
-      {/* Offers a way forward when someone registers an email that already exists in
+      {/* Kiosk: lead with Quick Checkout — most customers already have a          passwordless in-store account and Sign In is the wrong door for them. */}      {kiosk && <KioskCheckoutChoice />}      {/* Offers a way forward when someone registers an email that already exists in
           Proteus from an in-store visit. */}
       <AccountLinkPrompt />
       {/* Asks online shoppers to put their pickup time in Proteus's checkout Notes
